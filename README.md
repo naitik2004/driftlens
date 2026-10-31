@@ -179,11 +179,11 @@ predictions remain available for manual review instead of being automatically
 counted as false positives. The harness reports known-label recall, per-case
 runtime and warnings, and precision only for fully reviewed cases. It rejects
 repository overlap between development/evaluation splits. A small real-history
-[corpus and reproducible replay](examples/historical/README.md) now contains two
-genuine drift cases and two negative controls. The current detector missed both
-positive labels (0/2 known-label recall); both controls produced no findings.
-The positives require implicit example links/shared-destination reasoning and
-computed-path behavior beyond current support.
+[corpus and reproducible replay](examples/historical/README.md) now contains three
+genuine drift cases and three negative controls. The current detector missed all three
+positive labels (0/3 known-label recall); all three controls produced no findings.
+The cases cover optparse/example behavior, computed cache paths, and
+a removed local folder-listing cap; none is safely supported by the current static evidence rules.
 The cases are an unblinded scope study, not a held-out accuracy benchmark.
 [Live AI measurements](docs/LOCAL_AI.md) use separate synthetic inputs.
 
@@ -209,9 +209,9 @@ MIT licensed. Development proceeds on feature branches through pull requests.
 
 ## Current integration status
 
-The latest 1 November correction run passed 79 tests, all four deterministic demos and
+The earlier PR #10 correction run passed 79 tests, all four deterministic demos and
 the eight-case live Qwen suite. A clean installed CLI was checked outside the
-source checkout. These are implementation checks, not evidence of broad
+source checkout. A separate local check on merged main 6047427 passed 84 tests and all four demos; the model suite and clean-install checks were not rerun after PR #11. These are implementation checks, not evidence of broad
 real-history accuracy. See [verification and outstanding submission/rehearsal
 tasks](docs/VERIFICATION.md).
 
