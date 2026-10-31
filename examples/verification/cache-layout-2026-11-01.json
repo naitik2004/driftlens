@@ -36,7 +36,18 @@
     "yt-dlp-multistream-default",
     "gdown-folder-file-limit"
   ],
-  "clean_installed_history_cli": "pending",
+  "clean_installed_history_cli": {
+    "status": "passed",
+    "original_label_hits": 1,
+    "sentence_findings": 3,
+    "change_groups": 1,
+    "model_calls": 0,
+    "known_fixture_warnings": 4,
+    "findings_identical_to_saved_artifact": true,
+    "execution": "Installed venv console script outside source checkout"
+  },
   "organizer_submission": "unverified",
-  "spoken_team_rehearsal": "unverified"
+  "spoken_team_rehearsal": "unverified",
+  "runtime_commit": "26247bfb465e88ba6cdd331555bd6eade974df9f",
+  "captured_at_ist": "2026-11-01T02:45:21.019696+05:30"
 }

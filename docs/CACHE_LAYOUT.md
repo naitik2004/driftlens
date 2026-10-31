@@ -90,5 +90,7 @@ syntax-only test; analyzed projects do not need to be installed.
 
 All 105 tests passed locally, including 21 rule-specific test methods. Ordinary
 four-case demos and the actual eight-case Qwen/control suite also passed. Full
-historical replay results are in examples/historical/outputs/. Latest PR/main CI
-and clean-installed execution are checked before integration sign-off.
+historical replay results are in examples/historical/outputs/. A fresh installed CLI outside the source checkout matched the exact original
+label and reproduced all three saved findings identically. It used no model and
+retained the four known syntax-fixture warnings. Latest PR/main CI is checked
+before integration sign-off.
