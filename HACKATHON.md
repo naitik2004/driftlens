@@ -17,6 +17,13 @@ has become incorrect, and link the exact affected sentences to the responsible
 code changes. The initial scope is Python defaults, function parameters, and
 configuration options. Findings will include supporting evidence and uncertainty.
 
+## Architecture and implementation plan
+
+See [ARCHITECTURE.md](ARCHITECTURE.md) for the proposed analysis pipeline,
+MVP scope, false-positive controls, historical evaluation strategy, build
+sequence, and reading material. This is a design plan; implementation and
+benchmark results remain future work.
+
 ## Product AI model and justification
 
 **Selected model:** Qwen2.5-Coder 3B Instruct, using the `qwen2.5-coder:3b`
