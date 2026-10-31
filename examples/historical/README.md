@@ -39,14 +39,16 @@ python3 -m driftlens.evaluate examples/historical/manifest.json --output /tmp/dr
 
 | Case | Supplied labels found | Findings | Warnings | Saved report runtime (s) |
 | --- | --- | --- | --- | --- |
-| yt-dlp-multistream-default | 0/1 | 0 | 0 | 35.449 |
-| black-cache-filename | 0/1 | 0 | 4 | 7.887 |
-| yt-dlp-whitespace-control | 0/0 | 0 | 0 | 31.675 |
-| slugify-code-and-docs-together | 0/0 | 0 | 0 | 0.356 |
+| yt-dlp-multistream-default | 0/1 | 0 | 0 | 35.712 |
+| black-cache-filename | 0/1 | 0 | 4 | 10.306 |
+| yt-dlp-whitespace-control | 0/0 | 0 | 0 | 32.127 |
+| slugify-code-and-docs-together | 0/0 | 0 | 0 | 0.294 |
 
 Known-label recall is **0/2 (0%)** in `outputs/evaluation.json`; both negative
 controls still produce zero findings. The yt-dlp extractor
-now recognizes directly assigned optparse groups, but the stale format-selection
+now recognizes directly assigned optparse groups. Implicit/shared destinations
+and set_defaults overrides are conservatively unresolved after the defaults
+correction; the stale format-selection
 example does not name the changed flag or explicitly state its default. The
 explicit flag references in nearby sentences describe conditional behavior that
 remains true. Black's computed cache filename is not resolved. Both are recorded
@@ -179,3 +181,6 @@ For Black, A builds `cache.<line-length>.<integer-mode>.pickle`; B returns
 then joining computed components. The extractor has no exact, non-executing
 resolution for that call chain, so it leaves the case as a miss. C corrects the
 documentation in its new location; the replay verifies that path explicitly.
+
+The defaults-semantics correction regenerated these outputs and reran the full
+replay without changing the pinned revisions or labels. Recall remains 0/2.

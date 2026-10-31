@@ -88,7 +88,7 @@ Show examples/historical/README.md and one pinned A/B/C source example.
 “We also investigated actual public history. We analyze A and B before using C,
 the later correction, for validation. The current corpus has two genuine drift
 cases and two negative controls. The detector misses both positives: one needs
-nested optparse/example semantics; the other needs computed cache-path reasoning.
+shared optparse-default/example-link semantics; the other needs computed cache-path reasoning.
 Both are outside the implementation's scope today.
 
 “We retain that 0/2 result rather than present synthetic success as historical

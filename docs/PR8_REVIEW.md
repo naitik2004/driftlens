@@ -1,4 +1,4 @@
-# PR #8 integration review: hold for correction
+# PR #8 integration review and correction
 
 Reviewed PR head `bf48230110f68a47902f673202e07c15cb57e288` in an isolated
 worktree. Main was not changed. The PR's green tests do not cover the two
@@ -64,3 +64,13 @@ regressions belong in that detector branch, then Naitik reruns integration.
 The integration agent did not merge a known false-positive regression into main.
 The PR also still reports 0/2 genuine historical labels detected, so it must not
 be presented as closing the real-history detection gap.
+
+## Correction after external merge
+
+PR #8 and this review's handoff were merged externally while integration was
+ongoing. Naitik's correction removes implicit Boolean defaults, abstains on
+shared destinations and set_defaults overrides, and corrects the erroneous
+implicit-default unit expectation. Three new regressions reproduced failures on
+the merged version and pass after correction; the explicit single-destination
+positive test remains. Full correction suite: 79 tests passed. Historical
+effectiveness is still not claimed.

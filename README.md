@@ -65,6 +65,9 @@ not a historical accuracy benchmark.
 - Removed argparse flags and changed explicit defaults in direct, module-level
   `ArgumentParser` / `add_argument` definitions. Retained aliases and potentially
   compatible long-option abbreviations are respected.
+- Direct optparse options/groups in public function bodies with explicit scalar
+  defaults and a single declaration per destination. Implicit defaults, shared
+  destinations and set_defaults overrides abstain; no Boolean defaults are inferred.
 - Simple module constants and `from module import CONSTANT` dependencies with a
   maximum of two resolution hops. Constant changes carry the dependency's diff.
 - One constrained retry pattern: a literal `range(N)` loop around `try: return
@@ -179,7 +182,8 @@ repository overlap between development/evaluation splits. A small real-history
 [corpus and reproducible replay](examples/historical/README.md) now contains two
 genuine drift cases and two negative controls. The current detector missed both
 positive labels (0/2 known-label recall); both controls produced no findings.
-These positives exercise unsupported optparse/example and computed-path behavior.
+The positives require implicit example links/shared-destination reasoning and
+computed-path behavior beyond current support.
 The cases are an unblinded scope study, not a held-out accuracy benchmark.
 [Live AI measurements](docs/LOCAL_AI.md) use separate synthetic inputs.
 
@@ -205,7 +209,7 @@ MIT licensed. Development proceeds on feature branches through pull requests.
 
 ## Current integration status
 
-The 1 November integration run passed 72 tests, all four deterministic demos and
+The latest 1 November correction run passed 79 tests, all four deterministic demos and
 the eight-case live Qwen suite. A clean installed CLI was checked outside the
 source checkout. These are implementation checks, not evidence of broad
 real-history accuracy. See [verification and outstanding submission/rehearsal

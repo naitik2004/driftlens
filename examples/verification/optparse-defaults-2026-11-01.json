@@ -1,0 +1,95 @@
+{
+  "base_commit": "3991c9a7edcd47646b069b9e111ab41fb2e46b80",
+  "captured_at_ist": "2026-11-01T01:03:42.092740+05:30",
+  "change": "Conservative optparse default semantics correction after PR #8",
+  "regressions": {
+    "count": 3,
+    "before_fix": "all three failed with false findings",
+    "after_fix": "all three passed"
+  },
+  "full_unit_tests": {
+    "count": 79,
+    "status": "passed"
+  },
+  "deterministic_expected_findings": [
+    1,
+    0,
+    0,
+    1
+  ],
+  "live_model": {
+    "cases_passed": 8,
+    "model_calls": 5,
+    "added_findings": 3,
+    "cases": [
+      {
+        "name": "paraphrased-default",
+        "status": "passed",
+        "findings": 1,
+        "model_calls": 1,
+        "runtime_seconds": 8.013655
+      },
+      {
+        "name": "default-amounts-to",
+        "status": "passed",
+        "findings": 1,
+        "model_calls": 1,
+        "runtime_seconds": 4.686956
+      },
+      {
+        "name": "value-before-default",
+        "status": "passed",
+        "findings": 1,
+        "model_calls": 1,
+        "runtime_seconds": 4.402071
+      },
+      {
+        "name": "preexisting-inaccuracy",
+        "status": "passed",
+        "findings": 0,
+        "model_calls": 1,
+        "runtime_seconds": 3.980251
+      },
+      {
+        "name": "docs-fixed-together",
+        "status": "passed",
+        "findings": 0,
+        "model_calls": 0,
+        "runtime_seconds": 0.0983
+      },
+      {
+        "name": "explicit-example",
+        "status": "passed",
+        "findings": 0,
+        "model_calls": 0,
+        "runtime_seconds": 0.124857
+      },
+      {
+        "name": "negated-claim",
+        "status": "passed",
+        "findings": 0,
+        "model_calls": 1,
+        "runtime_seconds": 4.106908
+      },
+      {
+        "name": "unchanged-default",
+        "status": "passed",
+        "findings": 0,
+        "model_calls": 0,
+        "runtime_seconds": 0.122666
+      }
+    ]
+  },
+  "historical_replay": {
+    "cases": 4,
+    "known_labels": 2,
+    "hits": 0,
+    "recall": 0.0,
+    "predictions": 0
+  },
+  "remaining_limits": [
+    "Implicit, shared and set_defaults-overridden optparse defaults abstain.",
+    "Both real historical positives remain missed.",
+    "Organizer submissions and human rehearsal remain unverified."
+  ]
+}

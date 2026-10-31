@@ -1,7 +1,7 @@
 import unittest
 
 from driftlens.analyzer import analyze
-from driftlens.facts import Extractor
+from driftlens.facts import Extractor, UNKNOWN
 from .helpers import Repository
 
 
@@ -14,18 +14,20 @@ def parseOpts():
     parser = optparse.OptionParser()
     video = optparse.OptionGroup(parser, 'Video')
     video.add_option('--video-multistreams', action='store_true', dest='allow_video', default={default})
-    video.add_option('--no-video-multistreams', action='store_false', dest='allow_video')
     return parser
 '''
 
-    def test_tracks_exact_parser_group_options_and_implicit_store_false(self):
-        facts = Extractor({'cli.py': self.option.format(default='False')}).extract()
+    def test_tracks_explicit_default_and_abstains_on_implicit_store_false(self):
+        source = self.option.format(default='False').replace(
+            '    return parser',
+            "    video.add_option('--no-video-multistreams', action='store_false', dest='other')\n    return parser")
+        facts = Extractor({'cli.py': source}).extract()
         flags = {f.name: f for f in facts if f.kind == 'flag'}
         self.assertEqual(flags['--video-multistreams'].value['default'], False)
         self.assertEqual(flags['--video-multistreams'].value['dest'], 'allow_video')
         self.assertEqual(flags['--video-multistreams'].value['action'], 'store_true')
-        self.assertEqual(flags['--no-video-multistreams'].value['default'], True)
-        self.assertTrue(flags['--no-video-multistreams'].resolved)
+        self.assertEqual(flags['--no-video-multistreams'].value['default'], UNKNOWN)
+        self.assertFalse(flags['--no-video-multistreams'].resolved)
 
     def test_exact_flag_claim_links_old_and_new_static_defaults(self):
         a = self.repo.commit({'cli.py': self.option.format(default='True'),

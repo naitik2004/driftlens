@@ -4,38 +4,7 @@
   "base_commit": "50865ca803a130308c064c2de5c7140754382993",
   "head_commit": "91ebc64068d2957400dbfaadff23e995392b3963",
   "findings": [],
-  "abstentions": [
-    {
-      "claim": {
-        "path": "README.md",
-        "heading": "FORMAT SELECTION",
-        "quote": "However, if multiple audiostreams is enabled (`--audio-multistreams`), the default format changes to `-f bestvideo+bestaudio/best`.",
-        "line_start": 849,
-        "line_end": 849,
-        "start": 54070,
-        "end": 54201,
-        "kind": "sentence",
-        "columns": []
-      },
-      "symbol": "youtube_dlc.options.parseOpts",
-      "reason": "No unchanged claim with matching scope in the base snapshot"
-    },
-    {
-      "claim": {
-        "path": "README.md",
-        "heading": "CHANGES / 2021.01.05",
-        "quote": "* Added `--list-formats-as-table`,  `--list-formats-old`",
-        "line_start": 56,
-        "line_end": 56,
-        "start": 3176,
-        "end": 3232,
-        "kind": "sentence",
-        "columns": []
-      },
-      "symbol": "youtube_dlc.options.parseOpts",
-      "reason": "Cannot establish both old support and new contradiction"
-    }
-  ],
+  "abstentions": [],
   "warnings": [],
   "limitations": [
     "Python top-level functions, direct module-level argparse, and direct optparse option groups in public function bodies only.",
@@ -45,7 +14,7 @@
     "Markdown subset: ATX headings, paragraphs, simple pipe tables and fenced code."
   ],
   "metrics": {
-    "runtime_seconds": 35.44947,
+    "runtime_seconds": 35.711511,
     "claims_indexed": 2522,
     "facts_indexed": 912,
     "finding_count": 0,
