@@ -150,6 +150,13 @@ def analyze(repo, base, head, repository_url=None, model=None):
                 # Presence in a real parameter/flag reference table is supported;
                 # prose must explicitly state availability, not mention history.
                 supported = (claim.kind == "table" and any(re.search(r"parameter|flag|option|argument", c, re.I) for c in claim.columns)) or bool(re.search(r"\b(?:accepts?|supports?|available|takes?)\b", claim.quote, re.I))
+                # An imperative establishes availability of its exact option,
+                # not the behavior promised by the rest of the instruction.
+                # The old parser fact and unchanged claim are already verified.
+                if before.kind == "flag" and claim.kind == "sentence":
+                    option = re.escape(before.name)
+                    instruction = rf"^Use\s+(?:`{option}`|{option})(?=\s|[.,;:!?]|$)"
+                    supported = supported or bool(re.search(instruction, claim.quote, re.I))
                 if re.search(r"\b(?:not|never|no longer|unsupported|removed)\b", claim.quote, re.I):
                     supported = False
                 contradicted = True
