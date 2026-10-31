@@ -16,6 +16,9 @@ verification is complete. See [publishing setup](docs/PUBLISHING.md).
 
 ## Quick start
 
+First-time setup, Windows PowerShell commands, report interpretation and
+troubleshooting: [getting started](docs/GETTING_STARTED.md).
+
 Python 3.10+ and Git are required. The analyzer has no third-party runtime dependencies.
 From this checkout:
 
@@ -144,7 +147,7 @@ API reference: [Ollama chat](https://docs.ollama.com/api/chat).
 ## GitHub Actions
 
 [CI](.github/workflows/ci.yml) runs tests, demos and packaging checks on Python
-3.10, 3.12 and 3.13, validates wheel/source metadata, and checks installed
+3.10, 3.12 and 3.13 on Linux, plus Python 3.12 on Windows and macOS. It validates wheel/source metadata and checks installed
 finding and corrected-doc behavior outside the checkout. The [advisory drift workflow](.github/workflows/driftlens.yml)
 uses `pull_request`, reads the actual PR head from the event, and runs the analyzer
 from a separate trusted base checkout. It reads the target checkout only as Git
@@ -228,6 +231,14 @@ external work are recorded in [IMPLEMENTATION.md](IMPLEMENTATION.md).
 MIT licensed. Development proceeds on feature branches through pull requests.
 
 ## Current integration status
+
+The public-readiness follow-up passed **121 tests** and functional installed-wheel
+checks on hosted Linux, macOS and Windows. Text reports and fixtures use explicit
+UTF-8. The historical workflow ran successfully on merged main, with findings
+identical to the saved artifacts. Hosted packaging validation also passed on the
+readiness branch with upload skipped. This is portability/build evidence, not
+publication or an independent person's first-use experience. See
+[the hosted record](examples/verification/public-readiness-2026-11-01.json).
 
 The audit follow-up passed **120 tests**, all four deterministic demos, the
 eight-case actual local Qwen suite, and the six-case historical replay. It fixes

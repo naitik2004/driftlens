@@ -6,10 +6,16 @@ permissions:
   contents: read
 jobs:
   test:
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.os }}
     strategy:
       matrix:
+        os: [ubuntu-latest]
         python: ['3.10', '3.12', '3.13']
+        include:
+          - os: macos-latest
+            python: '3.12'
+          - os: windows-latest
+            python: '3.12'
     steps:
       - uses: actions/checkout@v4
         with:
@@ -22,15 +28,10 @@ jobs:
       - run: python -m pip install --no-deps .
       - run: driftlens --help
       - name: Build and validate distributions
+        shell: bash
         run: |
           python -m pip install build twine
           python -m build
           python -m twine check --strict dist/*
       - name: Verify installed CLI outside checkout
-        shell: bash
-        run: |
-          python -m venv "$RUNNER_TEMP/installed-cli"
-          "$RUNNER_TEMP/installed-cli/bin/python" -m pip install --no-deps dist/*.whl
-          "$RUNNER_TEMP/installed-cli/bin/python" -m pip check
-          cd "$RUNNER_TEMP"
-          "$RUNNER_TEMP/installed-cli/bin/python" -I "$GITHUB_WORKSPACE/examples/verify_install.py"
+        run: python examples/check_distribution.py --dist dist

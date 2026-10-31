@@ -1,0 +1,82 @@
+{
+  "source_commit": "8c161534fbcd7775d4b1181f151d2a36dcfcfa8d",
+  "unit_tests": 121,
+  "hosted_ci": {
+    "run_url": "https://github.com/naitik2004/driftlens/actions/runs/41246791397",
+    "conclusion": "success",
+    "jobs": [
+      {
+        "name": "test (macos-latest, 3.12)",
+        "conclusion": "success",
+        "url": "https://github.com/naitik2004/driftlens/actions/runs/41246791397/job/124671775757",
+        "installed_cli_step": "success"
+      },
+      {
+        "name": "test (ubuntu-latest, 3.13)",
+        "conclusion": "success",
+        "url": "https://github.com/naitik2004/driftlens/actions/runs/41246791397/job/124671775959",
+        "installed_cli_step": "success"
+      },
+      {
+        "name": "test (ubuntu-latest, 3.10)",
+        "conclusion": "success",
+        "url": "https://github.com/naitik2004/driftlens/actions/runs/41246791397/job/124671775966",
+        "installed_cli_step": "success"
+      },
+      {
+        "name": "test (ubuntu-latest, 3.12)",
+        "conclusion": "success",
+        "url": "https://github.com/naitik2004/driftlens/actions/runs/41246791397/job/124671776007",
+        "installed_cli_step": "success"
+      },
+      {
+        "name": "test (windows-latest, 3.12)",
+        "conclusion": "success",
+        "url": "https://github.com/naitik2004/driftlens/actions/runs/41246791397/job/124671776054",
+        "installed_cli_step": "success"
+      }
+    ]
+  },
+  "hosted_packaging": {
+    "run_url": "https://github.com/naitik2004/driftlens/actions/runs/41246763910",
+    "conclusion": "success",
+    "mode": "validation only on readiness branch",
+    "build": "success",
+    "publication": "skipped",
+    "hosted_wheel_downloaded_and_installed_locally": true
+  },
+  "hosted_history_main": {
+    "run_url": "https://github.com/naitik2004/driftlens/actions/runs/41246289713",
+    "source_commit": "caf6347b0ff74ee01f9e74c86f749ed96aaa4677",
+    "conclusion": "success",
+    "known_labels_hit": 1,
+    "known_labels": 3,
+    "negative_predictions": 0,
+    "findings_identical_to_saved": true
+  },
+  "github_environment_branch_policies": {
+    "pypi": [
+      {
+        "name": "main",
+        "type": "branch"
+      }
+    ],
+    "testpypi": [
+      {
+        "name": "main",
+        "type": "branch"
+      }
+    ]
+  },
+  "unicode_io": {
+    "non_utf8_locale_regression": "passed on Windows/Linux/macOS",
+    "report_encoding": "UTF-8",
+    "fixture_newlines": "LF"
+  },
+  "independent_first_user": "not observed",
+  "independent_dataset": "protocol and candidate log only; no new benchmark",
+  "actual_model_requests_in_followup": 0,
+  "publication": "not attempted; PyPI-side configuration unconfirmed",
+  "organizer_submission": "unverified",
+  "spoken_rehearsal": "unverified"
+}

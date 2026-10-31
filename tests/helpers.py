@@ -10,6 +10,7 @@ class Repository:
         self.git('init', '-q')
         self.git('config', 'user.name', 'DriftLens Test')
         self.git('config', 'user.email', 'test@example.invalid')
+        self.git('config', 'core.autocrlf', 'false')
 
     def git(self, *args):
         return subprocess.check_output(['git', '-C', str(self.path), *args], stderr=subprocess.PIPE).decode().strip()
@@ -21,7 +22,7 @@ class Repository:
                 target.unlink()
             else:
                 target.parent.mkdir(parents=True, exist_ok=True)
-                target.write_text(content)
+                target.write_text(content, encoding='utf-8', newline='\n')
         self.git('add', '-A')
         self.git('commit', '-qm', 'fixture', '--allow-empty')
         return self.git('rev-parse', 'HEAD')

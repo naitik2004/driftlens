@@ -76,7 +76,7 @@ class Ollama:
         output = None
         if path and path.exists():
             try:
-                output = json.loads(path.read_text())
+                output = json.loads(path.read_text(encoding='utf-8'))
                 self.validate(output, bundle)
                 self.cache_hits += 1
             except (ValueError, OSError):
@@ -98,7 +98,7 @@ class Ollama:
                 raise ModelError(f"Local model unavailable or invalid response: {exc}") from exc
             if path:
                 path.parent.mkdir(parents=True, exist_ok=True)
-                path.write_text(json.dumps(output, ensure_ascii=True) + "\n")
+                path.write_text(json.dumps(output, ensure_ascii=True) + "\n", encoding='utf-8', newline='\n')
         return output
 
     @staticmethod
