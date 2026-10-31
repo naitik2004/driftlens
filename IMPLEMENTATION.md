@@ -23,6 +23,14 @@ Markdown without importing or executing the analyzed project.
 
 ## Audit follow-up
 
+The later public-readiness follow-up passes **121 tests** on hosted Linux,
+Windows and macOS, including installed Unicode-report controls. It executes and
+records the historical workflow on merged main and packaging validation on the
+readiness branch without upload. GitHub pypi/testpypi environments are created
+with main-only branch policies; PyPI-side publishers are still unconfirmed.
+Independent data collection has a [protocol and candidate log](examples/evaluation/README.md),
+not a new benchmark. See [hosted evidence](examples/verification/public-readiness-2026-11-01.json).
+
 The five reproduced audit errors are fixed: unsupported parser registrations
 no longer prove removal, shadowed parser constructors and rebound constants
 abstain, custom range bindings invalidate retry facts, and Git timeouts return

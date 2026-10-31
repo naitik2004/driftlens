@@ -1,5 +1,24 @@
 # Integration verification — 1 November 2026
 
+## Hosted readiness follow-up
+
+Source `8c161534fbcd7775d4b1181f151d2a36dcfcfa8d` passed all 121 tests and functional
+installed-wheel controls on Linux, macOS and Windows in
+[hosted CI](https://github.com/naitik2004/driftlens/actions/runs/41246791397).
+Windows logs confirm the non-UTF-8-locale regression and outside-checkout install.
+The [packaging validation run](https://github.com/naitik2004/driftlens/actions/runs/41246763910)
+passed its build/install checks, retained distributions and skipped publication.
+Its downloaded wheel also passed a fresh local installation check.
+
+Separately, the [historical workflow on merged main](https://github.com/naitik2004/driftlens/actions/runs/41246289713)
+passed and produced findings identical to saved artifacts: 1/3 original labels,
+three quiet controls. GitHub pypi/testpypi environments now exist with main-only
+branch policies. No public upload, independent human first-use, completed new
+evaluation corpus, organizer submission or rehearsal is claimed.
+
+Records: [OS/package/environment evidence](../examples/verification/public-readiness-2026-11-01.json)
+and [hosted main replay](../examples/verification/hosted-history-main-2026-11-01.json).
+
 ## Latest audit remediation
 
 The audit follow-up passes 120 tests, including regressions for retained parser

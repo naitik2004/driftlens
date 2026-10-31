@@ -25,6 +25,12 @@ Add a pending GitHub publisher from the account Publishing page:
 Use matching GitHub environments. No API token belongs in repository files or
 chat. Trusted Publishing obtains a short-lived token during the release job.
 
+On 1 November 2026, the repository's `pypi` and `testpypi` GitHub environments
+were created and restricted to the `main` branch. This completes the GitHub-side
+environment step, not the PyPI/TestPyPI publisher registration or publication.
+The readiness branch's hosted validation run passed with its upload job skipped;
+see [the recorded evidence](../examples/verification/public-readiness-2026-11-01.json).
+
 ## Validate and publish
 
 Merge the reviewed release configuration into main. In GitHub Actions, run
