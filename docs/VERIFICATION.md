@@ -1,5 +1,26 @@
 # Integration verification — 1 November 2026
 
+## Published GitHub preview
+
+[DriftLens v0.1.0](https://github.com/naitik2004/driftlens/releases/tag/v0.1.0)
+is public as a hackathon preview, pinned to source
+`f9f45d30788ec0169cafb14e50c56c5bd40764b1` (merged PR #19). Its wheel, source
+archive and SHA256SUMS are uploaded. Anonymous downloads, checksum verification,
+a fresh isolated install and six functional installed-CLI scenarios all passed.
+This is automated installation evidence, not an independent person's first use.
+
+The exact release source passed all CI jobs on Linux, macOS and Windows, plus
+the packaging, six-case development replay and 12-case external evaluation
+workflows. The uploaded wheel's runtime files match that Git commit byte for
+byte. The record includes actual run URLs, jobs, asset hashes and public-install
+results: [release verification](../examples/verification/github-release-2026-11-01.json).
+
+Established recall remains 1/3 development labels and 0/1 external labels;
+behavioral review candidates and Qwen notes are not extra verified hits.
+PyPI/TestPyPI is deferred by explicit user choice. Independent human first-use,
+OrganizerHQ submission confirmation and spoken solo rehearsal remain unverified.
+Subsequent documentation commits do not change the pinned release runtime.
+
 ## Naitik takeover and release continuation
 
 PR #18's passing evidence update was reviewed and merged. Naitik took over all
