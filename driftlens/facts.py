@@ -172,6 +172,63 @@ class Extractor:
                     facts.append(Fact(path, f"{module}.{node.func.value.id}", "flag", flag,
                                       {"default": value, "aliases": sorted(flags)}, stmt.lineno, stmt.end_lineno,
                                       not unsafe_parser and None not in kwargs, deps))
+            facts.extend(self.optparse_facts(path, tree, module))
+        return facts
+
+    def optparse_facts(self, path, tree, module):
+        """Read direct OptionGroup.add_option calls inside one public function."""
+        facts = []
+        parsers, groups = set(), set()
+        for node in tree.body:
+            if isinstance(node, ast.Import):
+                parsers.update(f"{a.asname or a.name}.OptionParser" for a in node.names if a.name == "optparse")
+                groups.update(f"{a.asname or a.name}.OptionGroup" for a in node.names if a.name == "optparse")
+            elif isinstance(node, ast.ImportFrom) and node.module == "optparse":
+                parsers.update(a.asname or a.name for a in node.names if a.name == "OptionParser")
+                groups.update(a.asname or a.name for a in node.names if a.name == "OptionGroup")
+        for function in (n for n in tree.body if isinstance(n, (ast.FunctionDef, ast.AsyncFunctionDef))
+                         and not n.name.startswith("_") and not n.decorator_list):
+            parser_names, group_names = set(), set()
+            for statement in function.body:
+                if not isinstance(statement, ast.Assign) or len(statement.targets) != 1 or not isinstance(statement.targets[0], ast.Name):
+                    continue
+                target = statement.targets[0].id
+                value = statement.value
+                if not isinstance(value, ast.Call):
+                    continue
+                constructor = ast.unparse(value.func)
+                if constructor in parsers:
+                    parser_names.add(target)
+                elif constructor in groups and value.args and isinstance(value.args[0], ast.Name) and value.args[0].id in parser_names:
+                    group_names.add(target)
+            symbol = f"{module}.{function.name}"
+            for statement in function.body:
+                if not isinstance(statement, ast.Expr) or not isinstance(statement.value, ast.Call):
+                    continue
+                call = statement.value
+                if not (isinstance(call.func, ast.Attribute) and call.func.attr == "add_option"
+                        and isinstance(call.func.value, ast.Name) and call.func.value.id in group_names | parser_names):
+                    continue
+                options = [a.value for a in call.args if isinstance(a, ast.Constant)
+                           and isinstance(a.value, str) and a.value.startswith("-")]
+                if not options:
+                    continue
+                kwargs = {k.arg: k.value for k in call.keywords if k.arg}
+                action_node, default_node = kwargs.get("action"), kwargs.get("default")
+                action = action_node.value if isinstance(action_node, ast.Constant) else None
+                value, deps = self.value(path, default_node) if default_node is not None else (UNKNOWN, ())
+                resolved = action in ("store_true", "store_false")
+                if default_node is None:
+                    value = action == "store_false" if resolved else UNKNOWN
+                else:
+                    resolved = resolved and value != UNKNOWN
+                dest_node = kwargs.get("dest")
+                dest = dest_node.value if isinstance(dest_node, ast.Constant) and isinstance(dest_node.value, str) else None
+                resolved = resolved and dest is not None and not any(k.arg is None for k in call.keywords)
+                for option in options:
+                    facts.append(Fact(path, symbol, "flag", option,
+                                      {"default": value, "aliases": sorted(options), "dest": dest, "action": action},
+                                      statement.lineno, statement.end_lineno, resolved, deps))
         return facts
 
     def retry_count(self, path, node):

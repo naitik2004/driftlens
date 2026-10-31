@@ -8,7 +8,7 @@
       "predictions": 0,
       "unmatched_for_review": [],
       "correction_evidence": [],
-      "runtime_seconds": 29.775456,
+      "runtime_seconds": 30.844684,
       "warnings": [],
       "precision": null
     },
@@ -20,7 +20,7 @@
       "predictions": 0,
       "unmatched_for_review": [],
       "correction_evidence": [],
-      "runtime_seconds": 7.776972,
+      "runtime_seconds": 8.483131,
       "warnings": [
         "tests/data/expression.py: cannot use starred expression here (<unknown>, line 148)",
         "tests/data/numeric_literals_py2.py: invalid decimal literal (<unknown>, line 3)",
@@ -37,7 +37,7 @@
       "predictions": 0,
       "unmatched_for_review": [],
       "correction_evidence": [],
-      "runtime_seconds": 36.206089,
+      "runtime_seconds": 32.706354,
       "warnings": [],
       "precision": null
     },
@@ -49,7 +49,7 @@
       "predictions": 0,
       "unmatched_for_review": [],
       "correction_evidence": [],
-      "runtime_seconds": 0.361307,
+      "runtime_seconds": 0.326121,
       "warnings": [],
       "precision": null
     }

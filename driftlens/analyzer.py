@@ -114,9 +114,10 @@ def analyze(repo, base, head, repository_url=None, model=None):
     report = {"schema_version": 1, "analyzer_version": __version__,
               "base_commit": comparison.base.commit, "head_commit": comparison.head.commit,
               "findings": [], "abstentions": [], "warnings": old_extractor.errors + new_extractor.errors,
-              "limitations": ["Python top-level functions and direct module-level argparse definitions only.",
+              "limitations": ["Python top-level functions, direct module-level argparse, and direct optparse option groups in public function bodies only.",
                               "Exact scope references required; unresolved aliases, wrappers and qualifiers abstain.",
                               "Static declared defaults do not prove effective runtime values or physical units.",
+                              "Computed return values and called methods are not resolved.",
                               "Markdown subset: ATX headings, paragraphs, simple pipe tables and fenced code."]}
     failed_paths = {w.split(":", 1)[0] for w in report["warnings"]}
     for before, after, category in changes(before_facts, after_facts, comparison.renames):

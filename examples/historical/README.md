@@ -39,16 +39,18 @@ python3 -m driftlens.evaluate examples/historical/manifest.json --output /tmp/dr
 
 | Case | Supplied labels found | Findings | Warnings | Saved report runtime (s) |
 | --- | --- | --- | --- | --- |
-| yt-dlp-multistream-default | 0/1 | 0 | 0 | 28.182 |
-| black-cache-filename | 0/1 | 0 | 4 | 7.834 |
-| yt-dlp-whitespace-control | 0/0 | 0 | 0 | 28.690 |
-| slugify-code-and-docs-together | 0/0 | 0 | 0 | 0.322 |
+| yt-dlp-multistream-default | 0/1 | 0 | 0 | 35.449 |
+| black-cache-filename | 0/1 | 0 | 4 | 7.887 |
+| yt-dlp-whitespace-control | 0/0 | 0 | 0 | 31.675 |
+| slugify-code-and-docs-together | 0/0 | 0 | 0 | 0.356 |
 
-**Known-label recall: 0/2 (0%).** Both genuine drift labels were missed.
-Both negative controls produced zero findings. All four reports record zero model
-calls. Precision is undefined because there are no predictions; no broad
-accuracy or AI-benefit claim is made. The four Black warnings concern upstream
-Python-2/invalid-syntax test fixtures, not the changed `black.py` source.
+Known-label recall is **0/2 (0%)** in `outputs/evaluation.json`; both negative
+controls still produce zero findings. The yt-dlp extractor
+now recognizes directly assigned optparse groups, but the stale format-selection
+example does not name the changed flag or explicitly state its default. The
+explicit flag references in nearby sentences describe conditional behavior that
+remains true. Black's computed cache filename is not resolved. Both are recorded
+as misses.
 
 Raw reports and the harness metrics are in [outputs/](outputs/). The independent
 harness replay measures its own runtime, so its durations differ from the saved
@@ -115,7 +117,7 @@ action='store_true', dest='allow_multiple_video_streams', default=False,
 
 > For example, `-f bestvideo+best+bestaudio --video-multistreams --audio-multistreams` will download and merge all 3 given formats.
 
-Label subject: `youtube_dlc.options.parseOpts`, name `--video-multistreams`, category `flag_default_changed`. parseOpts is the actual callable defining the optparse option; the extractor currently emits no flag fact for it.
+Label subject: `youtube_dlc.options.parseOpts`, name `--video-multistreams`, category `flag_default_changed`. The extractor now emits a fact for direct optparse calls in the function body. The report remains a miss because this sentence contains no exact option reference and does not state a literal default. Do not infer a finding from the format selector alone.
 
 ### black-cache-filename
 
@@ -146,7 +148,7 @@ return CACHE_DIR / f"cache.{mode.get_cache_key()}.pickle"
 
 > - Linux: `/home/<username>/.cache/black/<version>/cache.<mode-key>.pickle`
 
-Label subject: `black.get_cache_file`, name `mode`, category `cache_path_changed`. cache_path_changed is a manual behavioral category outside the current detector categories; it does not add a detector feature.
+Label subject: `black.get_cache_file`, name `mode`, category `cache_path_changed`. This is a manual label outside detector categories. The report remains a miss because B's expression calls `mode.get_cache_key()`, whose result is assembled by a method body using a sorted enum comprehension, instance attributes, conversions, and joins. The extractor does not resolve function calls or instance state; no filename fact is produced.
 
 ### yt-dlp-whitespace-control
 
@@ -164,48 +166,16 @@ The new opt-in allow_unicode=False parameter and CLI flag are documented in the 
 - B (2022-02-22): [`d968ca7419e6f4e40685888c56d03bea50fd39d7`](https://github.com/un33k/python-slugify/commit/d968ca7419e6f4e40685888c56d03bea50fd39d7).
 - License at B: [MIT](https://github.com/un33k/python-slugify/blob/d968ca7419e6f4e40685888c56d03bea50fd39d7/LICENSE); notice copied to `licenses/python-slugify.txt`.
 
-For yt-dlp, the option definitions and `YoutubeDL.build_format_selector`
-both change multiple-stream defaults from True to False. With no opt-in flags,
-the old promise of merging all three formats is therefore stale. The later fix
-adds both opt-in flags to that same example. The detector recognizes direct
-module-level argparse definitions, not nested optparse groups, and deliberately
-skips explicit examples; no warning or abstention is emitted for this miss.
+For yt-dlp, `--video-multistreams` and `--audio-multistreams` change from
+True to False. The exact-reference policy permits a flag claim only when the
+claim contains that option string. The stale example omits it and requires
+deriving format-selector behavior from defaults, so the detector does not force
+a finding. The separate conditional sentences mentioning
+`--no-video-multistreams` and `--no-audio-multistreams` remain accurate.
 
-For Black, A builds `cache.<line-length>.<integer-mode>.pickle`; B uses a mode
-key containing target-version, line-length and formatting-option components.
-The documented filename remains unchanged. C fixes the documentation in its
-new location years later. The harness's `old_quote_still_present` field alone
-cannot establish a correction after a doc move: this runner also checks the
-explicit corrected path and replacement text. Computed filename behavior is
-outside the supported default/removal checks.
-
-## Search ledger and limits
-
-The initial search inspected histories in yt-dlp, Black and python-slugify and
-stopped after finding the above bounded corpus. It did not perform an exhaustive
-search or use a 45-minute timebox as a claim of search coverage.
-
-| Candidate | Decision |
-| --- | --- |
-| yt-dlp multistream defaults and later example correction | Included genuine positive; optparse and example semantics unsupported |
-| Black cache format and later docs correction | Included genuine positive; computed cache-path behavior unsupported |
-| Black default include-list correction (`52ab313a`) | Excluded: no verified earlier supported-claim/code-change pair |
-| python-slugify `word_boundaries` rename (`683364ea`) | Excluded: no matching Markdown claim or later correction found |
-| python-slugify Unicode opt-in addition (`d968ca74`) | Included as synchronized code/docs negative, not historical drift |
-| yt-dlp single trailing-space removal (`4eacbc17`) | Included as formatting-only negative; identical Python ASTs |
-
-This corpus measures neither AI contribution nor broad project accuracy. It
-contains no detected real-history positive. These cases should not be used to
-tune a detector and then called held-out evaluation; repository overlap between
-development and evaluation must remain explicit. Source snippets retain the
-upstream notices in `licenses/`.
-
-## Satya's explanation for the team
-
-“I checked actual Git snapshots instead of making a synthetic repository. In
-yt-dlp the two multistream defaults changed from True to False, but the README
-example still promised all three formats without enabling either option. A later
-commit added the missing flags. DriftLens returned no finding because its static
-extractor does not support that optparse setup and it excludes examples. That is
-a verified limitation, and I saved the raw result rather than counting it as a
-success.”
+For Black, A builds `cache.<line-length>.<integer-mode>.pickle`; B returns
+`cache.{mode.get_cache_key()}.pickle`. Resolving the latter requires following
+`get_cache_key`, evaluating a sorted enum comprehension and instance attributes,
+then joining computed components. The extractor has no exact, non-executing
+resolution for that call chain, so it leaves the case as a miss. C corrects the
+documentation in its new location; the replay verifies that path explicitly.

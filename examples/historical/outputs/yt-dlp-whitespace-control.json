@@ -7,15 +7,16 @@
   "abstentions": [],
   "warnings": [],
   "limitations": [
-    "Python top-level functions and direct module-level argparse definitions only.",
+    "Python top-level functions, direct module-level argparse, and direct optparse option groups in public function bodies only.",
     "Exact scope references required; unresolved aliases, wrappers and qualifiers abstain.",
     "Static declared defaults do not prove effective runtime values or physical units.",
+    "Computed return values and called methods are not resolved.",
     "Markdown subset: ATX headings, paragraphs, simple pipe tables and fenced code."
   ],
   "metrics": {
-    "runtime_seconds": 28.689553,
+    "runtime_seconds": 31.674797,
     "claims_indexed": 2548,
-    "facts_indexed": 611,
+    "facts_indexed": 817,
     "finding_count": 0,
     "change_groups": 0,
     "model_calls": 0,
