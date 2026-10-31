@@ -1,47 +1,62 @@
-# Naitik's agent assignment: continue this chat's work
+# Naitik Pandey — original assignment status
 
-Progress: local runtime/model installation, successful live inference, the
-eight-case synthetic suite and actual evidence artifacts are now completed.
-See ../LOCAL_AI.md. Continue with teammate PR integration, real-history review,
-submission verification and rehearsal; the original checklist follows.
+Checked against current merged main `8a66d57cdca223fcc3e4b7bac07f3337d12e3b42`
+on 1 November 2026. This replaces the old checklist's obsolete server-unavailable
+wording. The original assignment remains in Git history.
 
-Read docs/TEAM_PLAN.md and docs/JUDGES_GUIDE.md. Own live AI, reports, integration,
-CI and the final presentation. Do not edit Ravichandra's extractor/analyzer or
-Satya's evaluator while their branches are active.
+## Original steps 1–6: completed and verified
 
-Immediate issue: Qwen's integration is written and mocked tests pass, but a real
-Ollama server was unavailable. Meaningful AI is mandatory; do not describe the
-current synthetic deterministic demos as proof of AI use.
+| Original step | Verified delivery |
+| --- | --- |
+| 1. Install/start Ollama and Qwen; record hardware/model | Local Qwen2.5-Coder 3B Q4_K_M runs on the M3 / 8 GB laptop. Digest, runtime version and sampled memory are saved in examples/outputs/live-model-environment.json. |
+| 2. Prove actual model contribution | Actual uncached calls added three evidence-backed findings over the deterministic baseline in the eight-case synthetic suite. |
+| 3. Save actual outputs | Successful standalone/suite outputs and the initial rejected response are committed in examples/outputs/. |
+| 4. Handle real inference failures conservatively | Prompt v2 clarified types and revision direction after the first failure; expected labels and static verification were not weakened. Regression tests cover those errors. |
+| 5. Reconcile declarations and status | HACKATHON.md, README.md, IMPLEMENTATION.md, local AI guide and judge guidance reflect observed capabilities and limits. |
+| 6. Integrate, test and verify installation | All teammate PRs #1–#6 integrated; verification PR #7 merged. Final-main 72 tests and CI passed. Four demos, eight-case live suite, independent history replay, report checks and clean installed CLI verified. |
 
-1. Install/start Ollama on the demonstration laptop using official instructions.
-   Fetch qwen2.5-coder:3b, record model digest and hardware. The current tag is
-   about 1.9 GB on Ollama; latency and memory must be measured, not assumed.
-2. Run `python3 -m examples.live_model --output /tmp/driftlens-live-model.json`.
-   It compares a deterministic baseline against actual uncached local inference
-   on identical snapshots. Its sentence is deliberately outside today's regex
-   grammar, so a passing run proves a narrow model-assisted extraction contribution.
-   This is one synthetic smoke test, not an accuracy benchmark or proof that the
-   whole product requires a model. A failed run exits nonzero and records failure.
-3. If successful, save the ACTUAL output to examples/outputs/live-model.json in a
-   separate PR, plus model digest, measured hardware/runtime and exact command.
-   Never change the expected answer, inject a mocked verdict, or hide warnings
-   just to get a pass. Add positive paraphrases and negatives to assess usefulness.
-4. Inspect real returned JSON when inference fails; improve prompt/validation
-   conservatively within model.py. Schema validation and deterministic old/new
-   evidence remain mandatory. Check failure handling with regressions. Do not
-   enable automatic LLM calls on the secretless GitHub runner or require an API key.
-5. Fill current model/status declarations only after observed evidence; synchronize
-   HACKATHON.md, README.md and IMPLEMENTATION.md without rewriting history.
-6. Review and merge independent PRs one by one after tests and hosted CI pass.
-   Verify install from a clean clone and reports pinned to actual input commits.
-7. Confirm both organizer submissions, rehearse the guide with all members and
-   freeze the final green commit before 6:30 AM IST on 1 November.
+Evidence: [verification record](../VERIFICATION.md),
+[actual AI evidence](../../examples/outputs/LIVE_AI.md),
+[green main CI](https://github.com/naitik2004/driftlens/actions/runs/41233179308).
+These completed checks concern the cited version. New runtime changes require
+new integration checks.
 
-If local inference cannot be established promptly, ask event mentors about the
-announced open-model server before midnight. Current adapter deliberately accepts
-localhost only: remote support would require an explicit, constrained change and
-its own tests. Do not switch to closed-model APIs or claim an unused open model.
+## Original step 7: partly complete, human confirmation still required
 
-Do not spend the night on a dashboard, login system, graph database, model training,
-or rebranding DocDrift vs DriftLens. The project is DriftLens. Keep all subsequent
-work on PR branches and fill the mandatory PR description truthfully.
+Completed preparation:
+
+- [x] Eight-minute speaker script and four-minute Q&A material prepared.
+- [x] Demo commands executed and actual outputs inspected.
+- [x] Ready-to-copy submission text and personal Naitik demo notes prepared in
+      [SUBMISSION.md](../SUBMISSION.md).
+- [x] Current green main identified; no open teammate PRs at the status check.
+
+Not verified; do not mark these complete from repository evidence:
+
+- [ ] Original repository-link form submission confirmed.
+- [ ] OrganizerHQ submission confirmed, correct challenge selected, all three members added.
+- [ ] Actual eight-minute spoken team rehearsal completed.
+- [ ] Every member can operate the demo and explain the whole pipeline without an agent.
+- [ ] Team chooses its final green version and completes submission before the
+      1 November 6:30 AM IST freeze. Target 6:00 AM for recovery time.
+
+The integration agent has no authenticated OrganizerHQ tool and cannot observe
+spoken rehearsal. Submission confirmation requires a real submission URL or
+account confirmation; a GitHub URL alone is not proof of submission.
+
+## New integration queue after the baseline check
+
+PR #8 arrived while this handoff was being prepared. Its optparse extension has
+been reviewed and is **not cleared for merge**: two false-positive cases were
+reproduced. See [PR8_REVIEW.md](../PR8_REVIEW.md). Satya/Ravichandra need to correct
+the extractor and add regressions before Naitik integrates it. This new queue
+item does not invalidate the completed checks of the unchanged baseline above.
+
+## Boundaries
+
+Successful real-history detection is still a product gap: both supplied positive
+cases are missed. Satya owns evidence/candidate search; Ravichandra owns detector
+extensions; Naitik reviews, integrates and reruns checks when a fix arrives.
+Do not describe the existing 0/2 historical result as successful detection.
+PR #1's missing original description/disclosures belongs to its author to fill
+truthfully; its missing pre-merge check history cannot be retroactively created.
