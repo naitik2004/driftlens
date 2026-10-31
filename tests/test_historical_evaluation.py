@@ -59,6 +59,14 @@ class HistoricalEvaluationTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, 'localization'):
             module.verify(self.case, self.repo.path)
 
+    def test_explicit_cache_directory_does_not_mutate_manifest(self):
+        original = {'cases': [{**self.case, 'repo': '../missing/' + self.repo.path.name}]}
+        manifest = self.repo.path / 'manifest.json'
+        manifest.write_text(json.dumps(original))
+        result = module.replay(manifest, self.repo.path / 'output', self.repo.path.parent)
+        self.assertEqual(result['known_case_recall'], 1)
+        self.assertEqual(json.loads(manifest.read_text()), original)
+
     def test_missing_old_support_rejected(self):
         self.case['evidence']['before_code'] = 'timeout=99'
         with self.assertRaisesRegex(ValueError, 'before_code'):

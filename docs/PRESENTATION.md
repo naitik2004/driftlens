@@ -117,8 +117,8 @@ input examples and corresponding actual outputs. Name Qwen and the coding
 assistants truthfully. Do not claim an organizer submission unless confirmed.
 
 “DriftLens makes supported documentation contradictions traceable to the change
-that caused them. Our next priority is a safely supported real-history positive,
-then broader linking measured against independent cases. The repository includes
+that caused them. Our next priority is broader linking measured against new,
+independent histories, after fixing reproduced false positives. The repository includes
 both what worked and what failed, so a maintainer can inspect the evidence.”
 
 ## Four-minute Q&A drill

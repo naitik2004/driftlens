@@ -21,6 +21,25 @@ Markdown without importing or executing the analyzed project.
   model/content/prompt-versioned caching.
 - CLI, advisory GitHub Actions, MIT license, PR template and Python 3.10/3.12/3.13 CI.
 
+## Audit follow-up
+
+The five reproduced audit errors are fixed: unsupported parser registrations
+no longer prove removal, shadowed parser constructors and rebound constants
+abstain, custom range bindings invalidate retry facts, and Git timeouts return
+CLI exit code 2. Snapshot collection now preflights configurable file/byte limits
+and checks a collection time budget; exceeding one produces no partial report.
+All **120 tests** pass, including the new audit and explicit-cache
+regressions. Four demos, the eight-case actual local AI suite, and the six-case
+historical replay passed. A clean wheel install outside the checkout passed
+functional drift and corrected-doc controls.
+
+CI now validates distributions and installed behavior. A manual historical
+workflow checks the known Black hit and controls. All known corpus cases are
+marked development; no held-out accuracy is claimed. Release preparation from
+closed PR #15 is restored under proposed distribution name driftlens-docs;
+publication still needs configured PyPI/TestPyPI Trusted Publishers. See
+[the audit](docs/REPOSITORY_AUDIT.md) and [publishing setup](docs/PUBLISHING.md).
+
 ## Latest detector continuation
 
 Local suite: **105 tests passed**, including **21 filename-rule test methods**.

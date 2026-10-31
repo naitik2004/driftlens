@@ -1,5 +1,20 @@
 # Integration verification — 1 November 2026
 
+## Latest audit remediation
+
+The audit follow-up passes 120 tests, including regressions for retained parser
+options, shadowed/rebound bindings, Git timeouts and snapshot resource limits.
+The four deterministic demos and eight actual local Qwen cases pass. Historical
+recall remains 1/3 original labels with three quiet controls; all six known
+cases are now explicitly development data. Original labels and SHAs are unchanged.
+CI adds distribution validation and functional installed-CLI controls; manual
+historical replay and release workflows are prepared. Publication, new hosted
+manual workflows and organizer/rehearsal confirmation remain separate tasks.
+See [audit and remediation details](REPOSITORY_AUDIT.md), the
+[verification record](../examples/verification/audit-remediation-2026-11-01.json)
+and [fresh actual model output](../examples/verification/audit-live-model-2026-11-01.json). Older records below
+retain observations from their cited versions.
+
 ## Latest detector continuation
 
 The user authorized taking over the detector workstream. The new bounded

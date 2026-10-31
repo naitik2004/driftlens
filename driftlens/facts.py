@@ -2,6 +2,7 @@
 import ast
 import math
 import re
+from collections import Counter
 from dataclasses import asdict, dataclass
 from pathlib import PurePosixPath
 
@@ -36,6 +37,48 @@ def module_name(path):
     return ".".join(parts)
 
 
+def bindings(tree):
+    """Conservative binding inventory, including bindings without Name stores."""
+    counts = Counter()
+    for node in ast.walk(tree):
+        if isinstance(node, ast.Name) and isinstance(node.ctx, (ast.Store, ast.Del)):
+            counts[node.id] += 1
+        elif isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef, ast.ClassDef)):
+            counts[node.name] += 1
+        elif isinstance(node, (ast.Import, ast.ImportFrom)):
+            for alias in node.names:
+                counts[alias.asname or (alias.name.split('.')[0] if isinstance(node, ast.Import) else alias.name)] += 1
+        elif isinstance(node, ast.arg):
+            counts[node.arg] += 1
+        elif isinstance(node, ast.ExceptHandler) and node.name:
+            counts[node.name] += 1
+    return counts
+
+
+def uncertain_parser_use(tree, names, registrations, direct_body, allow_return=False):
+    """Unknown registrations, aliases and escapes cannot prove option absence."""
+    if not names:
+        return False
+    parents = {child: parent for parent in ast.walk(tree) for child in ast.iter_child_nodes(parent)}
+    direct_calls = {s.value for s in direct_body if isinstance(s, ast.Expr)}
+    for node in ast.walk(tree):
+        if not isinstance(node, ast.Name) or node.id not in names or not isinstance(node.ctx, ast.Load):
+            continue
+        parent = parents.get(node)
+        if allow_return and isinstance(parent, ast.Return):
+            continue
+        if not isinstance(parent, ast.Attribute) or not isinstance(parent.ctx, ast.Load):
+            return True
+        call = parents.get(parent)
+        if not isinstance(call, ast.Call) or call.func is not parent:
+            return True
+        if parent.attr in registrations and call not in direct_calls:
+            return True
+        if parent.attr not in registrations | {'parse_args', 'parse_known_args', 'print_help', 'format_help'}:
+            return True
+    return False
+
+
 def imported_names(tree, module, member):
     names = set()
     for node in tree.body:
@@ -43,12 +86,19 @@ def imported_names(tree, module, member):
             names.update(a.asname or a.name for a in node.names if a.name == member)
         elif isinstance(node, ast.Import):
             names.update((a.asname or a.name) + '.' + member for a in node.names if a.name == module)
-    return {name for name in names if sum(
-        a.asname == name.split('.')[0] or (not a.asname and a.name.split('.')[0] == name.split('.')[0])
-        for n in ast.walk(tree) if isinstance(n, (ast.Import, ast.ImportFrom)) for a in n.names) == 1 and not any(
-        (isinstance(n, ast.Name) and isinstance(n.ctx, (ast.Store, ast.Del)) and n.id == name.split('.')[0])
-        or (isinstance(n, (ast.FunctionDef, ast.AsyncFunctionDef, ast.ClassDef)) and n.name == name.split('.')[0])
-        for n in ast.walk(tree))}
+    if not names:
+        return set()
+    counts = bindings(tree)
+    mutated = set()
+    for node in ast.walk(tree):
+        if isinstance(node, ast.Attribute) and isinstance(node.ctx, (ast.Store, ast.Del)):
+            root = node.value
+            while isinstance(root, ast.Attribute):
+                root = root.value
+            if isinstance(root, ast.Name):
+                mutated.add(root.id)
+    return {name for name in names if counts[name.split('.')[0]] == 1
+            and name.split('.')[0] not in mutated and not counts['*']}
 
 
 def local_class(tree, name):
@@ -106,12 +156,9 @@ class Extractor:
                     module = ".".join(prefix + ([node.module] if node.module else []))
                     for alias in node.names:
                         imports[alias.asname or alias.name] = (self.modules.get(module), alias.name)
-            stores = {}
-            for node in ast.walk(tree):
-                if isinstance(node, ast.Name) and isinstance(node.ctx, (ast.Store, ast.Del)):
-                    stores[node.id] = stores.get(node.id, 0) + 1
+            stores = bindings(tree)
             self.constants[path] = {k: v[0] for k, v in assignments.items() if len(v) == 1 and stores.get(k) == 1}
-            self.imports[path] = imports
+            self.imports[path] = {k: v for k, v in imports.items() if stores[k] == 1}
 
     def value(self, path, node, hops=0, seen=()):
         if node is None:
@@ -139,15 +186,7 @@ class Extractor:
         for path, tree in self.trees.items():
             module = module_name(path)
             # Avoid claiming runtime facts for monkey-patched/reassigned names.
-            counts = {}
-            for node in tree.body:
-                name = getattr(node, "name", None)
-                if name:
-                    counts[name] = counts.get(name, 0) + 1
-                if isinstance(node, ast.Assign):
-                    for target in node.targets:
-                        if isinstance(target, ast.Name):
-                            counts[target.id] = counts.get(target.id, 0) + 1
+            counts = bindings(tree)
             for node in tree.body:
                 if isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef)) and not node.name.startswith("_"):
                     symbol = f"{module}.{node.name}"
@@ -182,14 +221,7 @@ class Extractor:
             # Recognize only direct argparse.ArgumentParser instances. Attribute
             # calls on arbitrary objects do not establish public CLI flags.
             parsers = set()
-            constructors = set()
-            for node in tree.body:
-                if isinstance(node, ast.Import):
-                    for alias in node.names:
-                        if alias.name == "argparse":
-                            constructors.add((alias.asname or "argparse") + ".ArgumentParser")
-                if isinstance(node, ast.ImportFrom) and node.module == "argparse":
-                    constructors.update(a.asname or a.name for a in node.names if a.name == "ArgumentParser")
+            constructors = imported_names(tree, 'argparse', 'ArgumentParser') if 'argparse' not in self.modules else set()
             for node in tree.body:
                 if isinstance(node, ast.Assign) and isinstance(node.value, ast.Call) and ast.unparse(node.value.func) in constructors:
                     parsers.update(t.id for t in node.targets if isinstance(t, ast.Name))
@@ -201,6 +233,9 @@ class Extractor:
                                 and isinstance(n.func.value, ast.Name) and n.func.value.id in parsers
                                 and n.func.attr in ("set_defaults", "add_subparsers", "add_argument_group", "add_mutually_exclusive_group")
                                 for n in ast.walk(tree))
+            binding_counts = bindings(tree)
+            unsafe_parser = unsafe_parser or any(binding_counts[name] != 1 for name in parsers)
+            unsafe_parser = unsafe_parser or uncertain_parser_use(tree, parsers, {'add_argument'}, tree.body)
             for parser in parsers:
                 definitions = [n for n in tree.body if isinstance(n, ast.Assign) and any(isinstance(t, ast.Name) and t.id == parser for t in n.targets)]
                 owner = definitions[0]
@@ -326,16 +361,11 @@ class Extractor:
     def optparse_facts(self, path, tree, module):
         """Read direct OptionGroup.add_option calls inside one public function."""
         facts = []
-        parsers, groups = set(), set()
-        for node in tree.body:
-            if isinstance(node, ast.Import):
-                parsers.update(f"{a.asname or a.name}.OptionParser" for a in node.names if a.name == "optparse")
-                groups.update(f"{a.asname or a.name}.OptionGroup" for a in node.names if a.name == "optparse")
-            elif isinstance(node, ast.ImportFrom) and node.module == "optparse":
-                parsers.update(a.asname or a.name for a in node.names if a.name == "OptionParser")
-                groups.update(a.asname or a.name for a in node.names if a.name == "OptionGroup")
+        parsers = imported_names(tree, 'optparse', 'OptionParser') if 'optparse' not in self.modules else set()
+        groups = imported_names(tree, 'optparse', 'OptionGroup') if 'optparse' not in self.modules else set()
+        counts = bindings(tree)
         for function in (n for n in tree.body if isinstance(n, (ast.FunctionDef, ast.AsyncFunctionDef))
-                         and not n.name.startswith("_") and not n.decorator_list):
+                         and not n.name.startswith("_") and not n.decorator_list and counts[n.name] == 1):
             parser_names, group_names = set(), set()
             for statement in function.body:
                 if not isinstance(statement, ast.Assign) or len(statement.targets) != 1 or not isinstance(statement.targets[0], ast.Name):
@@ -354,6 +384,26 @@ class Extractor:
             overridden = any(isinstance(n, ast.Call) and isinstance(n.func, ast.Attribute)
                              and n.func.attr == "set_defaults" and isinstance(n.func.value, ast.Name)
                              and n.func.value.id in parser_names | group_names for n in ast.walk(function))
+            # Group construction/attachment are known parser escapes; exclude
+            # their arguments while retaining all option registrations.
+            check_tree = ast.Module(body=[s for s in function.body if not (
+                isinstance(s, ast.Assign) and isinstance(s.value, ast.Call)
+                and ast.unparse(s.value.func) in groups) and not (
+                isinstance(s, ast.Expr) and isinstance(s.value, ast.Call)
+                and isinstance(s.value.func, ast.Attribute)
+                and isinstance(s.value.func.value, ast.Name)
+                and s.value.func.value.id in parser_names
+                and s.value.func.attr == 'add_option_group'
+                and len(s.value.args) == 1 and not s.value.keywords
+                and isinstance(s.value.args[0], ast.Name)
+                and s.value.args[0].id in group_names)], type_ignores=[])
+            overridden = overridden or uncertain_parser_use(check_tree, parser_names | group_names,
+                                                            {'add_option', 'add_option_group'}, function.body, True)
+            overridden = overridden or any(bindings(function)[name] != 1 for name in parser_names | group_names)
+            unknown_options = any(isinstance(n, ast.Call) and isinstance(n.func, ast.Attribute)
+                                  and n.func.attr == 'add_option' for n in ast.walk(function)) and not parser_names
+            if overridden or unknown_options:
+                facts.append(Fact(path, symbol, 'owner', 'function', {}, function.lineno, function.end_lineno, False))
             for statement in function.body:
                 if not isinstance(statement, ast.Expr) or not isinstance(statement.value, ast.Call):
                     continue
@@ -398,7 +448,7 @@ class Extractor:
         # Restrict retry counts to literals, avoiding dependency/rebinding claims.
         if not isinstance(loop.iter.args[0], ast.Constant):
             return None
-        if any(isinstance(n, ast.Name) and n.id == "range" and isinstance(n.ctx, ast.Store) for n in ast.walk(self.trees[path])) or any(a.arg == "range" for a in node.args.args + node.args.kwonlyargs):
+        if bindings(self.trees[path])['range']:
             return None
         count, _ = self.value(path, loop.iter.args[0])
         if type(count) != int or not 1 <= count <= 1000 or len(loop.body) != 1:

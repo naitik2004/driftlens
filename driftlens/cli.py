@@ -6,7 +6,7 @@ import sys
 from .analyzer import analyze
 from .model import Ollama
 from .reporting import annotations, summary, write_json
-from .snapshots import SnapshotError
+from .snapshots import SnapshotError, SnapshotLimits
 
 
 def event_revisions(event_path):
@@ -31,6 +31,15 @@ def main(argv=None):
     parser.add_argument('--model', nargs='?', const='qwen2.5-coder:3b', help='Enable optional local Ollama interpretation')
     parser.add_argument('--ollama-url', default='http://127.0.0.1:11434')
     parser.add_argument('--cache', type=Path)
+    limits = SnapshotLimits()
+    parser.add_argument('--max-files', type=int, default=limits.max_files,
+                        help='Maximum eligible files per snapshot (default 20000)')
+    parser.add_argument('--max-bytes', type=int, default=limits.max_bytes,
+                        help='Maximum eligible bytes per snapshot (default 100 MiB)')
+    parser.add_argument('--max-file-bytes', type=int, default=limits.max_file_bytes,
+                        help='Maximum bytes per eligible file (default 10 MiB)')
+    parser.add_argument('--snapshot-timeout', type=float, default=limits.timeout_seconds,
+                        help='Collection budget per snapshot in seconds (default 180)')
     args = parser.parse_args(argv)
     try:
         event_path = args.github_event or os.environ.get('GITHUB_EVENT_PATH')
@@ -42,7 +51,9 @@ def main(argv=None):
         if not base:
             parser.error('--base is required outside a GitHub pull_request event')
         model = Ollama(args.model, args.ollama_url, args.cache) if args.model else None
-        report = analyze(args.repo, base, head or 'HEAD', args.repository_url, model)
+        snapshot_limits = SnapshotLimits(args.max_files, args.max_bytes, args.max_file_bytes,
+                                         args.snapshot_timeout)
+        report = analyze(args.repo, base, head or 'HEAD', args.repository_url, model, snapshot_limits)
         if args.json_path:
             write_json(report, args.json_path)
         rendered = summary(report)

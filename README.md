@@ -7,6 +7,13 @@ executing analyzed repository code.
 A finding requires **old support + a contradictory code change + the same claim
 still present in current documentation**. Findings are advisory by default.
 
+## Package release status
+
+PyPI publication is being prepared under the proposed name `driftlens-docs`.
+It is not yet verified as published. The PyPI package named `driftlens` is an
+unrelated project. Continue using the source installation below until release
+verification is complete. See [publishing setup](docs/PUBLISHING.md).
+
 ## Quick start
 
 Python 3.10+ and Git are required. The analyzer has no third-party runtime dependencies.
@@ -35,6 +42,13 @@ errors. Explicit revision arguments take precedence over an inherited GitHub PR
 event; use `--github-event` to explicitly fill missing revisions from an event.
 Warnings and abstentions remain visible in reports; zero findings does
 not mean every documentation claim was verified.
+
+Snapshot collection preflights up to 20,000 eligible files, 100 MiB total and
+10 MiB per file. Configure `--max-files`, `--max-bytes` and `--max-file-bytes`
+for larger repositories. `--snapshot-timeout` defaults to 180 seconds per
+snapshot and is checked between Git operations; each Git operation also has a
+60-second timeout. These are collection limits, not a hard deadline for AST or
+model analysis. Exceeding a limit exits 2 without issuing a partial report.
 
 ## Run the demos and tests
 
@@ -130,7 +144,8 @@ API reference: [Ollama chat](https://docs.ollama.com/api/chat).
 ## GitHub Actions
 
 [CI](.github/workflows/ci.yml) runs tests, demos and packaging checks on Python
-3.10, 3.12 and 3.13. The [advisory drift workflow](.github/workflows/driftlens.yml)
+3.10, 3.12 and 3.13, validates wheel/source metadata, and checks installed
+finding and corrected-doc behavior outside the checkout. The [advisory drift workflow](.github/workflows/driftlens.yml)
 uses `pull_request`, reads the actual PR head from the event, and runs the analyzer
 from a separate trusted base checkout. It reads the target checkout only as Git
 objects. No model, secrets, PR comments or write token are required.
@@ -214,8 +229,10 @@ MIT licensed. Development proceeds on feature branches through pull requests.
 
 ## Current integration status
 
-The latest detector continuation passed **105 tests**, all four deterministic
-demos, the eight-case actual local Qwen suite, and the six-case historical replay.
+The audit follow-up passed **120 tests**, all four deterministic demos, the
+eight-case actual local Qwen suite, and the six-case historical replay. It fixes
+five reproduced errors involving parser registration, shadowed bindings and Git
+timeouts. CI also checks a functional installed CLI outside the checkout.
 The historical result is **1/3 supplied positive labels**, with three quiet
 controls. Three Black platform sentences form one underlying change group.
 See [the filename proof and runnable historical demo](docs/CACHE_LAYOUT.md).

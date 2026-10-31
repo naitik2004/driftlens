@@ -110,13 +110,13 @@ def commit_link(repository_url, commit, path, start, end=None):
     return f"{repository_url.rstrip('/')}/blob/{commit}/{quote(path, safe='/')}#L{start}" + (f"-L{end}" if end and end != start else "")
 
 
-def analyze(repo, base, head, repository_url=None, model=None):
+def analyze(repo, base, head, repository_url=None, model=None, snapshot_limits=None):
     started = time.perf_counter()
     if repository_url:
         parsed = urlparse(repository_url)
         if parsed.scheme != "https" or not parsed.netloc or parsed.query or parsed.fragment:
             raise ValueError("Repository URL must be an HTTPS repository URL")
-    comparison = collect(repo, base, head)
+    comparison = collect(repo, base, head, snapshot_limits)
     old_extractor, new_extractor = Extractor(comparison.base.files), Extractor(comparison.head.files)
     before_facts, after_facts = old_extractor.extract(), new_extractor.extract()
     old_claims, new_claims = index(comparison.base.files), index(comparison.head.files)

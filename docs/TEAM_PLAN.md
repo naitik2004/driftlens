@@ -26,9 +26,10 @@ model-assisted findings over a zero-finding baseline and five quiet controls in
 eight synthetic cases. See [the evidence and reproduction guide](LOCAL_AI.md).
 The initial unavailable-server and unvalidated-model observations above describe
 the inspected baseline. Satya's historical-evidence PR #3 has also been reviewed and merged: two genuine
-drift histories and two controls. Current known-label recall is 0/2 because the
-positives are outside supported patterns. A successful real-history positive
-remains a detector-workstream goal, not a completed acceptance item.
+drift histories and two controls. The later corpus contains three positive
+histories and three controls; Black's original label now matches, for 1/3
+known-label recall. All three controls stay quiet. These known cases are
+development data, not held-out evaluation. See [current status](../IMPLEMENTATION.md).
 
 ## What the judges require
 
