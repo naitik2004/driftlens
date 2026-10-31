@@ -1,0 +1,34 @@
+[
+  {
+    "name": "drift-detected",
+    "before_code": "def connect(timeout=30):\n    return timeout\n",
+    "after_code": "def connect(timeout=10):\n    return timeout\n",
+    "before_docs": "# connect\n\nConnections use the `timeout` parameter.\nThe `connect` timeout defaults to 30 seconds.\n",
+    "after_docs": "# connect\n\nConnections use the `timeout` parameter.\nThe `connect` timeout defaults to 30 seconds.\n",
+    "expected_findings": 1
+  },
+  {
+    "name": "documentation-fixed",
+    "before_code": "def connect(timeout=30):\n    return timeout\n",
+    "after_code": "def connect(timeout=10):\n    return timeout\n",
+    "before_docs": "# connect\n\nThe `connect` timeout defaults to 30 seconds.\n",
+    "after_docs": "# connect\n\nThe `connect` timeout defaults to 10 seconds.\n",
+    "expected_findings": 0
+  },
+  {
+    "name": "harmless-refactor",
+    "before_code": "def connect(timeout=30):\n    return timeout\n",
+    "after_code": "def connect(\n    timeout=30,\n):\n    # Formatting and comments preserve the declared default.\n    return timeout\n",
+    "before_docs": "# connect\n\nThe `connect` timeout defaults to 30 seconds.\n",
+    "after_docs": "# connect\n\nThe `connect` timeout defaults to 30 seconds.\n",
+    "expected_findings": 0
+  },
+  {
+    "name": "removed-flag",
+    "before_code": "import argparse\nparser = argparse.ArgumentParser()\nparser.add_argument('--timeout', default=30)\n",
+    "after_code": "import argparse\nparser = argparse.ArgumentParser()\n",
+    "before_docs": "The CLI supports `--timeout`.\n",
+    "after_docs": "The CLI supports `--timeout`.\n",
+    "expected_findings": 1
+  }
+]

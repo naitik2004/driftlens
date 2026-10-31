@@ -1,0 +1,29 @@
+{
+  "schema_version": 1,
+  "analyzer_version": "0.1.0",
+  "base_commit": "971e4d294d3ab0366fccd96c9343185f83bd681c",
+  "head_commit": "c89273d82bbfbab727733caee2d6f1630c9d90f0",
+  "findings": [],
+  "abstentions": [],
+  "warnings": [],
+  "limitations": [
+    "Python top-level functions and direct module-level argparse definitions only.",
+    "Exact scope references required; unresolved aliases, wrappers and qualifiers abstain.",
+    "Static declared defaults do not prove effective runtime values or physical units.",
+    "Markdown subset: ATX headings, paragraphs, simple pipe tables and fenced code."
+  ],
+  "metrics": {
+    "runtime_seconds": 0.066251,
+    "claims_indexed": 1,
+    "facts_indexed": 2,
+    "finding_count": 0,
+    "change_groups": 0,
+    "model_calls": 0,
+    "model_cache_hits": 0
+  },
+  "demo": {
+    "synthetic": true,
+    "name": "harmless-refactor",
+    "input": "examples/cases.json"
+  }
+}
