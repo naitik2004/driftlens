@@ -1,0 +1,47 @@
+name: Documentation drift (advisory)
+on:
+  pull_request:
+permissions:
+  contents: read
+concurrency:
+  group: driftlens-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+jobs:
+  analyze:
+    runs-on: ubuntu-latest
+    steps:
+      # Run the analyzer from the trusted base, never from the PR checkout.
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.base.sha }}
+          path: analyzer
+          persist-credentials: false
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          path: target
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Analyze actual PR snapshots
+        working-directory: analyzer
+        env:
+          REPOSITORY_URL: ${{ github.server_url }}/${{ github.repository }}
+        run: |
+          if [ ! -f driftlens/cli.py ]; then
+            echo 'DriftLens will activate after its initial implementation is merged into the base branch.' >> "$GITHUB_STEP_SUMMARY"
+            exit 0
+          fi
+          python -m driftlens --repo "$GITHUB_WORKSPACE/target" \
+            --github-event "$GITHUB_EVENT_PATH" \
+            --repository-url "$REPOSITORY_URL" \
+            --json "$GITHUB_WORKSPACE/driftlens-report.json" \
+            --summary "$GITHUB_STEP_SUMMARY" --github-annotations
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: driftlens-${{ github.event.pull_request.head.sha }}
+          path: driftlens-report.json
+          if-no-files-found: ignore

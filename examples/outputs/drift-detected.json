@@ -1,0 +1,128 @@
+{
+  "schema_version": 1,
+  "analyzer_version": "0.1.0",
+  "base_commit": "2e1beea79cbabc7bfaecbd72ab27c236032e5833",
+  "head_commit": "f6c03ce47e8583b5a4ea5355e1e5d5796485f094",
+  "findings": [
+    {
+      "id": "a7a3fd8a922009c899c0",
+      "group_id": "fcb659e0416ec503",
+      "category": "parameter_default_changed",
+      "claim": {
+        "path": "README.md",
+        "heading": "connect",
+        "quote": "The `connect` timeout defaults to 30 seconds.",
+        "line_start": 4,
+        "line_end": 4,
+        "start": 52,
+        "end": 97,
+        "kind": "sentence",
+        "columns": []
+      },
+      "before_claim": {
+        "path": "README.md",
+        "heading": "connect",
+        "quote": "The `connect` timeout defaults to 30 seconds.",
+        "line_start": 4,
+        "line_end": 4,
+        "start": 52,
+        "end": 97,
+        "kind": "sentence",
+        "columns": []
+      },
+      "before": {
+        "path": "client.py",
+        "symbol": "client.connect",
+        "kind": "parameter",
+        "name": "timeout",
+        "value": {
+          "default": 30,
+          "has_default": true,
+          "kwargs": false
+        },
+        "line": 1,
+        "end_line": 2,
+        "resolved": true,
+        "dependencies": []
+      },
+      "after": {
+        "path": "client.py",
+        "symbol": "client.connect",
+        "kind": "parameter",
+        "name": "timeout",
+        "value": {
+          "default": 10,
+          "has_default": true,
+          "kwargs": false
+        },
+        "line": 1,
+        "end_line": 2,
+        "resolved": true,
+        "dependencies": []
+      },
+      "after_owner": null,
+      "before_verdict": "supported",
+      "after_verdict": "contradicted",
+      "evidence_strength": "deterministic",
+      "hunks": [
+        {
+          "old_path": "client.py",
+          "new_path": "client.py",
+          "old_start": 1,
+          "old_count": 2,
+          "new_start": 1,
+          "new_count": 2,
+          "text": "@@ -1,2 +1,2 @@\n-def connect(timeout=30):\n+def connect(timeout=10):\n     return timeout\n"
+        }
+      ],
+      "explanation": "client.connect: timeout default changed from 30 to 10; the documentation still states the old value.",
+      "suggested_correction": "Update the documented default from 30 to 10.",
+      "links": {
+        "documentation": null,
+        "before": null,
+        "after": null
+      },
+      "limitations": [
+        "Static source evidence; runtime overrides are not evaluated."
+      ]
+    }
+  ],
+  "abstentions": [
+    {
+      "claim": {
+        "path": "README.md",
+        "heading": "connect",
+        "quote": "Connections use the `timeout` parameter.",
+        "line_start": 3,
+        "line_end": 3,
+        "start": 11,
+        "end": 51,
+        "kind": "sentence",
+        "columns": []
+      },
+      "symbol": "client.connect",
+      "reason": "Cannot establish both old support and new contradiction"
+    }
+  ],
+  "warnings": [],
+  "limitations": [
+    "Python top-level functions and direct module-level argparse definitions only.",
+    "Exact scope references required; unresolved aliases, wrappers and qualifiers abstain.",
+    "Static declared defaults do not prove effective runtime values or physical units.",
+    "Markdown subset: ATX headings, paragraphs, simple pipe tables and fenced code."
+  ],
+  "metrics": {
+    "runtime_seconds": 0.062139,
+    "claims_indexed": 2,
+    "facts_indexed": 2,
+    "finding_count": 1,
+    "change_groups": 1,
+    "model_calls": 0,
+    "model_cache_hits": 0
+  },
+  "demo": {
+    "synthetic": true,
+    "name": "drift-detected",
+    "input": "examples/cases.json"
+  }
+}

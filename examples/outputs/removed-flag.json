@@ -1,0 +1,109 @@
+{
+  "schema_version": 1,
+  "analyzer_version": "0.1.0",
+  "base_commit": "6d10078e897855d5f0a940e85fbfdf4824329633",
+  "head_commit": "7bd5d2df2abeeeaf2dba15f9e288c34d21891448",
+  "findings": [
+    {
+      "id": "d16d73100df72448265b",
+      "group_id": "68b4199071f096c0",
+      "category": "flag_removed",
+      "claim": {
+        "path": "README.md",
+        "heading": "",
+        "quote": "The CLI supports `--timeout`.",
+        "line_start": 1,
+        "line_end": 1,
+        "start": 0,
+        "end": 29,
+        "kind": "sentence",
+        "columns": []
+      },
+      "before_claim": {
+        "path": "README.md",
+        "heading": "",
+        "quote": "The CLI supports `--timeout`.",
+        "line_start": 1,
+        "line_end": 1,
+        "start": 0,
+        "end": 29,
+        "kind": "sentence",
+        "columns": []
+      },
+      "before": {
+        "path": "client.py",
+        "symbol": "client.parser",
+        "kind": "flag",
+        "name": "--timeout",
+        "value": {
+          "default": 30,
+          "aliases": [
+            "--timeout"
+          ]
+        },
+        "line": 3,
+        "end_line": 3,
+        "resolved": true,
+        "dependencies": []
+      },
+      "after": null,
+      "after_owner": {
+        "path": "client.py",
+        "symbol": "client.parser",
+        "kind": "owner",
+        "name": "parser",
+        "value": {},
+        "line": 2,
+        "end_line": 2,
+        "resolved": true,
+        "dependencies": []
+      },
+      "before_verdict": "supported",
+      "after_verdict": "contradicted",
+      "evidence_strength": "deterministic",
+      "hunks": [
+        {
+          "old_path": "client.py",
+          "new_path": "client.py",
+          "old_start": 1,
+          "old_count": 3,
+          "new_start": 1,
+          "new_count": 2,
+          "text": "@@ -1,3 +1,2 @@\n import argparse\n parser = argparse.ArgumentParser()\n-parser.add_argument('--timeout', default=30)\n"
+        }
+      ],
+      "explanation": "client.parser no longer declares --timeout, which the unchanged documentation says is available.",
+      "suggested_correction": "Remove or update the documented --timeout reference after reviewing migration behavior.",
+      "links": {
+        "documentation": null,
+        "before": null,
+        "after": null
+      },
+      "limitations": [
+        "Static source evidence; runtime overrides are not evaluated."
+      ]
+    }
+  ],
+  "abstentions": [],
+  "warnings": [],
+  "limitations": [
+    "Python top-level functions and direct module-level argparse definitions only.",
+    "Exact scope references required; unresolved aliases, wrappers and qualifiers abstain.",
+    "Static declared defaults do not prove effective runtime values or physical units.",
+    "Markdown subset: ATX headings, paragraphs, simple pipe tables and fenced code."
+  ],
+  "metrics": {
+    "runtime_seconds": 0.063613,
+    "claims_indexed": 1,
+    "facts_indexed": 1,
+    "finding_count": 1,
+    "change_groups": 1,
+    "model_calls": 0,
+    "model_cache_hits": 0
+  },
+  "demo": {
+    "synthetic": true,
+    "name": "removed-flag",
+    "input": "examples/cases.json"
+  }
+}
