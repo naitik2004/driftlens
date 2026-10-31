@@ -156,3 +156,38 @@ Each member gets two minutes, without an agent, to explain the full pipeline.
 Then another member changes a default, fixes its docs, or introduces ambiguous
 scope and asks what the tool should do. Open the code and test to check the answer.
 Any claim you cannot demonstrate gets removed or qualified before presentation.
+
+
+## Problem 5: explain the removed-flag example precisely
+
+Start with a direct module-level argparse definition of `--timeout`. Change it
+to `--deadline`, leaving README unchanged. Both of these instruction sentences
+are supported:
+
+- Use --timeout to stop slow jobs.
+- Use `--timeout` to stop slow jobs.
+
+Run `python3 -m unittest tests.test_detector_extensions -v` to exercise the
+committed Git-snapshot regression and its controls. The finding is
+`flag_removed`, with the retained exact quote, old parser fact and responsible
+diff hunk. Removing the option without a replacement also qualifies. Do not
+call it a verified semantic rename: we have not proved that `--deadline` is an
+equivalent replacement, nor that either flag implements "stop slow jobs."
+
+This extension recognizes sentence-leading `Use` (case-insensitive), followed
+by the exact flag with optional backticks. It still needs unambiguous parser
+scope, old support, current removal, the same passage/heading in both snapshots,
+and relevant change evidence. It uses deterministic facts and zero model calls.
+The separate Qwen demonstration is where we show actual AI contribution.
+
+Explain the controls: updating the sentence in the same PR clears it; keeping
+`--timeout` as an alias preserves compatibility; a potentially compatible long
+option abbreviation causes abstention. Historical, conditional, negated and
+example mentions are filtered or left unverified. Unrelated flags and harmless
+documentation-only changes do not prove removal. Changing surrounding text does
+not clear an instruction that is still stale. A flag never supported at A is a
+pre-existing issue, not new drift.
+
+Do not promise arbitrary imperative recognition, complex parser/wrapper
+resolution, general natural-language understanding or behavioral verification.
+The tests establish this narrow supported scope, not general recall or accuracy.

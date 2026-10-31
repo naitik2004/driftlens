@@ -222,3 +222,39 @@ contribution smoke test, not a historical accuracy benchmark. Unit tests use an
 explicit test double and do not establish live-model execution.
 
 Local setup, observed results and failure interpretation: [Local AI guide](docs/LOCAL_AI.md).
+
+
+## Direct CLI instructions: Problem 5 example
+
+When a module-level argparse definition changes from `--timeout` to `--deadline`
+and the current README still says either of these, DriftLens reports
+`flag_removed` for `--timeout`:
+
+- Use --timeout to stop slow jobs.
+- Use `--timeout` to stop slow jobs.
+
+The supported instruction starts the sentence with `Use` (case-insensitive),
+followed by the exact flag, optionally wrapped in backticks. The flag must be
+supported by the old parser facts, absent from the current parser facts, and
+linked to the same unchanged passage and heading context in both snapshots.
+The existing module/parser scope and diff-evidence checks still apply.
+
+A replacement flag is not required: removing `--timeout` without adding another
+option also qualifies. A replacement does not establish a semantic rename; the
+finding proves removal of the documented option, not that `--deadline` has the
+same meaning or that either option actually stops slow jobs. This check is
+fully deterministic and makes no model calls.
+
+Corrected documentation, retained aliases, potentially compatible long-option
+abbreviations, historical/conditional/negated mentions, code examples and
+pre-existing inaccuracies are filtered or left unverified. Unrelated flag
+mentions and harmless documentation-only edits do not establish a code removal.
+Edits elsewhere in a document do not hide an unchanged stale instruction.
+Other instruction forms, indirect references, complex parser setup and general
+natural-language or behavioral reasoning remain outside this extension.
+
+Reproduce the exact example and both flag spellings with:
+
+```sh
+python3 -m unittest tests.test_detector_extensions -v
+```
