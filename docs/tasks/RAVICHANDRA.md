@@ -1,7 +1,7 @@
 # Detector continuation status
 
 Naitik's latest continuation adds ordered shared optparse defaults and opt-in
-behavioral review, with 140 passing tests. The original yt-dlp/gdown claims are
+behavioral review, with 141 passing tests. The original yt-dlp/gdown claims are
 retrieved, but remain unverified rather than counted as hits. Actual Qwen notes
 validate citations; they do not establish contradictions. The external 12-case
 study is executed with its miss preserved. Naitik owns the remaining release and
