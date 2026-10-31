@@ -24,7 +24,7 @@ Implemented capabilities:
 - Synthetic demos, real A/B/C replay with later corrections withheld from
   detection, MIT license, PR template and Python 3.10/3.12/3.13 CI.
 
-## Integration run: 1 November 2026
+## Earlier integration run: 1 November 2026 (PRs #1–#6)
 
 Runtime source checked: `36ee68ffd98273de68fd0386a3ca1829998ed822` (PRs #1–#6).
 The verification PR changes documentation, the PR template and a verification
@@ -48,16 +48,16 @@ Observed locally on Python 3.14.6:
   the direct removed-flag example without AI and a paraphrased default with one
   actual Qwen call, with no warnings.
 
-The independent upstream-history replay completed all four pinned experiments
-with the same 0/2 positive-label recall and quiet negative controls. Source main
+The earlier replay completed four pinned experiments (0/2); PR #11 expanded the corpus to six experiments.
+The current saved output shows 0/3, with all three controls quiet. Source main
 CI passed across Python 3.10/3.12/3.13. See the verification record for provenance
 and the latest GitHub Actions runs for verification-PR/final-main status.
 
 ## Historical effectiveness and limits
 
-The bundled retrospective corpus contains two genuine drift cases and two real
-negative controls. Its saved baseline misses both positive labels: nested
-optparse/example semantics in yt-dlp and computed cache-path behavior in Black
+The initial retrospective corpus contained two genuine drift cases and two real
+negative controls. PR #11 later added a third missed positive; the current corpus misses all three: nested
+optparse/example semantics in yt-dlp, computed cache-path behavior in Black, and gdown’s removed folder-listing cap
 are outside current support. Both controls stay quiet. This is **0/2 supplied
 positive labels detected**, not successful real-history detection. It is an
 unblinded scope study, not a held-out accuracy benchmark. See
