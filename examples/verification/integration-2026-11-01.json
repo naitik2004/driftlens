@@ -1,0 +1,202 @@
+{
+  "source_commit": "36ee68ffd98273de68fd0386a3ca1829998ed822",
+  "python_version": "3.14.6",
+  "unit_tests": {
+    "count": 72,
+    "status": "passed"
+  },
+  "deterministic_cases": [
+    {
+      "case": "drift-detected",
+      "findings": 1,
+      "expected": 1,
+      "quote_offsets_and_evidence": "passed"
+    },
+    {
+      "case": "documentation-fixed",
+      "findings": 0,
+      "expected": 0,
+      "quote_offsets_and_evidence": "passed"
+    },
+    {
+      "case": "harmless-refactor",
+      "findings": 0,
+      "expected": 0,
+      "quote_offsets_and_evidence": "passed"
+    },
+    {
+      "case": "removed-flag",
+      "findings": 1,
+      "expected": 1,
+      "quote_offsets_and_evidence": "passed"
+    }
+  ],
+  "live_model_cases": [
+    {
+      "name": "paraphrased-default",
+      "status": "passed",
+      "baseline_findings": 0,
+      "assisted_findings": 1,
+      "model_calls": 1,
+      "runtime_seconds": 6.045634,
+      "api_created_at": "2026-10-31T19:07:26.334489Z"
+    },
+    {
+      "name": "default-amounts-to",
+      "status": "passed",
+      "baseline_findings": 0,
+      "assisted_findings": 1,
+      "model_calls": 1,
+      "runtime_seconds": 2.722113,
+      "api_created_at": "2026-10-31T19:07:29.308073Z"
+    },
+    {
+      "name": "value-before-default",
+      "status": "passed",
+      "baseline_findings": 0,
+      "assisted_findings": 1,
+      "model_calls": 1,
+      "runtime_seconds": 2.742134,
+      "api_created_at": "2026-10-31T19:07:32.246332Z"
+    },
+    {
+      "name": "preexisting-inaccuracy",
+      "status": "passed",
+      "baseline_findings": 0,
+      "assisted_findings": 0,
+      "model_calls": 1,
+      "runtime_seconds": 2.576928,
+      "api_created_at": "2026-10-31T19:07:35.029113Z"
+    },
+    {
+      "name": "docs-fixed-together",
+      "status": "passed",
+      "baseline_findings": 0,
+      "assisted_findings": 0,
+      "model_calls": 0,
+      "runtime_seconds": 0.072163,
+      "api_created_at": null
+    },
+    {
+      "name": "explicit-example",
+      "status": "passed",
+      "baseline_findings": 0,
+      "assisted_findings": 0,
+      "model_calls": 0,
+      "runtime_seconds": 0.098598,
+      "api_created_at": null
+    },
+    {
+      "name": "negated-claim",
+      "status": "passed",
+      "baseline_findings": 0,
+      "assisted_findings": 0,
+      "model_calls": 1,
+      "runtime_seconds": 2.663609,
+      "api_created_at": "2026-10-31T19:07:38.388778Z"
+    },
+    {
+      "name": "unchanged-default",
+      "status": "passed",
+      "baseline_findings": 0,
+      "assisted_findings": 0,
+      "model_calls": 0,
+      "runtime_seconds": 0.077027,
+      "api_created_at": null
+    }
+  ],
+  "live_model_calls": 5,
+  "historical_replay": {
+    "status": "completed",
+    "known_label_recall": 0.0,
+    "cases": [
+      {
+        "id": "yt-dlp-multistream-default",
+        "known_labels": 1,
+        "known_hits": 0,
+        "findings": 0,
+        "warnings": [],
+        "model_calls": 0,
+        "runtime_seconds": 20.899935
+      },
+      {
+        "id": "black-cache-filename",
+        "known_labels": 1,
+        "known_hits": 0,
+        "findings": 0,
+        "warnings": [
+          "tests/data/expression.py: cannot use starred expression here (<unknown>, line 148)",
+          "tests/data/numeric_literals_py2.py: invalid decimal literal (<unknown>, line 3)",
+          "tests/data/python2.py: 'u' and 'r' prefixes are incompatible (<unknown>, line 11)",
+          "tests/data/python2_unicode_literals.py: 'u' and 'r' prefixes are incompatible (<unknown>, line 8)"
+        ],
+        "model_calls": 0,
+        "runtime_seconds": 5.188315
+      },
+      {
+        "id": "yt-dlp-whitespace-control",
+        "known_labels": 0,
+        "known_hits": 0,
+        "findings": 0,
+        "warnings": [],
+        "model_calls": 0,
+        "runtime_seconds": 24.143758
+      },
+      {
+        "id": "slugify-code-and-docs-together",
+        "known_labels": 0,
+        "known_hits": 0,
+        "findings": 0,
+        "warnings": [],
+        "model_calls": 0,
+        "runtime_seconds": 0.357704
+      }
+    ],
+    "interpretation": "Both genuine positive cases missed; both controls quiet. Not successful historical detection."
+  },
+  "clean_install": {
+    "package_path": "/private/tmp/driftlens-clean-env-20261101/lib/python3.14/site-packages/driftlens/__init__.py",
+    "checks": [
+      {
+        "case": "removed-flag",
+        "status": "passed",
+        "model_calls": 0,
+        "runtime_seconds": 0.118785
+      },
+      {
+        "case": "model",
+        "status": "passed",
+        "model_calls": 1,
+        "runtime_seconds": 4.204054
+      }
+    ]
+  },
+  "organizer_submissions": "unverified",
+  "human_rehearsal": "not_observed",
+  "repository_checks": {
+    "visibility": "PUBLIC",
+    "license": "MIT",
+    "team": "Fuoriclasse",
+    "members": [
+      "Satya Prakash",
+      "Ravichandra Shinde",
+      "Naitik Pandey"
+    ],
+    "problem": 5,
+    "first_commit_only_hackathon_md": true,
+    "required_files_present": true,
+    "runtime_and_weights_untracked": true,
+    "focused_literal_credential_scan": "no_matches_not_a_security_audit",
+    "source_main_ci_run": 41232713350,
+    "open_teammate_prs_at_check": 0,
+    "historical_workflow_gap": "PR #1 description empty; no recorded pre-merge checks, post-merge CI passed."
+  },
+  "captured_at_ist": "2026-11-01T00:42:10.857867+05:30",
+  "live_model": {
+    "name": "qwen2.5-coder:3b",
+    "digest": "f72c60cabf6237b07f6e632b2c48d533cef25eda2efbd34bed21c5e9c01e6225",
+    "quantization": "Q4_K_M",
+    "prompt_version": "driftlens-claim-v2",
+    "verdict_cache_enabled": false
+  }
+}
