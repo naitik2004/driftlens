@@ -11,6 +11,8 @@ Implemented capabilities:
 - AST facts for public top-level function parameters/defaults, bounded simple
   constants/imports, direct module-level argparse definitions, and one constrained
   retry-count pattern.
+- Direct optparse option/group facts in public function bodies, with explicit
+  defaults only. Implicit/shared destinations and set_defaults overrides abstain.
 - Exact Markdown sentence/table spans, scoped linking, unchanged-claim alignment,
   old support/new contradiction checks, and conservative abstention.
 - Removed CLI options in direct `Use --flag` instructions, with optional backticks.
@@ -80,3 +82,16 @@ Ordinary CI requires neither a running model nor an API key. The first
 implementation PR has an empty description and no recorded pre-merge PR checks;
 its post-merge CI passed. That historical workflow gap has not been rewritten or
 represented as a successful pre-merge review.
+
+## Subsequent optparse integration correction
+
+PR #8 was merged externally during review. Its implicit Boolean defaults and
+per-option treatment of shared destinations produced reproduced false positives.
+The correction removes inferred Boolean defaults and conservatively leaves
+implicit/shared/overridden defaults unresolved. Three failing-before/passing-after
+Git-snapshot regressions were added, and the prior test that asserted an invented
+implicit True default was corrected. The valid explicit-default positive remains.
+
+The correction run passed 79 tests, all four deterministic demos, and all eight
+actual local Qwen/control cases. The baseline 72-test record above describes the
+earlier source commit. Historical recall remains an explicit limitation.

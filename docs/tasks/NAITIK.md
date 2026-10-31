@@ -46,11 +46,12 @@ account confirmation; a GitHub URL alone is not proof of submission.
 
 ## New integration queue after the baseline check
 
-PR #8 arrived while this handoff was being prepared. Its optparse extension has
-been reviewed and is **not cleared for merge**: two false-positive cases were
-reproduced. See [PR8_REVIEW.md](../PR8_REVIEW.md). Satya/Ravichandra need to correct
-the extractor and add regressions before Naitik integrates it. This new queue
-item does not invalidate the completed checks of the unchanged baseline above.
+PR #8 arrived and was merged externally while its review was being prepared.
+Integration review reproduced false positives; Naitik then prepared a conservative
+correction with three failing-before/passing-after regressions. The correction
+run passed 79 tests, four demos and eight live-model/control cases. See
+[PR8_REVIEW.md](../PR8_REVIEW.md). The earlier 72-test checklist remains provenance
+for the baseline above. Correction PR/final-main CI must pass before sign-off.
 
 ## Boundaries
 

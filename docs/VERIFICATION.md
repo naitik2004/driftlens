@@ -1,5 +1,22 @@
 # Integration verification — 1 November 2026
 
+## Later optparse correction
+
+PR #8 was merged during integration review. Three false-positive cases were
+reproduced: invented implicit Boolean defaults, conflicting shared-destination
+defaults, and set_defaults overrides. The correction now abstains on those cases.
+The valid explicit single-destination positive remains covered.
+
+Correction validation: **79 tests passed**, all four deterministic demos passed,
+all eight actual Qwen/control cases passed, and the four-case historical replay
+completed again with unchanged labels and **0/2** historical positives detected.
+The [correction record](../examples/verification/optparse-defaults-2026-11-01.json)
+retains these results. Earlier 72-test results below describe the original
+source version and are not the current test count. The correction also passed a
+fresh clone/install and both installed-CLI checks outside the checkout. Its PR
+and post-merge main CI must pass before integration sign-off.
+
+
 This records checks actually run on merged runtime source
 `36ee68ffd98273de68fd0386a3ca1829998ed822` (PRs #1–#6), not a claim that all
 submission or presentation tasks are complete. The verification PR changes only

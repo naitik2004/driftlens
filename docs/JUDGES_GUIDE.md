@@ -39,7 +39,7 @@ README.md and tested code define what is actually supported.
 
 ## What is implemented versus still unproven
 
-The 1 November integration run passed 72 tests and all four synthetic demos.
+The latest correction run passed 79 tests and all four synthetic demos.
 Live local model calls, a clean installed CLI, and exact report evidence were
 checked separately. See [the verification record](VERIFICATION.md) for current
 status. These checks do not establish real-world accuracy.
@@ -200,3 +200,12 @@ That is not a spoken team rehearsal. All three members still need to run through
 the eight-minute pitch, operate their own demonstration segment and answer
 questions without an assistant. Do not mark that human rehearsal complete until
 it happens. A concise speaker script is in [PRESENTATION.md](PRESENTATION.md).
+
+## Optparse correction to explain if asked
+
+Unlike argparse Boolean actions, optparse leaves unspecified defaults as None.
+Defaults also belong to destinations shared by options. A newly merged extension
+initially got those cases wrong; integration review reproduced false positives.
+We added three negative regressions and now abstain on implicit/shared/overridden
+defaults instead of inventing proof. This is a correctness fix, not a claim of
+successfully detecting the two historical cases.

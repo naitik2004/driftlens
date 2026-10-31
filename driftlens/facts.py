@@ -202,6 +202,10 @@ class Extractor:
                 elif constructor in groups and value.args and isinstance(value.args[0], ast.Name) and value.args[0].id in parser_names:
                     group_names.add(target)
             symbol = f"{module}.{function.name}"
+            function_facts, destination_counts = [], {}
+            overridden = any(isinstance(n, ast.Call) and isinstance(n.func, ast.Attribute)
+                             and n.func.attr == "set_defaults" and isinstance(n.func.value, ast.Name)
+                             and n.func.value.id in parser_names | group_names for n in ast.walk(function))
             for statement in function.body:
                 if not isinstance(statement, ast.Expr) or not isinstance(statement.value, ast.Call):
                     continue
@@ -217,18 +221,19 @@ class Extractor:
                 action_node, default_node = kwargs.get("action"), kwargs.get("default")
                 action = action_node.value if isinstance(action_node, ast.Constant) else None
                 value, deps = self.value(path, default_node) if default_node is not None else (UNKNOWN, ())
-                resolved = action in ("store_true", "store_false")
-                if default_node is None:
-                    value = action == "store_false" if resolved else UNKNOWN
-                else:
-                    resolved = resolved and value != UNKNOWN
+                resolved = action in ("store_true", "store_false") and value != UNKNOWN
                 dest_node = kwargs.get("dest")
                 dest = dest_node.value if isinstance(dest_node, ast.Constant) and isinstance(dest_node.value, str) else None
+                destination_counts[dest] = destination_counts.get(dest, 0) + 1
                 resolved = resolved and dest is not None and not any(k.arg is None for k in call.keywords)
                 for option in options:
-                    facts.append(Fact(path, symbol, "flag", option,
+                    function_facts.append(Fact(path, symbol, "flag", option,
                                       {"default": value, "aliases": sorted(options), "dest": dest, "action": action},
                                       statement.lineno, statement.end_lineno, resolved, deps))
+            # shortcut: implicit/shared/overridden defaults abstain, until destination state is modeled.
+            for fact in function_facts:
+                fact.resolved = fact.resolved and not overridden and destination_counts[fact.value["dest"]] == 1
+            facts.extend(function_facts)
         return facts
 
     def retry_count(self, path, node):

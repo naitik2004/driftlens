@@ -43,7 +43,7 @@ extracts structured claims from otherwise unresolved prose, with schema, quote
 and value validation. Unsupported or ambiguous evidence is left unverified.
 
 The repository includes a CLI, advisory GitHub Actions workflow, MIT license,
-72-test integration result, four deterministic demos, actual local-model outputs
+79-test correction result, four deterministic demos, actual local-model outputs
 and reproducible public-history experiments. AI added three verified findings in
 a developer-selected synthetic suite. Both genuine historical drift cases in the
 current corpus remain missed because they exercise unsupported patterns. The
