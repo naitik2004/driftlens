@@ -12,8 +12,9 @@ all eight actual Qwen/control cases passed, and the four-case historical replay
 completed again with unchanged labels and **0/2** historical positives detected.
 The [correction record](../examples/verification/optparse-defaults-2026-11-01.json)
 retains these results. Earlier 72-test results below describe the original
-source version and are not the current test count. Clean-install and final-main
-CI checks for the correction are completed separately before integration sign-off.
+source version and are not the current test count. The correction also passed a
+fresh clone/install and both installed-CLI checks outside the checkout. Its PR
+and post-merge main CI must pass before integration sign-off.
 
 
 This records checks actually run on merged runtime source

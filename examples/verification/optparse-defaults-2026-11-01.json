@@ -91,5 +91,22 @@
     "Implicit, shared and set_defaults-overridden optparse defaults abstain.",
     "Both real historical positives remain missed.",
     "Organizer submissions and human rehearsal remain unverified."
-  ]
+  ],
+  "clean_install": {
+    "package_path": "/private/tmp/driftlens-optparse-clean-env/lib/python3.14/site-packages/driftlens/__init__.py",
+    "checks": [
+      {
+        "case": "removed-flag",
+        "status": "passed",
+        "model_calls": 0,
+        "runtime_seconds": 0.096102
+      },
+      {
+        "case": "model",
+        "status": "passed",
+        "model_calls": 1,
+        "runtime_seconds": 2.732437
+      }
+    ]
+  }
 }
