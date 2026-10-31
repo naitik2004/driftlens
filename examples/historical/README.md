@@ -6,6 +6,8 @@ patterns. They are useful scope failures, not evidence of successful detection.
 This is deterministic evaluation: no model is loaded and upstream code is never
 imported or executed.
 
+Implementation handoff for the existing gdown miss: [exact evidence and acceptance gate](GDOWN_HANDOFF.md).
+
 ## Reproduce
 
 From the DriftLens checkout, put bare Git histories in an explicit sibling cache
