@@ -1,0 +1,25 @@
+{
+  "schema_version": 1,
+  "analyzer_version": "0.1.0",
+  "base_commit": "373c16d983bcfafcd1ccd9f0fd826aa21d5c9365",
+  "head_commit": "dda064d76f8f04b7ebb0fc4c7b2f9e9b063a2e58",
+  "findings": [],
+  "abstentions": [],
+  "warnings": [],
+  "limitations": [
+    "Python top-level functions, direct module-level argparse, and direct optparse option groups in public function bodies only.",
+    "Exact scope references required; unresolved aliases, wrappers and qualifiers abstain.",
+    "Static declared defaults do not prove effective runtime values or physical units.",
+    "Computed return values and called methods are not resolved.",
+    "Markdown subset: ATX headings, paragraphs, simple pipe tables and fenced code."
+  ],
+  "metrics": {
+    "runtime_seconds": 0.447242,
+    "claims_indexed": 88,
+    "facts_indexed": 117,
+    "finding_count": 0,
+    "change_groups": 0,
+    "model_calls": 0,
+    "model_cache_hits": 0
+  }
+}

@@ -31,8 +31,8 @@
         "correction_path": "README.md",
         "correction_quote": "For example, `-f bestvideo+best+bestaudio --video-multistreams --audio-multistreams` will download and merge all 3 given formats."
       },
-      "review": "The video/audio defaults change from True to False. The unchanged example omits the opt-in flags and still promises all three formats; the later docs add both flags. Optparse inside parseOpts and behavioral examples are outside current support.",
-      "label_subject_note": "parseOpts is the actual callable defining the optparse option; the extractor currently emits no flag fact for it."
+      "review": "The video/audio defaults change from True to False. The unchanged example omits the opt-in flags and still promises all three formats; later docs add both flags. Direct optparse groups are now extracted, but implicit/shared destinations are conservative and this example requires format-selection behavior rather than an exact default claim.",
+      "label_subject_note": "parseOpts is the callable defining the optparse option. Current extraction recognizes direct groups, but the reviewed sentence does not name the option or state its literal default."
     },
     {
       "id": "black-cache-filename",
@@ -98,6 +98,59 @@
         "code_path": "slugify/slugify.py",
         "doc_path": "README.md",
         "added_text": "allow_unicode=False"
+      }
+    },
+    {
+      "id": "gdown-folder-file-limit",
+      "repo": "../../../driftlens-history-cache/gdown.git",
+      "before": "373c16d983bcfafcd1ccd9f0fd826aa21d5c9365",
+      "drift": "dda064d76f8f04b7ebb0fc4c7b2f9e9b063a2e58",
+      "split": "evaluation",
+      "expected": [
+        {
+          "path": "README.md",
+          "symbol": "gdown.download_folder.download_folder",
+          "name": "max_files_per_folder",
+          "category": "folder_file_limit_changed",
+          "quote": "- Downloads folders recursively (up to 50 files per folder)",
+          "line_start": 21,
+          "start": 925
+        }
+      ],
+      "fully_reviewed": false,
+      "source_url": "https://github.com/wkentaro/gdown",
+      "license": "MIT",
+      "kind": "positive",
+      "correction": "5bb1faa88faa179ae114ab095515be3fd1324269",
+      "evidence": {
+        "code_path": "gdown/download_folder.py",
+        "before_code": "MAX_NUMBER_FILES = 50",
+        "drift_code": "url = f\"https://drive.google.com/embeddedfolderview?{params}\"",
+        "absent_drift_code": "MAX_NUMBER_FILES",
+        "doc_path": "README.md",
+        "quote": "- Downloads folders recursively (up to 50 files per folder)",
+        "correction_path": "README.md",
+        "correction_quote": "- Downloads folders recursively\n"
+      },
+      "review": "A enforces the 50-file listing limit. Two sequential code changes remove the limit and replace _DRIVE_ivd parsing with the embeddedfolderview endpoint, while the exact README bullet remains unchanged at B. Later C removes the stale parenthetical. No upstream code or network folder operation is executed. This is static/provenance evidence, not a measured unlimited-service guarantee.",
+      "label_subject_note": "folder_file_limit_changed is a manual behavioral label outside detector categories; max_files_per_folder is the reviewed concept, not a real function parameter. A is two commits before B because the intermediate removal leaves old parser references to the removed constant; using that intermediate as a supported baseline would be misleading."
+    },
+    {
+      "id": "gdown-fuzzy-code-and-docs-together",
+      "repo": "../../../driftlens-history-cache/gdown.git",
+      "before": "6a435009d5bf3f2ffc99f47d209e0e8b4173c1e9",
+      "drift": "b1c6e1ce257d4fa247304adcd181cdf8e7651c74",
+      "split": "evaluation",
+      "expected": [],
+      "fully_reviewed": true,
+      "source_url": "https://github.com/wkentaro/gdown",
+      "license": "MIT",
+      "kind": "negative",
+      "review": "The complete seven-file diff removes the fuzzy Python parameter and CLI option and updates every README usage in the same commit. Reviewed all actual predictions (none); no introduced stale README claim is expected. This is a synchronized removal control, not a delayed-fix positive. Upstream tests are inspected as source, never run.",
+      "synchronized": {
+        "code_path": "gdown/download.py",
+        "doc_path": "README.md",
+        "removed_text": "fuzzy"
       }
     }
   ]

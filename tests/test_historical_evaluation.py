@@ -64,6 +64,23 @@ class HistoricalEvaluationTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, 'before_code'):
             module.verify(self.case, self.repo.path)
 
+    def test_removed_code_evidence_must_be_absent_at_b(self):
+        self.case['evidence']['absent_drift_code'] = 'timeout=10'
+        with self.assertRaisesRegex(ValueError, 'removed code still present'):
+            module.verify(self.case, self.repo.path)
+        self.case['evidence']['absent_drift_code'] = 'timeout=30'
+        module.verify(self.case, self.repo.path)
+
+    def test_claim_must_remain_at_b_even_without_localization_labels(self):
+        self.case['drift'] = self.repo.commit({'README.md': 'Updated documentation.\n'})
+        self.case['expected'] = []
+        with self.assertRaisesRegex(ValueError, 'claim not retained at B'):
+            module.verify(self.case, self.repo.path)
+
+    def test_before_may_precede_multiple_change_commits(self):
+        self.case['drift'] = self.repo.commit({'unrelated.txt': 'Second commit in the change.\n'})
+        module.verify(self.case, self.repo.path)
+
     def test_behavior_change_cannot_be_called_formatting(self):
         self.case['formatting_only'] = True
         with self.assertRaisesRegex(ValueError, 'AST'):
@@ -73,6 +90,23 @@ class HistoricalEvaluationTests(unittest.TestCase):
         self.case['synchronized'] = {'code_path': 'client.py', 'doc_path': 'README.md',
                                      'added_text': 'timeout=10'}
         with self.assertRaisesRegex(ValueError, 'code and docs together'):
+            module.verify(self.case, self.repo.path)
+
+    def test_synchronized_removal_checks_both_code_and_docs(self):
+        self.case['expected'] = []
+        self.case.pop('evidence')
+        self.case['synchronized'] = {'code_path': 'client.py', 'doc_path': 'README.md',
+                                     'removed_text': 'timeout'}
+        with self.assertRaisesRegex(ValueError, 'code and docs together'):
+            module.verify(self.case, self.repo.path)
+        self.case['drift'] = self.repo.commit({'client.py': 'def connect(): pass\n',
+                                               'README.md': '`connect` is available.\n'})
+        module.verify(self.case, self.repo.path)
+
+    def test_synchronized_direction_must_be_unambiguous(self):
+        self.case['synchronized'] = {'code_path': 'client.py', 'doc_path': 'README.md',
+                                     'removed_text': 'timeout', 'added_text': 'timeout'}
+        with self.assertRaisesRegex(ValueError, 'exactly one'):
             module.verify(self.case, self.repo.path)
 
 
