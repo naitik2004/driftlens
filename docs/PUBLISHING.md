@@ -28,10 +28,13 @@ chat. Trusted Publishing obtains a short-lived token during the release job.
 ## Validate and publish
 
 Merge the reviewed release configuration into main. In GitHub Actions, run
-**Publish Python package** from **main**, selecting `testpypi`. It runs tests,
+**Publish Python package** with `publish` unchecked for validation only. It runs tests,
 demos, builds both distributions, checks metadata, tests wheel installation
-outside the checkout, then uploads using Trusted Publishing. Other branches can
-build but cannot publish.
+outside the checkout and retains distributions without an upload.
+
+After account setup, run it from **main**, selecting `testpypi` and checking
+`publish`. Only this explicit upload mode uses Trusted Publishing. Other branches
+can validate but cannot publish. An unchecked run is not publication evidence.
 
 After successful TestPyPI upload, use a fresh virtual environment:
 
@@ -41,7 +44,8 @@ python3 -m venv /tmp/driftlens-testpypi
 /tmp/driftlens-testpypi/bin/driftlens --help
 ```
 
-Only after verifying that install, run the workflow on main with `pypi`. Verify:
+Only after verifying that install, run the workflow on main with `pypi` and
+`publish` checked. Verify:
 
 ```sh
 python3 -m venv /tmp/driftlens-pypi

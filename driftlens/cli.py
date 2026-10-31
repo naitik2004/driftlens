@@ -10,7 +10,7 @@ from .snapshots import SnapshotError, SnapshotLimits
 
 
 def event_revisions(event_path):
-    event = json.loads(Path(event_path).read_text())
+    event = json.loads(Path(event_path).read_text(encoding='utf-8'))
     pr = event.get('pull_request')
     if not pr:
         raise ValueError('GitHub event does not contain pull_request revisions')
@@ -59,7 +59,7 @@ def main(argv=None):
         rendered = summary(report)
         if args.summary:
             args.summary.parent.mkdir(parents=True, exist_ok=True)
-            args.summary.write_text(rendered)
+            args.summary.write_text(rendered, encoding='utf-8', newline='\n')
         if args.github_annotations:
             print('\n'.join(annotations(report)))
         elif not args.summary:

@@ -2,6 +2,11 @@ name: Publish Python package
 on:
   workflow_dispatch:
     inputs:
+      publish:
+        description: Upload after validation (requires configured Trusted Publisher)
+        type: boolean
+        default: false
+        required: true
       index:
         description: Package index
         type: choice
@@ -26,14 +31,7 @@ jobs:
       - run: python -m build
       - run: python -m twine check --strict dist/*
       - name: Test wheel outside source checkout
-        shell: bash
-        run: |
-          python -m venv "$RUNNER_TEMP/package-test"
-          "$RUNNER_TEMP/package-test/bin/python" -m pip install --no-deps dist/*.whl
-          cd "$RUNNER_TEMP"
-          "$RUNNER_TEMP/package-test/bin/python" -I -m driftlens --help
-          "$RUNNER_TEMP/package-test/bin/driftlens" --help
-          "$RUNNER_TEMP/package-test/bin/python" -I "$GITHUB_WORKSPACE/examples/verify_install.py"
+        run: python examples/check_distribution.py --dist dist
       - uses: actions/upload-artifact@v4
         with:
           name: python-distributions
@@ -41,7 +39,7 @@ jobs:
           if-no-files-found: error
   publish:
     needs: build
-    if: github.ref == 'refs/heads/main'
+    if: github.ref == 'refs/heads/main' && inputs.publish
     runs-on: ubuntu-latest
     environment:
       name: ${{ inputs.index }}

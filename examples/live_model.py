@@ -58,11 +58,12 @@ def run(model, case=None):
                                            env=env, stderr=subprocess.PIPE).decode().strip()
 
         git('init', '-q', '--initial-branch=main')
+        git('config', 'core.autocrlf', 'false')
         # This paraphrase is intentionally outside the deterministic default grammar.
         commits = []
         for stage, default in (('before', 30), ('after', case['after_default'])):
-            (repo / 'README.md').write_text(case[f'{stage}_docs'])
-            (repo / 'client.py').write_text(f'def connect(timeout={default}):\n    return timeout\n')
+            (repo / 'README.md').write_text(case[f'{stage}_docs'], encoding='utf-8', newline='\n')
+            (repo / 'client.py').write_text(f'def connect(timeout={default}):\n    return timeout\n', encoding='utf-8', newline='\n')
             git('add', 'README.md', 'client.py')
             git('-c', 'commit.gpgsign=false', 'commit', '--allow-empty', '-qm', f'{stage}: timeout {default}')
             commits.append(git('rev-parse', 'HEAD'))
@@ -85,7 +86,7 @@ def main(argv=None):
     args = parser.parse_args(argv)
     try:
         if args.cases:
-            cases = json.loads(args.cases.read_text())
+            cases = json.loads(args.cases.read_text(encoding='utf-8'))
             if not isinstance(cases, list) or not cases:
                 raise ValueError('Cases must be a nonempty JSON list')
             results = [run(Ollama(args.model), case) for case in cases]

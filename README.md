@@ -16,6 +16,9 @@ verification is complete. See [publishing setup](docs/PUBLISHING.md).
 
 ## Quick start
 
+First-time setup, Windows PowerShell commands, report interpretation and
+troubleshooting: [getting started](docs/GETTING_STARTED.md).
+
 Python 3.10+ and Git are required. The analyzer has no third-party runtime dependencies.
 From this checkout:
 

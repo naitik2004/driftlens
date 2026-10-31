@@ -10,7 +10,7 @@ from driftlens.reporting import summary, write_json
 
 def main():
     root = Path(__file__).parent
-    cases = json.loads((root / 'cases.json').read_text())
+    cases = json.loads((root / 'cases.json').read_text(encoding='utf-8'))
     for case in cases:
         with tempfile.TemporaryDirectory(prefix='driftlens-demo-') as temporary:
             repo = Path(temporary)
@@ -20,10 +20,11 @@ def main():
             def git(*args):
                 return subprocess.check_output(['git', '-C', str(repo), *args], env=env, stderr=subprocess.PIPE).decode().strip()
             git('init', '-q', '--initial-branch=main')
+            git('config', 'core.autocrlf', 'false')
             commits = []
             for stage in ('before', 'after'):
-                (repo / 'client.py').write_text(case[f'{stage}_code'])
-                (repo / 'README.md').write_text(case[f'{stage}_docs'])
+                (repo / 'client.py').write_text(case[f'{stage}_code'], encoding='utf-8', newline='\n')
+                (repo / 'README.md').write_text(case[f'{stage}_docs'], encoding='utf-8', newline='\n')
                 git('add', 'client.py', 'README.md')
                 git('-c', 'commit.gpgsign=false', 'commit', '-qm', stage)
                 commits.append(git('rev-parse', 'HEAD'))
@@ -33,7 +34,7 @@ def main():
             report['demo'] = {'synthetic': True, 'name': case['name'], 'input': 'examples/cases.json'}
             output = root / 'outputs' / case['name']
             write_json(report, output.with_suffix('.json'))
-            output.with_suffix('.md').write_text(summary(report))
+            output.with_suffix('.md').write_text(summary(report), encoding='utf-8', newline='\n')
             print(f"{case['name']}: {len(report['findings'])} finding(s)")
 
 

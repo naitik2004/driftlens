@@ -46,4 +46,4 @@ def annotations(report):
 
 def write_json(report, path):
     path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(json.dumps(report, indent=2, ensure_ascii=True, allow_nan=False) + '\n')
+    path.write_text(json.dumps(report, indent=2, ensure_ascii=True, allow_nan=False) + '\n', encoding='utf-8', newline='\n')

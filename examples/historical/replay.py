@@ -67,7 +67,7 @@ def verify(case, repo):
 
 
 def replay(manifest_path, output, cache_dir=None):
-    manifest = json.loads(manifest_path.read_text())
+    manifest = json.loads(manifest_path.read_text(encoding='utf-8'))
     if cache_dir is not None:
         for case in manifest['cases']:
             case['repo'] = str((cache_dir / Path(case['repo']).name).resolve())

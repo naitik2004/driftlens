@@ -70,7 +70,7 @@ def main():
     parser.add_argument('--output', type=Path, required=True)
     args = parser.parse_args()
     try:
-        result = evaluate(json.loads(args.manifest.read_text()), args.manifest.parent)
+        result = evaluate(json.loads(args.manifest.read_text(encoding='utf-8')), args.manifest.parent)
         write_json(result, args.output)
     except (ValueError, OSError, KeyError) as exc:
         parser.exit(2, f'DriftLens evaluation: {exc}\n')
