@@ -1,0 +1,24 @@
+{
+  "schema_version": 1,
+  "analyzer_version": "0.1.0",
+  "base_commit": "e182ba877bff741a96e511eac53f25fe3e015e8c",
+  "head_commit": "4eacbc172264cb8121e44e39ac40f9e959a7b4e2",
+  "findings": [],
+  "abstentions": [],
+  "warnings": [],
+  "limitations": [
+    "Python top-level functions and direct module-level argparse definitions only.",
+    "Exact scope references required; unresolved aliases, wrappers and qualifiers abstain.",
+    "Static declared defaults do not prove effective runtime values or physical units.",
+    "Markdown subset: ATX headings, paragraphs, simple pipe tables and fenced code."
+  ],
+  "metrics": {
+    "runtime_seconds": 28.689553,
+    "claims_indexed": 2548,
+    "facts_indexed": 611,
+    "finding_count": 0,
+    "change_groups": 0,
+    "model_calls": 0,
+    "model_cache_hits": 0
+  }
+}

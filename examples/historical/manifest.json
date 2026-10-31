@@ -1,0 +1,104 @@
+{
+  "cases": [
+    {
+      "id": "yt-dlp-multistream-default",
+      "repo": "../../../driftlens-history-cache/yt-dlp.git",
+      "before": "50865ca803a130308c064c2de5c7140754382993",
+      "drift": "91ebc64068d2957400dbfaadff23e995392b3963",
+      "split": "evaluation",
+      "expected": [
+        {
+          "path": "README.md",
+          "symbol": "youtube_dlc.options.parseOpts",
+          "name": "--video-multistreams",
+          "category": "flag_default_changed",
+          "quote": "For example, `-f bestvideo+best+bestaudio` will download and merge all 3 given formats.",
+          "line_start": 885,
+          "start": 58525
+        }
+      ],
+      "fully_reviewed": false,
+      "source_url": "https://github.com/yt-dlp/yt-dlp",
+      "license": "Unlicense",
+      "kind": "positive",
+      "correction": "dce87436778a3448a3db098617eabe5541f6f229",
+      "evidence": {
+        "code_path": "youtube_dlc/options.py",
+        "before_code": "action='store_true', dest='allow_multiple_video_streams', default=True,",
+        "drift_code": "action='store_true', dest='allow_multiple_video_streams', default=False,",
+        "doc_path": "README.md",
+        "quote": "For example, `-f bestvideo+best+bestaudio` will download and merge all 3 given formats.",
+        "correction_path": "README.md",
+        "correction_quote": "For example, `-f bestvideo+best+bestaudio --video-multistreams --audio-multistreams` will download and merge all 3 given formats."
+      },
+      "review": "The video/audio defaults change from True to False. The unchanged example omits the opt-in flags and still promises all three formats; the later docs add both flags. Optparse inside parseOpts and behavioral examples are outside current support.",
+      "label_subject_note": "parseOpts is the actual callable defining the optparse option; the extractor currently emits no flag fact for it."
+    },
+    {
+      "id": "black-cache-filename",
+      "repo": "../../../driftlens-history-cache/black.git",
+      "before": "a9d8af466a65b7d88ea35e0ff4c460175098260e",
+      "drift": "36d3c516d3c09fc5f05c420900dd6b854e3c8bbd",
+      "split": "evaluation",
+      "expected": [
+        {
+          "path": "README.md",
+          "symbol": "black.get_cache_file",
+          "name": "mode",
+          "category": "cache_path_changed",
+          "quote": "* Linux: `/home/<username>/.cache/black/<version>/cache.<line-length>.<file-mode>.pickle`",
+          "line_start": 886,
+          "start": 35239
+        }
+      ],
+      "fully_reviewed": false,
+      "source_url": "https://github.com/psf/black",
+      "license": "MIT",
+      "kind": "positive",
+      "correction": "137766332565267cad23aea28bcfef4569439edd",
+      "evidence": {
+        "code_path": "black.py",
+        "before_code": "return CACHE_DIR / f\"cache.{line_length}.{mode.value}.pickle\"",
+        "drift_code": "return CACHE_DIR / f\"cache.{mode.get_cache_key()}.pickle\"",
+        "doc_path": "README.md",
+        "quote": "* Linux: `/home/<username>/.cache/black/<version>/cache.<line-length>.<file-mode>.pickle`",
+        "correction_path": "docs/usage_and_configuration/file_collection_and_discovery.md",
+        "correction_quote": "- Linux: `/home/<username>/.cache/black/<version>/cache.<mode-key>.pickle`"
+      },
+      "review": "The old filename uses line length and an integer flag. B switches to a multi-part mode key including target versions. The old path remains in README; C corrects it after docs have moved. Computed return values and cache-path behavior are outside current support.",
+      "label_subject_note": "cache_path_changed is a manual behavioral category outside the current detector categories; it does not add a detector feature."
+    },
+    {
+      "id": "yt-dlp-whitespace-control",
+      "repo": "../../../driftlens-history-cache/yt-dlp.git",
+      "before": "e182ba877bff741a96e511eac53f25fe3e015e8c",
+      "drift": "4eacbc172264cb8121e44e39ac40f9e959a7b4e2",
+      "split": "evaluation",
+      "expected": [],
+      "fully_reviewed": true,
+      "source_url": "https://github.com/yt-dlp/yt-dlp",
+      "license": "Unlicense",
+      "kind": "negative",
+      "review": "The entire commit removes one trailing space after a dictionary entry in youtube_dl/extractor/rtlnl.py. Python ASTs are identical; no Markdown changes.",
+      "formatting_only": true
+    },
+    {
+      "id": "slugify-code-and-docs-together",
+      "repo": "../../../driftlens-history-cache/python-slugify.git",
+      "before": "07b87da81140cf51e4a585e43d4fe9113f4c2ad5",
+      "drift": "d968ca7419e6f4e40685888c56d03bea50fd39d7",
+      "split": "evaluation",
+      "expected": [],
+      "fully_reviewed": true,
+      "source_url": "https://github.com/un33k/python-slugify",
+      "license": "MIT",
+      "kind": "negative",
+      "review": "The new opt-in allow_unicode=False parameter and CLI flag are documented in the same commit, including the README signature and Unicode examples. Existing defaults stay unchanged; this is a synchronized feature addition, not a default-change control.",
+      "synchronized": {
+        "code_path": "slugify/slugify.py",
+        "doc_path": "README.md",
+        "added_text": "allow_unicode=False"
+      }
+    }
+  ]
+}

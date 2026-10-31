@@ -1,0 +1,65 @@
+{
+  "cases": [
+    {
+      "id": "yt-dlp-multistream-default",
+      "split": "evaluation",
+      "known_labels": 1,
+      "known_hits": 0,
+      "predictions": 0,
+      "unmatched_for_review": [],
+      "correction_evidence": [],
+      "runtime_seconds": 29.775456,
+      "warnings": [],
+      "precision": null
+    },
+    {
+      "id": "black-cache-filename",
+      "split": "evaluation",
+      "known_labels": 1,
+      "known_hits": 0,
+      "predictions": 0,
+      "unmatched_for_review": [],
+      "correction_evidence": [],
+      "runtime_seconds": 7.776972,
+      "warnings": [
+        "tests/data/expression.py: cannot use starred expression here (<unknown>, line 148)",
+        "tests/data/numeric_literals_py2.py: invalid decimal literal (<unknown>, line 3)",
+        "tests/data/python2.py: 'u' and 'r' prefixes are incompatible (<unknown>, line 11)",
+        "tests/data/python2_unicode_literals.py: 'u' and 'r' prefixes are incompatible (<unknown>, line 8)"
+      ],
+      "precision": null
+    },
+    {
+      "id": "yt-dlp-whitespace-control",
+      "split": "evaluation",
+      "known_labels": 0,
+      "known_hits": 0,
+      "predictions": 0,
+      "unmatched_for_review": [],
+      "correction_evidence": [],
+      "runtime_seconds": 36.206089,
+      "warnings": [],
+      "precision": null
+    },
+    {
+      "id": "slugify-code-and-docs-together",
+      "split": "evaluation",
+      "known_labels": 0,
+      "known_hits": 0,
+      "predictions": 0,
+      "unmatched_for_review": [],
+      "correction_evidence": [],
+      "runtime_seconds": 0.361307,
+      "warnings": [],
+      "precision": null
+    }
+  ],
+  "known_case_recall": 0.0,
+  "warnings_per_case": 1.0,
+  "model_resource_usage": null,
+  "limitations": [
+    "Recall is over supplied labels only.",
+    "Precision is reported only for explicitly fully reviewed cases.",
+    "This deterministic replay does not measure model quality or hardware resource usage."
+  ]
+}
