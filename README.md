@@ -31,7 +31,9 @@ merge base with the head; dirty working files are ignored. Fetch enough history
 before analyzing a shallow clone. Add `--repository-url https://github.com/OWNER/REPO`
 for commit-pinned source links. Exit codes: 0 for completed advisory analysis,
 1 for findings when `--fail-on-drift` is explicitly supplied, 2 for input/analysis
-errors. Warnings and abstentions remain visible in reports; zero findings does
+errors. Explicit revision arguments take precedence over an inherited GitHub PR
+event; use `--github-event` to explicitly fill missing revisions from an event.
+Warnings and abstentions remain visible in reports; zero findings does
 not mean every documentation claim was verified.
 
 ## Run the demos and tests
