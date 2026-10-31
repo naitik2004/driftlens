@@ -108,10 +108,15 @@ and the installed model's digest, so changing the model behind a tag invalidates
 cached results. A digest lookup failure disables that analysis with a warning.
 Only localhost HTTP endpoints are accepted.
 
-**Live model validation is pending.** Unit tests mock Ollama responses; this
-implementation session could not connect to the local server. No real-model
-accuracy, latency or memory claim is made. The deterministic pipeline works
-without Ollama.
+**Live local inference has been demonstrated.** On an Apple M3 with 8 GB RAM,
+Qwen added three verified findings missed by the deterministic baseline; all five
+controls stayed quiet in a developer-selected synthetic suite. Five uncached
+requests were made across eight cases; three controls were filtered before any
+model call. Model-enabled case runtimes were 1.87–2.71 seconds on this run. This
+is not a real-history accuracy benchmark. The initial failed run is retained.
+See [commands, hardware and actual evidence](docs/LOCAL_AI.md). Unit tests still
+use explicitly identified test doubles; they are separate from these live runs.
+The deterministic pipeline and hosted CI work without Ollama.
 
 API reference: [Ollama chat](https://docs.ollama.com/api/chat).
 
@@ -210,3 +215,5 @@ the actual reports, and exits nonzero unless an uncached model call adds the
 expected evidence-backed finding without warnings. A successful run is a narrow
 contribution smoke test, not a historical accuracy benchmark. Unit tests use an
 explicit test double and do not establish live-model execution.
+
+Local setup, observed results and failure interpretation: [Local AI guide](docs/LOCAL_AI.md).

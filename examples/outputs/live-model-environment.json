@@ -1,0 +1,83 @@
+{
+  "hardware": {
+    "chip": "Apple M3",
+    "memory_bytes": 8589934592,
+    "architecture": "arm64",
+    "os": "27.2"
+  },
+  "ollama": {
+    "version": "0.40.13"
+  },
+  "installed_models": {
+    "models": [
+      {
+        "name": "qwen2.5-coder:3b",
+        "model": "qwen2.5-coder:3b",
+        "modified_at": "2026-10-31T23:42:29.47872697+05:30",
+        "size": 1929912626,
+        "digest": "f72c60cabf6237b07f6e632b2c48d533cef25eda2efbd34bed21c5e9c01e6225",
+        "details": {
+          "parent_model": "",
+          "format": "gguf",
+          "family": "qwen2",
+          "families": [
+            "qwen2"
+          ],
+          "parameter_size": "3.1B",
+          "quantization_level": "Q4_K_M",
+          "context_length": 32768,
+          "embedding_length": 2048,
+          "runner": "ggml"
+        },
+        "capabilities": [
+          "completion",
+          "tools",
+          "insert"
+        ]
+      }
+    ]
+  },
+  "server_settings": {
+    "host": "127.0.0.1:11434",
+    "context_length": 4096,
+    "parallel_requests": 1
+  },
+  "runtime_archive_sha256": "bae29252232b9e1358cf5801a7d65a07442af18fb5467cb68c7fc3711f59c511",
+  "loaded_models_snapshot": {
+    "models": [
+      {
+        "name": "qwen2.5-coder:3b",
+        "model": "qwen2.5-coder:3b",
+        "size": 2163558317,
+        "digest": "f72c60cabf6237b07f6e632b2c48d533cef25eda2efbd34bed21c5e9c01e6225",
+        "details": {
+          "parent_model": "",
+          "format": "gguf",
+          "family": "qwen2",
+          "families": [
+            "qwen2"
+          ],
+          "parameter_size": "3.1B",
+          "quantization_level": "Q4_K_M"
+        },
+        "expires_at": "2026-10-31T23:48:42.354581+05:30",
+        "size_vram": 2163558317,
+        "context_length": 4096,
+        "runner": "llamacpp"
+      }
+    ]
+  },
+  "process_memory_snapshot": [
+    {
+      "pid": 45537,
+      "rss_kib": 16640,
+      "executable": "ollama"
+    },
+    {
+      "pid": 53359,
+      "rss_kib": 2095088,
+      "executable": "llama-server"
+    }
+  ],
+  "memory_measurement_note": "Single sampled RSS per process and Ollama-reported allocation; not peak memory. Shared pages and GPU memory may overlap; do not sum as physical RAM consumption."
+}

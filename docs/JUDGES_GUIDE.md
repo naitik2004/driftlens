@@ -43,9 +43,12 @@ The inspected MVP has 49 passing original tests and four passing synthetic demos
 This planning branch adds a tested live-model contribution harness. Main's hosted
 CI passed after PR #1. These facts do not establish real-world accuracy.
 
-Local model integration exists, but no successful live inference was observed in
-this inspection. Historical replay tooling exists, but no real A/B/C corpus was
-bundled at the inspected baseline. Update claims only after observing new results.
+Live local inference was subsequently observed: prompt v2 produced three
+model-assisted findings that the baseline missed, and five synthetic controls
+stayed quiet. See [actual evidence](LOCAL_AI.md). The first live run failed and
+was rejected; do not claim the model is always reliable. Historical replay tooling
+exists, but no real A/B/C corpus was bundled at the inspected baseline. Update
+that claim only after Satya's evidence is reviewed.
 The GitHub workflow runs deterministic analysis without Qwen; local model-enabled
 analysis is a separate product mode. Explain that distinction directly.
 

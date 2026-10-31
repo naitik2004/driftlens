@@ -19,6 +19,14 @@ Not yet demonstrated: live Qwen inference, measured model benefit on real data,
 or accuracy on actual historical documentation fixes. The local Ollama endpoint
 was unavailable during inspection. A mocked model test is not live AI evidence.
 
+## Live AI progress update
+
+Naitik's live AI work subsequently demonstrated actual Qwen inference: three
+model-assisted findings over a zero-finding baseline and five quiet controls in
+eight synthetic cases. See [the evidence and reproduction guide](LOCAL_AI.md).
+The initial unavailable-server and unvalidated-model observations above describe
+the inspected baseline. Historical evaluation remains a separate workstream.
+
 ## What the judges require
 
 Sources: the supplied event slides (especially 12–19, 20–21 and 29) and the
