@@ -13,6 +13,11 @@ passed a fresh local install check. Python-version-specific parser warning text
 differs for legacy Black fixtures, while all six findings match exactly.
 
 Machine-readable results: [post-merge main evidence](../examples/verification/hosted-main-2026-11-01.json).
+The follow-up [TestPyPI upload attempt](https://github.com/naitik2004/driftlens/actions/runs/41249039149)
+passed build validation but failed at OIDC exchange with `invalid-publisher`;
+TestPyPI has no matching Trusted Publisher for this workflow claim set. No
+artifact was uploaded. Configure and verify that publisher on TestPyPI, then
+retry before considering public PyPI.
 
 Source `8c161534fbcd7775d4b1181f151d2a36dcfcfa8d` passed all 121 tests and functional
 installed-wheel controls on Linux, macOS and Windows in
