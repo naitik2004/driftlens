@@ -44,6 +44,14 @@ The integration agent has no authenticated OrganizerHQ tool and cannot observe
 spoken rehearsal. Submission confirmation requires a real submission URL or
 account confirmation; a GitHub URL alone is not proof of submission.
 
+## New integration queue after the baseline check
+
+PR #8 arrived while this handoff was being prepared. Its optparse extension has
+been reviewed and is **not cleared for merge**: two false-positive cases were
+reproduced. See [PR8_REVIEW.md](../PR8_REVIEW.md). Satya/Ravichandra need to correct
+the extractor and add regressions before Naitik integrates it. This new queue
+item does not invalidate the completed checks of the unchanged baseline above.
+
 ## Boundaries
 
 Successful real-history detection is still a product gap: both supplied positive
