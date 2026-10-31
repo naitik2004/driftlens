@@ -35,7 +35,8 @@ def main(argv=None):
     try:
         event_path = args.github_event or os.environ.get('GITHUB_EVENT_PATH')
         base, head = args.base, args.head
-        if event_path and (not base or not head) and (args.github_event or os.environ.get('GITHUB_EVENT_NAME') == 'pull_request'):
+        use_environment = not base and not head and os.environ.get('GITHUB_EVENT_NAME') == 'pull_request'
+        if event_path and (not base or not head) and (args.github_event or use_environment):
             event_base, event_head = event_revisions(event_path)
             base, head = base or event_base, head or event_head
         if not base:
