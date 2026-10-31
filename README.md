@@ -190,3 +190,21 @@ initial implementation status is historical. Current validation and remaining
 external work are recorded in [IMPLEMENTATION.md](IMPLEMENTATION.md).
 
 MIT licensed. Development proceeds on feature branches through pull requests.
+
+## Team execution and presentation
+
+See [the three-person work plan](docs/TEAM_PLAN.md), the copyable
+[agent assignments](docs/tasks/), and the [presentation and Q&A guide](docs/JUDGES_GUIDE.md).
+
+To verify a real local-model contribution separately from deterministic fixtures:
+
+```sh
+python3 -m examples.live_model --output /tmp/driftlens-live-model.json
+```
+
+This requires a running Ollama server with the selected model downloaded. It
+compares model-off and model-on results for identical synthetic snapshots, saves
+the actual reports, and exits nonzero unless an uncached model call adds the
+expected evidence-backed finding without warnings. A successful run is a narrow
+contribution smoke test, not a historical accuracy benchmark. Unit tests use an
+explicit test double and do not establish live-model execution.
