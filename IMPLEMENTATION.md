@@ -7,8 +7,9 @@ Markdown without importing or executing the analyzed project.
 
 - AST facts for public top-level defaults/parameters, bounded constants/imports,
   direct argparse definitions and a constrained retry-count pattern.
-- Direct optparse option/group facts with explicit defaults. Implicit/shared
-  destinations and set_defaults overrides conservatively abstain.
+- Direct optparse option/group facts with ordered shared-destination defaults:
+  last explicit registration wins; implicit paired flags do not overwrite it.
+  Dynamic constructors/registrations and set_defaults overrides abstain.
 - Exact Markdown spans, scoped linking, old support/new contradiction checks,
   same-PR documentation correction suppression and conservative exclusions.
 - Removed CLI flags in direct `Use --flag` instructions, including backticks.
@@ -19,6 +20,11 @@ Markdown without importing or executing the analyzed project.
   facts, responsible hunks and optional immutable source links.
 - Optional local Qwen prose extraction with validated schema/quote/value and
   model/content/prompt-versioned caching.
+- Opt-in source-backed behavioral review candidates, explicitly separate from
+  findings, annotations, build failures and accuracy metrics. See
+  [BEHAVIOR_REVIEW.md](docs/BEHAVIOR_REVIEW.md).
+- Optional bounded Qwen notes on those candidates, with exact-quote and source
+  citation validation. These are unverified interpretations, never drift hits.
 - CLI, advisory GitHub Actions, MIT license, PR template and Python 3.10/3.12/3.13 CI.
 
 ## Audit follow-up
@@ -28,8 +34,11 @@ Windows and macOS, including installed Unicode-report controls. It executes and
 records the historical workflow on merged main and packaging validation on the
 readiness branch without upload. GitHub pypi/testpypi environments are created
 with main-only branch policies; PyPI-side publishers are still unconfirmed.
-Independent data collection has a [protocol and candidate log](examples/evaluation/README.md),
-not a new benchmark. See [hosted evidence](examples/verification/public-readiness-2026-11-01.json).
+Independent data collection subsequently produced a
+[12-case external study](examples/evaluation/README.md): 0/1 supplied positives,
+11 quiet controls, no warnings. Precision is undefined with no predictions.
+The earlier [hosted evidence](examples/verification/public-readiness-2026-11-01.json)
+predates this study. No independent human test is claimed.
 
 The five reproduced audit errors are fixed: unsupported parser registrations
 no longer prove removal, shadowed parser constructors and rebound constants

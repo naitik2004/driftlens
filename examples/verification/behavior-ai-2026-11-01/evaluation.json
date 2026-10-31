@@ -1,0 +1,45 @@
+{
+  "cases": [
+    {
+      "id": "yt-dlp-multistream-default",
+      "findings": 0,
+      "candidates": 1,
+      "model_calls": 1,
+      "validated_notes": 1,
+      "warnings": []
+    },
+    {
+      "id": "yt-dlp-whitespace-control",
+      "findings": 0,
+      "candidates": 0,
+      "model_calls": 0,
+      "validated_notes": 0,
+      "warnings": []
+    },
+    {
+      "id": "slugify-code-and-docs-together",
+      "findings": 0,
+      "candidates": 0,
+      "model_calls": 0,
+      "validated_notes": 0,
+      "warnings": []
+    },
+    {
+      "id": "gdown-folder-file-limit",
+      "findings": 0,
+      "candidates": 1,
+      "model_calls": 1,
+      "validated_notes": 1,
+      "warnings": []
+    },
+    {
+      "id": "gdown-fuzzy-code-and-docs-together",
+      "findings": 0,
+      "candidates": 0,
+      "model_calls": 0,
+      "validated_notes": 0,
+      "warnings": []
+    }
+  ],
+  "scope": "Actual local Qwen review notes, not established drift detections; three real negative controls included."
+}

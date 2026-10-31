@@ -110,7 +110,7 @@ def commit_link(repository_url, commit, path, start, end=None):
     return f"{repository_url.rstrip('/')}/blob/{commit}/{quote(path, safe='/')}#L{start}" + (f"-L{end}" if end and end != start else "")
 
 
-def analyze(repo, base, head, repository_url=None, model=None, snapshot_limits=None):
+def analyze(repo, base, head, repository_url=None, model=None, snapshot_limits=None, review_candidates=False):
     started = time.perf_counter()
     if repository_url:
         parsed = urlparse(repository_url)
@@ -231,12 +231,30 @@ def analyze(repo, base, head, repository_url=None, model=None, snapshot_limits=N
                        "limitations": ["Static source evidence; runtime overrides are not evaluated."]}
             report["findings"].append(finding)
     report["findings"] = list({f["id"]: f for f in report["findings"]}.values())
+    if review_candidates:
+        from .review import collect_candidates
+        report['review_candidates'] = collect_candidates(comparison, before_facts, after_facts, old_claims, new_claims)
+        for candidate in report['review_candidates']:
+            claim = candidate['claim']
+            candidate['documentation_link'] = commit_link(repository_url, comparison.head.commit, claim['path'], claim['line_start'], claim['line_end'])
+            for evidence in candidate['evidence']:
+                commit = comparison.base.commit if evidence['revision'] == 'base' else comparison.head.commit
+                evidence['link'] = commit_link(repository_url, commit, evidence['path'], evidence['line'], evidence['end_line'])
+        if model:
+            report['limitations'].append('Only the first three behavioral candidates receive optional unverified model notes; citations do not prove the interpretation.')
+            for candidate in report['review_candidates'][:3]:
+                try:
+                    candidate['model_review'] = model.review(candidate)
+                except (ModelError, AttributeError) as exc:
+                    report['warnings'].append(f'Behavioral model review: {exc}')
     report["warnings"] = sorted(set(report["warnings"]))
     report["metrics"] = {"runtime_seconds": round(time.perf_counter() - started, 6),
                          "claims_indexed": len(new_claims), "facts_indexed": len(after_facts),
                          "finding_count": len(report["findings"]),
                          "change_groups": len({f["group_id"] for f in report["findings"]}),
                          "model_calls": model.calls if model else 0, "model_cache_hits": model.cache_hits if model else 0}
+    if review_candidates:
+        report['metrics']['review_candidate_count'] = len(report['review_candidates'])
     return report
 
 

@@ -6,7 +6,7 @@ from pathlib import Path
 
 from driftlens.analyzer import analyze
 from driftlens.evaluate import evaluate
-from driftlens.reporting import write_json
+from driftlens.reporting import summary, write_json
 from driftlens.snapshots import git, resolve
 
 
@@ -66,18 +66,22 @@ def verify(case, repo):
                     'Synchronized control must change code and docs together')
 
 
-def replay(manifest_path, output, cache_dir=None):
+def replay(manifest_path, output, cache_dir=None, review_candidates=False):
     manifest = json.loads(manifest_path.read_text(encoding='utf-8'))
     if cache_dir is not None:
         for case in manifest['cases']:
             case['repo'] = str((cache_dir / Path(case['repo']).name).resolve())
+    candidate_counts = {}
     for case in manifest['cases']:
         repo = (manifest_path.parent / case['repo']).resolve()
         verify(case, repo)
         # C, its patch, message and later source are never arguments to analysis.
         report = analyze(repo, case['before'], case['drift'],
-                         repository_url=case['source_url'])
+                         repository_url=case['source_url'],
+                         **({'review_candidates': True} if review_candidates else {}))
+        candidate_counts[case['id']] = len(report.get('review_candidates', []))
         write_json(report, output / f'{case["id"]}.json')
+        (output / f'{case["id"]}.md').write_text(summary(report), encoding='utf-8', newline='\n')
         if case.get('correction'):
             c, evidence = case['correction'], case['evidence']
             require(len(c) == 40 and resolve(repo, c) == c,
@@ -90,6 +94,10 @@ def replay(manifest_path, output, cache_dir=None):
                     f'{case["id"]}: correction does not replace the stale claim')
     # Use the existing metric contract; it independently analyzes only A/B.
     result = evaluate(manifest, manifest_path.parent)
+    if review_candidates:
+        for case in result['cases']:
+            case['review_candidates'] = candidate_counts[case['id']]
+        result['limitations'].append('Behavioral review candidates are not findings and do not count toward recall or precision.')
     write_json(result, output / 'evaluation.json')
     return result
 
@@ -102,9 +110,10 @@ def main():
                         default=Path(__file__).with_name('outputs'))
     parser.add_argument('--cache-dir', type=Path,
                         help='Directory containing the four bare NAME.git histories')
+    parser.add_argument('--review-candidates', action='store_true')
     args = parser.parse_args()
     try:
-        result = replay(args.manifest, args.output, args.cache_dir)
+        result = replay(args.manifest, args.output, args.cache_dir, args.review_candidates)
     except (ValueError, OSError, KeyError) as exc:
         parser.exit(2, f'Historical replay: {exc}\n')
     print(f'{len(result["cases"])} cases; known-label recall: {result["known_case_recall"]}')

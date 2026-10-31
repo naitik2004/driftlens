@@ -366,7 +366,7 @@ class Extractor:
         counts = bindings(tree)
         for function in (n for n in tree.body if isinstance(n, (ast.FunctionDef, ast.AsyncFunctionDef))
                          and not n.name.startswith("_") and not n.decorator_list and counts[n.name] == 1):
-            parser_names, group_names = set(), set()
+            parser_names, group_names, parser_owner = set(), set(), {}
             for statement in function.body:
                 if not isinstance(statement, ast.Assign) or len(statement.targets) != 1 or not isinstance(statement.targets[0], ast.Name):
                     continue
@@ -377,10 +377,25 @@ class Extractor:
                 constructor = ast.unparse(value.func)
                 if constructor in parsers:
                     parser_names.add(target)
+                    parser_owner[target] = target
                 elif constructor in groups and value.args and isinstance(value.args[0], ast.Name) and value.args[0].id in parser_names:
                     group_names.add(target)
+                    parser_owner[target] = value.args[0].id
             symbol = f"{module}.{function.name}"
-            function_facts, destination_counts = [], {}
+            function_facts, destination_defaults, fact_destinations = [], {}, []
+            uncertain_defaults = set()
+            for statement in function.body:
+                if (isinstance(statement, ast.Assign) and len(statement.targets) == 1
+                        and isinstance(statement.targets[0], ast.Name)
+                        and statement.targets[0].id in parser_names
+                        and isinstance(statement.value, ast.Call)):
+                    # Custom option lists/classes and unknown constructor
+                    # keywords can install defaults before registrations.
+                    if statement.value.args or any(k.arg not in {
+                            'usage', 'version', 'description', 'epilog', 'prog',
+                            'formatter', 'add_help_option', 'conflict_handler'}
+                            for k in statement.value.keywords):
+                        uncertain_defaults.add(statement.targets[0].id)
             overridden = any(isinstance(n, ast.Call) and isinstance(n.func, ast.Attribute)
                              and n.func.attr == "set_defaults" and isinstance(n.func.value, ast.Name)
                              and n.func.value.id in parser_names | group_names for n in ast.walk(function))
@@ -413,6 +428,8 @@ class Extractor:
                     continue
                 options = [a.value for a in call.args if isinstance(a, ast.Constant)
                            and isinstance(a.value, str) and a.value.startswith("-")]
+                if len(options) != len(call.args):
+                    uncertain_defaults.add(parser_owner[call.func.value.id])
                 if not options:
                     continue
                 kwargs = {k.arg: k.value for k in call.keywords if k.arg}
@@ -422,15 +439,36 @@ class Extractor:
                 resolved = action in ("store_true", "store_false") and value != UNKNOWN
                 dest_node = kwargs.get("dest")
                 dest = dest_node.value if isinstance(dest_node, ast.Constant) and isinstance(dest_node.value, str) else None
-                destination_counts[dest] = destination_counts.get(dest, 0) + 1
+                if dest_node is None and action not in ('help', 'version', 'callback'):
+                    spelling = next((o for o in options if o.startswith('--')), options[0])
+                    dest = spelling.lstrip('-').replace('-', '_')
+                destination = (parser_owner[call.func.value.id], dest)
+                if any(k.arg is None for k in call.keywords) or (dest is None and dest_node is not None):
+                    uncertain_defaults.add(destination[0])
+                # optparse shares a defaults dictionary between a parser and
+                # its groups. Registration order matters: an implicit default
+                # never overwrites a prior explicit one; the last explicit
+                # default wins, even when declared by the opposite flag.
+                if default_node is not None:
+                    destination_defaults[destination] = (value, deps + ((path, statement.lineno),))
                 resolved = resolved and dest is not None and not any(k.arg is None for k in call.keywords)
                 for option in options:
-                    function_facts.append(Fact(path, symbol, "flag", option,
+                    fact = Fact(path, symbol, "flag", option,
                                       {"default": value, "aliases": sorted(options), "dest": dest, "action": action},
-                                      statement.lineno, statement.end_lineno, resolved, deps))
-            # shortcut: implicit/shared/overridden defaults abstain, until destination state is modeled.
-            for fact in function_facts:
-                fact.resolved = fact.resolved and not overridden and destination_counts[fact.value["dest"]] == 1
+                                      statement.lineno, statement.end_lineno, resolved, deps)
+                    function_facts.append(fact)
+                    fact_destinations.append((fact, destination, not any(k.arg is None for k in call.keywords)))
+            # Multiple registrations of one spelling collapse to the same
+            # public fact key, whether on one parser or several. Do not invent
+            # a scope/ownership decision from whichever declaration was last.
+            spelling_counts = Counter(f.name for f in function_facts)
+            for fact, destination, explicit_keywords in fact_destinations:
+                value, deps = destination_defaults.get(destination, (UNKNOWN, ()))
+                fact.value['default'], fact.dependencies = value, deps
+                fact.resolved = (not overridden and destination[0] not in uncertain_defaults
+                                 and spelling_counts[fact.name] == 1
+                                 and explicit_keywords and destination[1] is not None
+                                 and fact.value['action'] in ('store_true', 'store_false') and value != UNKNOWN)
             facts.extend(function_facts)
         return facts
 

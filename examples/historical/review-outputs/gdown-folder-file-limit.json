@@ -1,0 +1,86 @@
+{
+  "schema_version": 1,
+  "analyzer_version": "0.1.0",
+  "base_commit": "373c16d983bcfafcd1ccd9f0fd826aa21d5c9365",
+  "head_commit": "dda064d76f8f04b7ebb0fc4c7b2f9e9b063a2e58",
+  "findings": [],
+  "abstentions": [],
+  "warnings": [],
+  "limitations": [
+    "Python top-level functions, direct module-level argparse, and direct optparse option groups in public function bodies only.",
+    "Exact scope references required; unresolved aliases, wrappers and qualifiers abstain.",
+    "Static declared defaults do not prove effective runtime values or physical units.",
+    "General computed return values and arbitrary called methods are not resolved.",
+    "Filename checks bound one local literal dot-join; runtime type/dispatch overrides are not evaluated.",
+    "Markdown subset: ATX headings, paragraphs, simple pipe tables and fenced code."
+  ],
+  "review_candidates": [
+    {
+      "status": "needs_review",
+      "kind": "removed_numeric_guard",
+      "claim": {
+        "path": "README.md",
+        "heading": "gdown / Why?",
+        "quote": "- Downloads folders recursively (up to 50 files per folder)",
+        "line_start": 21,
+        "line_end": 21,
+        "start": 925,
+        "end": 984,
+        "kind": "sentence",
+        "columns": []
+      },
+      "symbol": "gdown.download_folder.download_folder",
+      "before_limit": 50,
+      "reason": "A referenced numeric client guard disappeared while this limit claim remains. The replacement implementation and external service may impose another bound; no unlimited-service claim is established.",
+      "changes": [],
+      "evidence": [
+        {
+          "revision": "base",
+          "path": "gdown/download_folder.py",
+          "line": 22,
+          "end_line": 22,
+          "quote": "MAX_NUMBER_FILES = 50",
+          "link": "https://github.com/wkentaro/gdown/blob/373c16d983bcfafcd1ccd9f0fd826aa21d5c9365/gdown/download_folder.py#L22"
+        },
+        {
+          "revision": "base",
+          "path": "gdown/download_folder.py",
+          "line": 178,
+          "end_line": 178,
+          "quote": "    has_at_least_max_files = len(gdrive_file.children) == MAX_NUMBER_FILES",
+          "link": "https://github.com/wkentaro/gdown/blob/373c16d983bcfafcd1ccd9f0fd826aa21d5c9365/gdown/download_folder.py#L178"
+        },
+        {
+          "revision": "head",
+          "path": "gdown/download_folder.py",
+          "line": 144,
+          "end_line": 149,
+          "quote": "    gdrive_file = _download_and_parse_google_drive_link(\n        sess=sess,\n        folder_id=folder_id,\n        quiet=quiet,\n        verify=verify,\n    )",
+          "link": "https://github.com/wkentaro/gdown/blob/dda064d76f8f04b7ebb0fc4c7b2f9e9b063a2e58/gdown/download_folder.py#L144-L149"
+        },
+        {
+          "revision": "head",
+          "path": "gdown/download_folder.py",
+          "line": 276,
+          "end_line": 322,
+          "quote": "def _download_and_parse_google_drive_link(\n    sess: requests.Session,\n    folder_id: str,\n    quiet: bool = False,\n    verify: bool | str = True,\n) -> _GoogleDriveFile:\n    folder_name, children = _parse_embedded_folder_view(\n        sess=sess, folder_id=folder_id, verify=verify\n    )\n\n    gdrive_file = _GoogleDriveFile(\n        id=folder_id,\n        name=folder_name,\n        type=_GoogleDriveFile.TYPE_FOLDER,\n    )\n\n    for child_id, child_name, child_type in children:\n        if child_type != _GoogleDriveFile.TYPE_FOLDER:\n            if not quiet:\n                print(\n                    \"Processing file\",\n                    child_id,\n                    child_name,\n                )\n            gdrive_file.children.append(\n                _GoogleDriveFile(\n                    id=child_id,\n                    name=child_name,\n                    type=child_type,\n                )\n            )\n            continue\n\n        if not quiet:\n            print(\n                \"Retrieving folder\",\n                child_id,\n                child_name,\n            )\n        child = _download_and_parse_google_drive_link(\n            sess=sess,\n            folder_id=child_id,\n            quiet=quiet,\n            verify=verify,\n        )\n        gdrive_file.children.append(child)\n    return gdrive_file",
+          "link": "https://github.com/wkentaro/gdown/blob/dda064d76f8f04b7ebb0fc4c7b2f9e9b063a2e58/gdown/download_folder.py#L276-L322"
+        }
+      ],
+      "limitations": [
+        "Retrieval candidate only; absence of this guard does not prove a new effective bound."
+      ],
+      "documentation_link": "https://github.com/wkentaro/gdown/blob/dda064d76f8f04b7ebb0fc4c7b2f9e9b063a2e58/README.md#L21"
+    }
+  ],
+  "metrics": {
+    "runtime_seconds": 0.744764,
+    "claims_indexed": 88,
+    "facts_indexed": 117,
+    "finding_count": 0,
+    "change_groups": 0,
+    "model_calls": 0,
+    "model_cache_hits": 0,
+    "review_candidate_count": 1
+  }
+}

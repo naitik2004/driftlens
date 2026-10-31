@@ -28,6 +28,8 @@ def main(argv=None):
     parser.add_argument('--summary', type=Path)
     parser.add_argument('--github-annotations', action='store_true')
     parser.add_argument('--fail-on-drift', action='store_true', help='Exit 1 on findings; advisory by default')
+    parser.add_argument('--review-candidates', action='store_true',
+                        help='Also retrieve unverified behavioral review candidates; these do not count as findings')
     parser.add_argument('--model', nargs='?', const='qwen2.5-coder:3b', help='Enable optional local Ollama interpretation')
     parser.add_argument('--ollama-url', default='http://127.0.0.1:11434')
     parser.add_argument('--cache', type=Path)
@@ -53,7 +55,8 @@ def main(argv=None):
         model = Ollama(args.model, args.ollama_url, args.cache) if args.model else None
         snapshot_limits = SnapshotLimits(args.max_files, args.max_bytes, args.max_file_bytes,
                                          args.snapshot_timeout)
-        report = analyze(args.repo, base, head or 'HEAD', args.repository_url, model, snapshot_limits)
+        report = analyze(args.repo, base, head or 'HEAD', args.repository_url, model, snapshot_limits,
+                         review_candidates=args.review_candidates)
         if args.json_path:
             write_json(report, args.json_path)
         rendered = summary(report)
@@ -65,6 +68,8 @@ def main(argv=None):
         elif not args.summary:
             print(rendered, end='')
         print(f"DriftLens: {len(report['findings'])} finding(s), {len(report['abstentions'])} abstention(s), {len(report['warnings'])} warning(s).", file=sys.stderr)
+        if args.review_candidates:
+            print(f"DriftLens: {len(report['review_candidates'])} behavioral candidate(s) require review; not counted as findings.", file=sys.stderr)
         return 1 if args.fail_on_drift and report['findings'] else 0
     except (SnapshotError, ValueError, OSError, KeyError) as exc:
         print(f'DriftLens: {exc}', file=sys.stderr)

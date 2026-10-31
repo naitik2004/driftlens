@@ -43,12 +43,15 @@ extracts structured claims from otherwise unresolved prose, with schema, quote
 and value validation. Unsupported or ambiguous evidence is left unverified.
 
 The repository includes a CLI, advisory GitHub Actions workflow, MIT license,
-105-test detector result, four deterministic demos, actual local-model outputs
+141 passing tests, four deterministic demos, actual local-model outputs
 and reproducible public-history experiments. AI added three verified findings in
 a developer-selected synthetic suite. The historical corpus matches one of three original positive labels: Black
 produces three stale platform sentences in one change group. The other two cases
 remain missed. This is a retrospective development result, not held-out accuracy. The
 project does not claim broad historical accuracy or general behavioral reasoning.
+A separate 12-case external-repository study misses its one positive and keeps
+11 controls quiet. Optional behavioral review retrieves the two development
+misses as unverified candidates, not established findings or successful hits.
 
 ## What the form cannot verify automatically for us
 
@@ -90,7 +93,8 @@ run. Do not call that fallback live or substitute a test double.
 
 ## Human completion check
 
-Speak your segments aloud, then do one eight-minute run with both teammates and
-a stopwatch. Each person should explain one finding end to end and answer a
-question outside their ownership area. The agent's successful terminal runs do
-not establish that this rehearsal or understanding has happened.
+Naitik now delivers all segments. Speak the complete eight-minute presentation
+aloud with a stopwatch, operate the demo and explain one finding end to end.
+Answer the Q&A without reading an agent response. The original team declaration
+remains intact; others' attendance or participation is not assumed. Successful
+terminal runs do not establish that this human rehearsal happened.

@@ -69,7 +69,70 @@ def main():
         result = subprocess.run(command, cwd=tmp, capture_output=True, text=True, timeout=60)
         assert result.returncode == 0, result.stderr
         assert not json.loads(output.read_text(encoding='utf-8'))['findings']
-    print(f'Installed CLI passed drift, corrected-doc and retained-flag controls: {driftlens.__file__}')
+        pair = '''import optparse
+def options():
+    parser = optparse.OptionParser()
+    parser.add_option('--enable', action='store_true', dest='mode', default=True)
+    parser.add_option('--disable', action='store_false', dest='mode')
+    return parser
+'''
+        (repo / 'README.md').write_text('`--enable` defaults to True.\n', encoding='utf-8')
+        for default in ('True', 'False'):
+            (repo / 'client.py').write_text(pair.replace('default=True', 'default=' + default), encoding='utf-8')
+            git('add', '.')
+            git('-c', 'commit.gpgsign=false', 'commit', '-qm', 'paired flags')
+            command[command.index('--base' if default == 'True' else '--head') + 1] = git('rev-parse', 'HEAD')
+        result = subprocess.run(command, cwd=tmp, capture_output=True, text=True, timeout=60)
+        assert result.returncode == 1, result.stderr
+        assert len(json.loads(output.read_text(encoding='utf-8'))['findings']) == 1
+
+        ambiguous = '''import optparse
+def options():
+    first = optparse.OptionParser()
+    second = optparse.OptionParser()
+    first.add_option('--enable', action='store_true', dest='mode', default=True)
+    second.add_option('--enable', action='store_true', dest='mode', default=False)
+    return first
+'''
+        (repo / 'README.md').write_text('`--enable` defaults to False.\n', encoding='utf-8')
+        for revision, content in (('--base', ambiguous), ('--head', ambiguous.replace("dest='mode', default=False", "dest='mode', default=True"))):
+            (repo / 'client.py').write_text(content, encoding='utf-8')
+            git('add', '.')
+            git('-c', 'commit.gpgsign=false', 'commit', '-qm', 'ambiguous parsers')
+            command[command.index(revision) + 1] = git('rev-parse', 'HEAD')
+        result = subprocess.run(command, cwd=tmp, capture_output=True, text=True, timeout=60)
+        assert result.returncode == 0, result.stderr
+        assert not json.loads(output.read_text(encoding='utf-8'))['findings']
+
+        before = '''MAX_ENTRIES = 17
+def _collect():
+    tree = retrieve()
+    if len(tree.children) == MAX_ENTRIES:
+        raise ValueError('limit')
+    return tree
+def export_folder():
+    return _collect()
+'''
+        after = '''def _collect():
+    return retrieve_new()
+def export_folder():
+    return _collect()
+'''
+        (repo / 'README.md').write_text('Exports folders (up to 17 files per folder)\n', encoding='utf-8')
+        for revision, content in (('--base', before), ('--head', after)):
+            (repo / 'client.py').write_text(content, encoding='utf-8')
+            git('add', '.')
+            git('-c', 'commit.gpgsign=false', 'commit', '-qm', 'review candidate')
+            command[command.index(revision) + 1] = git('rev-parse', 'HEAD')
+        result = subprocess.run(command + ['--review-candidates'], cwd=tmp, capture_output=True, text=True, timeout=60)
+        assert result.returncode == 0, result.stderr
+        report = json.loads(output.read_text(encoding='utf-8'))
+        assert not report['findings'] and not report['warnings']
+        assert len(report['review_candidates']) == 1
+        assert report['review_candidates'][0]['status'] == 'needs_review'
+        from driftlens import review_model
+        assert not Path(review_model.__file__).resolve().is_relative_to(checkout)
+    print(f'Installed CLI passed drift, corrected-doc, retained-flag, paired-default, ambiguous-parser and behavioral-review controls: {driftlens.__file__}')
 
 
 if __name__ == '__main__':

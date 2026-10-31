@@ -1,0 +1,156 @@
+{
+  "cases": [
+    {
+      "id": "httpx-limits-default",
+      "split": "evaluation",
+      "known_labels": 1,
+      "known_hits": 0,
+      "predictions": 0,
+      "unmatched_for_review": [],
+      "correction_evidence": [],
+      "runtime_seconds": 2.178581,
+      "warnings": [],
+      "precision": null
+    },
+    {
+      "id": "httpx-redirect-default-synchronized",
+      "split": "evaluation",
+      "known_labels": 0,
+      "known_hits": 0,
+      "predictions": 0,
+      "unmatched_for_review": [],
+      "correction_evidence": [],
+      "runtime_seconds": 4.851308,
+      "warnings": [],
+      "precision": null
+    },
+    {
+      "id": "httpx-encoding-default-synchronized",
+      "split": "evaluation",
+      "known_labels": 0,
+      "known_hits": 0,
+      "predictions": 0,
+      "unmatched_for_review": [],
+      "correction_evidence": [],
+      "runtime_seconds": 3.617302,
+      "warnings": [],
+      "precision": null
+    },
+    {
+      "id": "httpx-http2-default-synchronized",
+      "split": "evaluation",
+      "known_labels": 0,
+      "known_hits": 0,
+      "predictions": 0,
+      "unmatched_for_review": [],
+      "correction_evidence": [],
+      "runtime_seconds": 2.295623,
+      "warnings": [],
+      "precision": null
+    },
+    {
+      "id": "httpx-url-comment",
+      "split": "evaluation",
+      "known_labels": 0,
+      "known_hits": 0,
+      "predictions": 0,
+      "unmatched_for_review": [],
+      "correction_evidence": [],
+      "runtime_seconds": 3.316639,
+      "warnings": [],
+      "precision": null
+    },
+    {
+      "id": "httpx-exception-docstring",
+      "split": "evaluation",
+      "known_labels": 0,
+      "known_hits": 0,
+      "predictions": 0,
+      "unmatched_for_review": [],
+      "correction_evidence": [],
+      "runtime_seconds": 3.074225,
+      "warnings": [],
+      "precision": null
+    },
+    {
+      "id": "httpx-wsgi-docstring",
+      "split": "evaluation",
+      "known_labels": 0,
+      "known_hits": 0,
+      "predictions": 0,
+      "unmatched_for_review": [],
+      "correction_evidence": [],
+      "runtime_seconds": 3.01333,
+      "warnings": [],
+      "precision": null
+    },
+    {
+      "id": "pipx-comparisons-and-installation-spelling",
+      "split": "evaluation",
+      "known_labels": 0,
+      "known_hits": 0,
+      "predictions": 0,
+      "unmatched_for_review": [],
+      "correction_evidence": [],
+      "runtime_seconds": 1.453853,
+      "warnings": [],
+      "precision": null
+    },
+    {
+      "id": "pipx-comparisons-spelling",
+      "split": "evaluation",
+      "known_labels": 0,
+      "known_hits": 0,
+      "predictions": 0,
+      "unmatched_for_review": [],
+      "correction_evidence": [],
+      "runtime_seconds": 1.435625,
+      "warnings": [],
+      "precision": null
+    },
+    {
+      "id": "pipx-warning-spelling",
+      "split": "evaluation",
+      "known_labels": 0,
+      "known_hits": 0,
+      "predictions": 0,
+      "unmatched_for_review": [],
+      "correction_evidence": [],
+      "runtime_seconds": 0.783121,
+      "warnings": [],
+      "precision": null
+    },
+    {
+      "id": "pipx-comparisons-grammar",
+      "split": "evaluation",
+      "known_labels": 0,
+      "known_hits": 0,
+      "predictions": 0,
+      "unmatched_for_review": [],
+      "correction_evidence": [],
+      "runtime_seconds": 0.746002,
+      "warnings": [],
+      "precision": null
+    },
+    {
+      "id": "pipx-interpreter-spelling",
+      "split": "evaluation",
+      "known_labels": 0,
+      "known_hits": 0,
+      "predictions": 0,
+      "unmatched_for_review": [],
+      "correction_evidence": [],
+      "runtime_seconds": 0.708242,
+      "warnings": [],
+      "precision": null
+    }
+  ],
+  "known_case_recall": 0.0,
+  "warnings_per_case": 0.0,
+  "model_resource_usage": null,
+  "limitations": [
+    "Recall is over supplied labels only.",
+    "Precision is reported only for explicitly fully reviewed cases.",
+    "This deterministic replay does not measure model quality or hardware resource usage."
+  ]
+}

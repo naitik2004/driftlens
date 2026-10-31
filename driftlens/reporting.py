@@ -26,6 +26,26 @@ def summary(report):
                 lines += ['<details><summary>Responsible change</summary>', '', '<pre>' + safe(hunk['text']) + '</pre>', '', '</details>', '']
     if not report['findings']:
         lines += ['No new drift established within the supported analysis scope.', '']
+    if report.get('review_candidates'):
+        lines += ['## Behavioral candidates requiring review', '',
+                  'These are retrieval hints, not established drift findings. They do not trigger annotations or fail-on-drift.', '']
+        for candidate in report['review_candidates']:
+            claim = candidate['claim']
+            link = candidate.get('documentation_link')
+            lines += [f"**{safe(claim['path'])}:{claim['line_start']}**" + (f' ([source]({link}))' if link else ''), '',
+                      '<blockquote>' + safe(claim['quote']).replace('\n', '<br>') + '</blockquote>', '', safe(candidate['reason']), '']
+            if candidate.get('model_review'):
+                review = candidate['model_review']
+                lines += [f"Unverified local-model notes ({safe(review['model'])}; {safe(review['assessment'])}):", '',
+                          safe(review['reason']), '', safe(review['suggested_action']), '',
+                          'Citation validation checks source text only; it does not establish the model’s interpretation.', '']
+            for change in candidate['changes']:
+                before, after = change['before'], change['after']
+                lines += [safe(f"{before['path']}:{before['line']}: {before['name']} declared default {before['value']['default']!r} → {after['value']['default']!r}; resolved parser state: {change['default_resolved']}."), '']
+            for evidence in candidate['evidence']:
+                label = f"{evidence['revision']} {evidence['path']}:{evidence['line']}"
+                lines += [f"[{safe(label)}]({evidence['link']})" if evidence.get('link') else safe(label), '',
+                          '<details><summary>Source evidence</summary>', '', '<pre>' + safe(evidence['quote']) + '</pre>', '', '</details>', '']
     lines += [f"Abstentions: {len(report['abstentions'])}. Runtime: {report['metrics']['runtime_seconds']:.3f}s.", '']
     lines += [f'- Warning: {safe(w)}' for w in report['warnings']]
     lines += ['', '## Scope and limitations', '']

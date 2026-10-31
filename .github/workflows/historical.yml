@@ -30,7 +30,7 @@ jobs:
           git clone --bare https://github.com/un33k/python-slugify.git "$HISTORY_CACHE/python-slugify.git"
           git clone --bare https://github.com/wkentaro/gdown.git "$HISTORY_CACHE/gdown.git"
       - name: Replay pinned histories without executing upstream code
-        run: python -m examples.historical.replay --cache-dir "$RUNNER_TEMP/histories" --output "$RUNNER_TEMP/results"
+        run: python -m examples.historical.replay --cache-dir "$RUNNER_TEMP/histories" --review-candidates --output "$RUNNER_TEMP/results"
       - name: Check known labels and controls
         env:
           RESULT_PATH: ${{ runner.temp }}/results/evaluation.json
@@ -44,7 +44,14 @@ jobs:
           for row in rows.values():
               if row['known_labels'] == 0:
                   assert row['predictions'] == 0, row['id']
-          print('Known Black label retained; all three negative controls quiet.')
+                  assert row['review_candidates'] == 0, row['id']
+          manifest = json.loads(Path('examples/historical/manifest.json').read_text())
+          for case in manifest['cases']:
+              if case['id'] in ('yt-dlp-multistream-default', 'gdown-folder-file-limit'):
+                  report = json.loads((Path(os.environ['RESULT_PATH']).parent / (case['id'] + '.json')).read_text())
+                  label = case['expected'][0]
+                  assert any(all(c['claim'][k] == label[k] for k in ('path', 'quote', 'line_start', 'start')) for c in report['review_candidates'])
+          print('Black detected; three controls quiet; yt-dlp/gdown retrieved for review only, not counted as detections.')
           PY
       - uses: actions/upload-artifact@v4
         if: always()

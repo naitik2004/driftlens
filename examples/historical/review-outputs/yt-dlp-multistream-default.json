@@ -1,0 +1,183 @@
+{
+  "schema_version": 1,
+  "analyzer_version": "0.1.0",
+  "base_commit": "50865ca803a130308c064c2de5c7140754382993",
+  "head_commit": "91ebc64068d2957400dbfaadff23e995392b3963",
+  "findings": [],
+  "abstentions": [],
+  "warnings": [],
+  "limitations": [
+    "Python top-level functions, direct module-level argparse, and direct optparse option groups in public function bodies only.",
+    "Exact scope references required; unresolved aliases, wrappers and qualifiers abstain.",
+    "Static declared defaults do not prove effective runtime values or physical units.",
+    "General computed return values and arbitrary called methods are not resolved.",
+    "Filename checks bound one local literal dot-join; runtime type/dispatch overrides are not evaluated.",
+    "Markdown subset: ATX headings, paragraphs, simple pipe tables and fenced code."
+  ],
+  "review_candidates": [
+    {
+      "status": "needs_review",
+      "kind": "merge_example_after_flag_change",
+      "claim": {
+        "path": "README.md",
+        "heading": "FORMAT SELECTION",
+        "quote": "For example, `-f bestvideo+best+bestaudio` will download and merge all 3 given formats.",
+        "line_start": 885,
+        "line_end": 885,
+        "start": 58525,
+        "end": 58612,
+        "kind": "sentence",
+        "columns": []
+      },
+      "changes": [
+        {
+          "before": {
+            "path": "youtube_dlc/options.py",
+            "symbol": "youtube_dlc.options.parseOpts",
+            "kind": "flag",
+            "name": "--video-multistreams",
+            "value": {
+              "default": true,
+              "aliases": [
+                "--video-multistreams"
+              ],
+              "dest": "allow_multiple_video_streams",
+              "action": "store_true"
+            },
+            "line": 439,
+            "end_line": 442,
+            "resolved": false,
+            "dependencies": [
+              [
+                "youtube_dlc/options.py",
+                439
+              ]
+            ]
+          },
+          "after": {
+            "path": "youtube_dlc/options.py",
+            "symbol": "youtube_dlc.options.parseOpts",
+            "kind": "flag",
+            "name": "--video-multistreams",
+            "value": {
+              "default": false,
+              "aliases": [
+                "--video-multistreams"
+              ],
+              "dest": "allow_multiple_video_streams",
+              "action": "store_true"
+            },
+            "line": 439,
+            "end_line": 442,
+            "resolved": false,
+            "dependencies": [
+              [
+                "youtube_dlc/options.py",
+                439
+              ]
+            ]
+          },
+          "default_resolved": false
+        },
+        {
+          "before": {
+            "path": "youtube_dlc/options.py",
+            "symbol": "youtube_dlc.options.parseOpts",
+            "kind": "flag",
+            "name": "--audio-multistreams",
+            "value": {
+              "default": true,
+              "aliases": [
+                "--audio-multistreams"
+              ],
+              "dest": "allow_multiple_audio_streams",
+              "action": "store_true"
+            },
+            "line": 447,
+            "end_line": 450,
+            "resolved": false,
+            "dependencies": [
+              [
+                "youtube_dlc/options.py",
+                447
+              ]
+            ]
+          },
+          "after": {
+            "path": "youtube_dlc/options.py",
+            "symbol": "youtube_dlc.options.parseOpts",
+            "kind": "flag",
+            "name": "--audio-multistreams",
+            "value": {
+              "default": false,
+              "aliases": [
+                "--audio-multistreams"
+              ],
+              "dest": "allow_multiple_audio_streams",
+              "action": "store_true"
+            },
+            "line": 447,
+            "end_line": 450,
+            "resolved": false,
+            "dependencies": [
+              [
+                "youtube_dlc/options.py",
+                447
+              ]
+            ]
+          },
+          "default_resolved": false
+        }
+      ],
+      "reason": "Opt-in defaults changed while this merge example remains. Stream-selection behavior and CLI forwarding require verification; the example alone does not assert a default.",
+      "evidence": [
+        {
+          "revision": "base",
+          "path": "youtube_dlc/options.py",
+          "line": 439,
+          "end_line": 442,
+          "quote": "    video_format.add_option(\n        '--video-multistreams',\n        action='store_true', dest='allow_multiple_video_streams', default=True,\n        help='Allow multiple video streams to be merged into a single file (default)')",
+          "link": "https://github.com/yt-dlp/yt-dlp/blob/50865ca803a130308c064c2de5c7140754382993/youtube_dlc/options.py#L439-L442"
+        },
+        {
+          "revision": "head",
+          "path": "youtube_dlc/options.py",
+          "line": 439,
+          "end_line": 442,
+          "quote": "    video_format.add_option(\n        '--video-multistreams',\n        action='store_true', dest='allow_multiple_video_streams', default=False,\n        help='Allow multiple video streams to be merged into a single file')",
+          "link": "https://github.com/yt-dlp/yt-dlp/blob/91ebc64068d2957400dbfaadff23e995392b3963/youtube_dlc/options.py#L439-L442"
+        },
+        {
+          "revision": "base",
+          "path": "youtube_dlc/options.py",
+          "line": 447,
+          "end_line": 450,
+          "quote": "    video_format.add_option(\n        '--audio-multistreams',\n        action='store_true', dest='allow_multiple_audio_streams', default=True,\n        help='Allow multiple audio streams to be merged into a single file (default)')",
+          "link": "https://github.com/yt-dlp/yt-dlp/blob/50865ca803a130308c064c2de5c7140754382993/youtube_dlc/options.py#L447-L450"
+        },
+        {
+          "revision": "head",
+          "path": "youtube_dlc/options.py",
+          "line": 447,
+          "end_line": 450,
+          "quote": "    video_format.add_option(\n        '--audio-multistreams',\n        action='store_true', dest='allow_multiple_audio_streams', default=False,\n        help='Allow multiple audio streams to be merged into a single file')",
+          "link": "https://github.com/yt-dlp/yt-dlp/blob/91ebc64068d2957400dbfaadff23e995392b3963/youtube_dlc/options.py#L447-L450"
+        }
+      ],
+      "limitations": [
+        "Not an established contradiction; unresolved parser construction, aliases or runtime dependencies may preserve the example."
+      ],
+      "documentation_link": "https://github.com/yt-dlp/yt-dlp/blob/91ebc64068d2957400dbfaadff23e995392b3963/README.md#L885"
+    }
+  ],
+  "metrics": {
+    "runtime_seconds": 28.065877,
+    "claims_indexed": 2522,
+    "facts_indexed": 919,
+    "finding_count": 0,
+    "change_groups": 0,
+    "model_calls": 0,
+    "model_cache_hits": 0,
+    "review_candidate_count": 1
+  }
+}

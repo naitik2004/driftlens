@@ -1,9 +1,10 @@
 # Eight-minute presentation: Fuoriclasse / DriftLens
 
-This is a rehearsal script, not a record of completed human rehearsal. Every
-member must explain the whole pipeline and operate their segment without an
-agent. Test the exact demo laptop beforehand. The event allows eight minutes of
-presentation and four minutes of Q&A.
+This is a rehearsal script, not a record of completed human rehearsal. Naitik now
+delivers every segment alone. The original three-person team remains credited;
+this script does not assert the other members are attending. Test the exact demo
+laptop beforehand. The event allows eight minutes of presentation and four
+minutes of Q&A.
 
 ## Before the panel
 
@@ -24,7 +25,7 @@ still promises a default of 30. We check that the old code supported the claim,
 the new code contradicts it, and the stale sentence still exists. We chose
 Problem 5 because that link is the useful part for maintainers.”
 
-## 0:45–2:45 — Ravichandra: deterministic live demonstration
+## 0:45–2:45 — Naitik: deterministic live demonstration
 
 Say: “This first demonstration uses an actual historical Black code change.”
 Run the pinned A/B command in CACHE_LAYOUT.md, using the prepared bare cache.
@@ -44,7 +45,7 @@ this static contract. Later documentation C was not given to the detector.
 Then briefly show the removed-flag example as an additional controlled fixture.
 Do not call that synthetic example upstream history or a verified semantic rename.
 
-## 2:45–3:45 — Satya: two important non-findings
+## 2:45–3:45 — Naitik: two important non-findings
 
 Run `python3 -m examples.demo` and show documentation-fixed and harmless-refactor reports.
 
@@ -76,7 +77,7 @@ five actual requests across eight cases, not eight demonstrations of AI reasonin
 Point to baseline/assisted counts, model_calls, evidence_strength and the actual
 API response. Mention the initial rejected response if asked about reliability.
 
-## 4:45–6:00 — Satya: real histories and honest limits
+## 4:45–6:00 — Naitik: real histories and honest limits
 
 Show examples/historical/README.md and one pinned A/B/C source example.
 
@@ -86,7 +87,9 @@ The two extra platform sentences are reviewed predictions for that same code
 change, not extra successful historical cases. Known-label recall is one of
 three supplied positive labels. We left the labels unchanged.
 
-“The yt-dlp behavior example and gdown folder cap remain missed. This rule was
+“The yt-dlp behavior example and gdown folder cap remain unverified findings.
+Opt-in review mode now retrieves those sentences with source evidence, without
+counting candidates as detections. This rule was
 developed using an already-known Black case, so we do not call it held-out
 accuracy. We kept the misses, warnings and two additional reviewed locations
 visible. Later C is used only after A/B detection to corroborate the result.”
@@ -95,7 +98,13 @@ If a later reviewed PR changes these results, rerun the corpus and update this
 script and reports before changing that claim. Never silently replace a miss
 with a different task or count the absence of predictions as perfect precision.
 
-## 6:00–7:15 — Ravichandra: design decisions and trade-offs
+Show the separate external study briefly: 12 HTTPX/pipx cases, one genuine
+delayed-fix positive missed, 11 controls quiet. Say: “That is 0/1 supplied-label
+recall and undefined precision with no predictions. We preserved the frozen
+baseline and did not tune on that new case.” Do not present this as broad
+accuracy or independent human verification.
+
+## 6:00–7:15 — Naitik: design decisions and trade-offs
 
 Trace the code once: Git snapshots → AST facts → Markdown spans → scoped linking
 → supported-before/contradicted-after verification → reports. The optional model
@@ -123,7 +132,7 @@ both what worked and what failed, so a maintainer can inspect the evidence.”
 
 ## Four-minute Q&A drill
 
-Ask each other, without an assistant:
+Naitik: answer aloud without an assistant, then check the guide:
 
 1. Why is this different from grep and doctest?
 2. Which exact line verifies old support and current contradiction?
@@ -134,6 +143,6 @@ Ask each other, without an assistant:
 7. What runs on GitHub, and what requires the local model?
 
 Use JUDGES_GUIDE.md for explanations. Stop and inspect the source/test whenever
-someone cannot explain a claim. Complete a real eight-minute spoken run with a
+you cannot explain a claim. Complete a real eight-minute spoken run with a
 stopwatch before marking rehearsal complete; the agent's technical checks do not
 substitute for that run.
