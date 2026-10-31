@@ -26,6 +26,11 @@ python3 -m unittest discover -v
 Existing caches can be updated with `git -C PATH fetch origin`. The manifest pins
 full SHAs, so later upstream changes do not change the selected snapshots.
 `--output /tmp/driftlens-history-results` keeps regenerated artifacts separate.
+Use `--cache-dir /absolute/cache` to select a directory containing the four
+`NAME.git` histories without editing the manifest. A manual GitHub Actions
+workflow, `Historical replay (manual)`, fetches/cache these public histories,
+checks the known Black label and all negative controls, and retains artifacts.
+It is separate from ordinary fast CI and makes no held-out accuracy claim.
 The replay verifies A/B ancestry, exact quote offsets and code evidence, writes
 individual actual reports, then verifies C and runs the existing metric harness.
 The latter analyzes A/B again, so total replay time exceeds the sum of individual
@@ -42,12 +47,12 @@ python3 -m driftlens.evaluate examples/historical/manifest.json --output /tmp/dr
 
 | Case | Supplied labels found | Findings | Warnings | Saved report runtime (s) |
 | --- | --- | --- | --- | --- |
-| yt-dlp-multistream-default | 0/1 | 0 | 0 | 19.229 |
-| black-cache-filename | 1/1 | 3 | 4 | 4.908 |
-| yt-dlp-whitespace-control | 0/0 | 0 | 0 | 19.694 |
-| slugify-code-and-docs-together | 0/0 | 0 | 0 | 0.248 |
-| gdown-folder-file-limit | 0/1 | 0 | 0 | 0.471 |
-| gdown-fuzzy-code-and-docs-together | 0/0 | 0 | 0 | 0.485 |
+| yt-dlp-multistream-default | 0/1 | 0 | 0 | 46.245 |
+| black-cache-filename | 1/1 | 3 | 4 | 8.306 |
+| yt-dlp-whitespace-control | 0/0 | 0 | 0 | 28.940 |
+| slugify-code-and-docs-together | 0/0 | 0 | 0 | 0.328 |
+| gdown-folder-file-limit | 0/1 | 0 | 0 | 0.563 |
+| gdown-fuzzy-code-and-docs-together | 0/0 | 0 | 0 | 0.597 |
 
 Known-label recall is **1/3 (33.3%)** in `outputs/evaluation.json`; all three
 negative controls still produce zero findings. Black's exact existing Linux label
@@ -84,9 +89,11 @@ the detector report.
 
 Labels in `manifest.json` include exact B path, quote, one-based line number,
 zero-based Unicode start offset, subject, parameter/flag and category. The three
-positive labels intentionally represent manually verified drift beyond current
-support. `cache_path_changed` is a manual behavioral label, not a new detector
-category. Unsupported subjects do not have to exist in extracted facts.
+positive labels represent manually verified drift. Black is now supported by the
+bounded `cache_path_changed` rule; the other two subjects remain outside supported
+patterns. Original labels and SHAs are unchanged. All six cases are marked
+`development`: they have been inspected during development and provide no held-out
+accuracy estimate. Unsupported subjects need not exist in extracted facts.
 
 Positive cases have `fully_reviewed: false`: only the named claims are labeled;
 the corpus does not assert exhaustive coverage of all stale text. Negative
@@ -137,7 +144,7 @@ Label subject: `youtube_dlc.options.parseOpts`, name `--video-multistreams`, cat
 
 ### black-cache-filename
 
-The old filename uses line length and an integer flag. B switches to a multi-part mode key including target versions. The old path remains in README; C corrects it after docs have moved. Computed return values and cache-path behavior are outside current support.
+The old filename uses line length and an integer flag. B switches to a multi-part mode key including target versions. The old path remains in README; C corrects it after docs have moved. The bounded declared-layout detector now matches this known case; arbitrary computed behavior remains unsupported.
 
 - A (2019-02-06): [`a9d8af466a65b7d88ea35e0ff4c460175098260e`](https://github.com/psf/black/commit/a9d8af466a65b7d88ea35e0ff4c460175098260e).
 - B (2019-02-06): [`36d3c516d3c09fc5f05c420900dd6b854e3c8bbd`](https://github.com/psf/black/commit/36d3c516d3c09fc5f05c420900dd6b854e3c8bbd).

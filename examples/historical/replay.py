@@ -66,8 +66,11 @@ def verify(case, repo):
                     'Synchronized control must change code and docs together')
 
 
-def replay(manifest_path, output):
+def replay(manifest_path, output, cache_dir=None):
     manifest = json.loads(manifest_path.read_text())
+    if cache_dir is not None:
+        for case in manifest['cases']:
+            case['repo'] = str((cache_dir / Path(case['repo']).name).resolve())
     for case in manifest['cases']:
         repo = (manifest_path.parent / case['repo']).resolve()
         verify(case, repo)
@@ -97,9 +100,11 @@ def main():
                         default=Path(__file__).with_name('manifest.json'))
     parser.add_argument('--output', type=Path,
                         default=Path(__file__).with_name('outputs'))
+    parser.add_argument('--cache-dir', type=Path,
+                        help='Directory containing the four bare NAME.git histories')
     args = parser.parse_args()
     try:
-        result = replay(args.manifest, args.output)
+        result = replay(args.manifest, args.output, args.cache_dir)
     except (ValueError, OSError, KeyError) as exc:
         parser.exit(2, f'Historical replay: {exc}\n')
     print(f'{len(result["cases"])} cases; known-label recall: {result["known_case_recall"]}')

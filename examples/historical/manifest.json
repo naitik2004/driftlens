@@ -5,7 +5,7 @@
       "repo": "../../../driftlens-history-cache/yt-dlp.git",
       "before": "50865ca803a130308c064c2de5c7140754382993",
       "drift": "91ebc64068d2957400dbfaadff23e995392b3963",
-      "split": "evaluation",
+      "split": "development",
       "expected": [
         {
           "path": "README.md",
@@ -39,7 +39,7 @@
       "repo": "../../../driftlens-history-cache/black.git",
       "before": "a9d8af466a65b7d88ea35e0ff4c460175098260e",
       "drift": "36d3c516d3c09fc5f05c420900dd6b854e3c8bbd",
-      "split": "evaluation",
+      "split": "development",
       "expected": [
         {
           "path": "README.md",
@@ -65,15 +65,15 @@
         "correction_path": "docs/usage_and_configuration/file_collection_and_discovery.md",
         "correction_quote": "- Linux: `/home/<username>/.cache/black/<version>/cache.<mode-key>.pickle`"
       },
-      "review": "The old filename uses line length and an integer flag. B switches to a multi-part mode key including target versions. The old path remains in README; C corrects it after docs have moved. Computed return values and cache-path behavior are outside current support.",
-      "label_subject_note": "cache_path_changed is a manual behavioral category outside the current detector categories; it does not add a detector feature."
+      "review": "The old filename uses two numeric fields. B uses a declared local helper joining five parts; the bounded filename rule detects the exact Linux label plus two reviewed platform sentences. C later corrects the moved docs. This known case was used during detector development.",
+      "label_subject_note": "cache_path_changed is supported by the bounded declared-layout rule. Original localization, subject and category labels remain unchanged."
     },
     {
       "id": "yt-dlp-whitespace-control",
       "repo": "../../../driftlens-history-cache/yt-dlp.git",
       "before": "e182ba877bff741a96e511eac53f25fe3e015e8c",
       "drift": "4eacbc172264cb8121e44e39ac40f9e959a7b4e2",
-      "split": "evaluation",
+      "split": "development",
       "expected": [],
       "fully_reviewed": true,
       "source_url": "https://github.com/yt-dlp/yt-dlp",
@@ -87,7 +87,7 @@
       "repo": "../../../driftlens-history-cache/python-slugify.git",
       "before": "07b87da81140cf51e4a585e43d4fe9113f4c2ad5",
       "drift": "d968ca7419e6f4e40685888c56d03bea50fd39d7",
-      "split": "evaluation",
+      "split": "development",
       "expected": [],
       "fully_reviewed": true,
       "source_url": "https://github.com/un33k/python-slugify",
@@ -105,7 +105,7 @@
       "repo": "../../../driftlens-history-cache/gdown.git",
       "before": "373c16d983bcfafcd1ccd9f0fd826aa21d5c9365",
       "drift": "dda064d76f8f04b7ebb0fc4c7b2f9e9b063a2e58",
-      "split": "evaluation",
+      "split": "development",
       "expected": [
         {
           "path": "README.md",
@@ -140,7 +140,7 @@
       "repo": "../../../driftlens-history-cache/gdown.git",
       "before": "6a435009d5bf3f2ffc99f47d209e0e8b4173c1e9",
       "drift": "b1c6e1ce257d4fa247304adcd181cdf8e7651c74",
-      "split": "evaluation",
+      "split": "development",
       "expected": [],
       "fully_reviewed": true,
       "source_url": "https://github.com/wkentaro/gdown",

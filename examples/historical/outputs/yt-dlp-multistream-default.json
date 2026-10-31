@@ -15,9 +15,9 @@
     "Markdown subset: ATX headings, paragraphs, simple pipe tables and fenced code."
   ],
   "metrics": {
-    "runtime_seconds": 19.229241,
+    "runtime_seconds": 46.244946,
     "claims_indexed": 2522,
-    "facts_indexed": 912,
+    "facts_indexed": 919,
     "finding_count": 0,
     "change_groups": 0,
     "model_calls": 0,

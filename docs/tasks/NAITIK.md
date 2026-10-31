@@ -55,9 +55,9 @@ for the baseline above. Correction PR/final-main CI must pass before sign-off.
 
 ## Boundaries
 
-Successful real-history detection is still a product gap: both supplied positive
-cases are missed. Satya owns evidence/candidate search; Ravichandra owns detector
-extensions; Naitik reviews, integrates and reruns checks when a fix arrives.
-Do not describe the existing 0/2 historical result as successful detection.
+The current corpus matches Black's original label, for 1/3 positive labels;
+yt-dlp and gdown remain missed. All three controls stay quiet. These are known
+development cases, not held-out accuracy. The original 0/2 result above records
+an earlier version. Naitik reviews, integrates and reruns checks for later fixes.
 PR #1's missing original description/disclosures belongs to its author to fill
 truthfully; its missing pre-merge check history cannot be retroactively created.

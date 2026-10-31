@@ -1,0 +1,82 @@
+{
+  "audited_main": "428e81204a1f3078dc108c7a4494d11756468e09",
+  "runtime_sources_sha256": "bac2d4464a56597eb1439db24e74dd5eab95812c89d0590e27cc89217f5d6a52",
+  "python": "3.14.6",
+  "unit_tests": {
+    "status": "passed",
+    "count": 120,
+    "new_methods": 15
+  },
+  "regressions_failed_before_fix": true,
+  "fixed": [
+    "retained parser registrations",
+    "shadowed constructors",
+    "rebound constants and functions",
+    "shadowed range",
+    "Git timeout handling"
+  ],
+  "snapshot_limits": {
+    "max_files": 20000,
+    "max_bytes": 104857600,
+    "max_file_bytes": 10485760,
+    "timeout_seconds": 180,
+    "scope": "collection only, checked between Git operations"
+  },
+  "demos": {
+    "status": "passed",
+    "counts": [
+      1,
+      0,
+      0,
+      1
+    ]
+  },
+  "live_model": {
+    "status": "passed",
+    "model": "qwen2.5-coder:3b",
+    "cases": 8,
+    "uncached_calls": 5
+  },
+  "historical": {
+    "cases": 6,
+    "known_positive_labels": 3,
+    "known_hits": 1,
+    "negative_predictions": 0,
+    "original_labels_and_shas_changed": false,
+    "all_splits": "development",
+    "held_out": false,
+    "black_findings": 3,
+    "black_change_groups": 1,
+    "warnings": 4
+  },
+  "distributions": {
+    "name": "driftlens-docs",
+    "version": "0.1.0",
+    "wheel_and_sdist": "built",
+    "strict_twine": "passed",
+    "source_fixture_contents": "verified",
+    "public_upload": "not attempted"
+  },
+  "installed_cli": {
+    "status": "passed",
+    "outside_checkout": true,
+    "controls": [
+      "positive drift",
+      "corrected docs",
+      "retained conditional flag"
+    ],
+    "historical_black_findings": 3,
+    "findings_identical_to_saved": true,
+    "pip_check": "passed"
+  },
+  "workflow_yaml": "parsed locally; hosted checks tracked on PR",
+  "organizer_submission": "unverified",
+  "spoken_rehearsal": "unverified",
+  "remaining": [
+    "two semantic historical misses",
+    "new independent held-out histories and broader precision evaluation",
+    "PyPI/TestPyPI publisher account setup and upload",
+    "hosted manual workflow execution after integration",
+    "organizer and rehearsal confirmation"
+  ]
+}

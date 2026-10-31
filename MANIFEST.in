@@ -1,0 +1,4 @@
+include ARCHITECTURE.md HACKATHON.md IMPLEMENTATION.md
+recursive-include docs *.md
+recursive-include examples *.py *.json *.md *.txt
+recursive-include tests *.py

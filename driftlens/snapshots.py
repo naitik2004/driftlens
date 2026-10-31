@@ -1,19 +1,39 @@
 """Immutable Git snapshots, rename mappings and responsible diff hunks."""
 from dataclasses import dataclass
 from pathlib import Path
+import math
 import re
 import subprocess
+import time
 
 
 class SnapshotError(ValueError):
     pass
 
 
+@dataclass(frozen=True)
+class SnapshotLimits:
+    max_files: int = 20_000
+    max_bytes: int = 100 * 1024 * 1024
+    max_file_bytes: int = 10 * 1024 * 1024
+    timeout_seconds: float = 180
+
+    def __post_init__(self):
+        if (any(type(value) is not int or value <= 0 for value in
+                (self.max_files, self.max_bytes, self.max_file_bytes))
+                or type(self.timeout_seconds) not in (int, float)
+                or not math.isfinite(self.timeout_seconds) or self.timeout_seconds <= 0):
+            raise SnapshotError('Snapshot limits must be positive finite numbers with integer file/byte limits')
+
+
 def git(repo, *args):
-    result = subprocess.run(
-        ["git", "-C", str(repo), *args], stdout=subprocess.PIPE,
-        stderr=subprocess.PIPE, timeout=60,
-    )
+    try:
+        result = subprocess.run(
+            ["git", "-C", str(repo), *args], stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE, timeout=60,
+        )
+    except subprocess.TimeoutExpired as exc:
+        raise SnapshotError('Git operation timed out after 60 seconds') from exc
     if result.returncode:
         raise SnapshotError(result.stderr.decode("utf-8", "replace").strip())
     return result.stdout
@@ -38,29 +58,47 @@ def resolve(repo, revision):
     return git(repo, "rev-parse", "--verify", "--end-of-options", revision + "^{commit}").decode().strip()
 
 
-def snapshot(repo, commit):
+def snapshot(repo, commit, limits=None):
+    limits = limits or SnapshotLimits()
+    started = time.monotonic()
     files = {}
-    for entry in git(repo, "ls-tree", "-rz", commit).split(b"\0"):
+    blobs = []
+    total_bytes = 0
+    for entry in git(repo, "ls-tree", "-rzl", commit).split(b"\0"):
         if not entry:
             continue
         metadata, raw_path = entry.split(b"\t", 1)
-        mode, kind, oid = metadata.split()
+        mode, kind, oid, raw_size = metadata.split()
         path = raw_path.decode("utf-8", "surrogateescape")
         # Symlinks and submodules are data, never followed.
         if mode not in (b"100644", b"100755") or not path.lower().endswith((".py", ".md", ".markdown")):
             continue
+        size = int(raw_size)
+        total_bytes += size
+        if size > limits.max_file_bytes:
+            raise SnapshotError(f'Snapshot file byte limit exceeded: {path}')
+        blobs.append((path, oid))
+        if len(blobs) > limits.max_files or total_bytes > limits.max_bytes:
+            raise SnapshotError('Snapshot file count or total byte limit exceeded')
+    # Preflight object sizes before loading any eligible content. Fail rather
+    # than silently issuing an incomplete report after truncating the snapshot.
+    for path, oid in blobs:
+        if time.monotonic() - started > limits.timeout_seconds:
+            raise SnapshotError('Snapshot collection timed out')
         blob = git(repo, "cat-file", "blob", oid.decode())
         try:
             files[path] = blob.decode("utf-8")
         except UnicodeDecodeError:
             raise SnapshotError(f"Cannot analyze non-UTF-8 file: {path}")
+    if time.monotonic() - started > limits.timeout_seconds:
+        raise SnapshotError('Snapshot collection timed out')
     return Snapshot(commit, files)
 
 
-def collect(repo: Path, base: str, head: str):
+def collect(repo: Path, base: str, head: str, limits=None):
     target, tip = resolve(repo, base), resolve(repo, head)
     ancestor = git(repo, "merge-base", target, tip).decode().strip()
-    old, new = snapshot(repo, ancestor), snapshot(repo, tip)
+    old, new = snapshot(repo, ancestor, limits), snapshot(repo, tip, limits)
     entries = git(repo, "diff", "--name-status", "-z", "-M", ancestor, tip).split(b"\0")
     renames, changed = {}, []
     i = 0

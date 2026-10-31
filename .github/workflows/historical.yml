@@ -1,0 +1,54 @@
+name: Historical replay (manual)
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  replay:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/cache@v4
+        id: histories
+        with:
+          path: ${{ runner.temp }}/histories
+          key: historical-git-${{ hashFiles('examples/historical/manifest.json') }}
+      - name: Fetch public Git histories
+        if: steps.histories.outputs.cache-hit != 'true'
+        env:
+          HISTORY_CACHE: ${{ runner.temp }}/histories
+        run: |
+          mkdir -p "$HISTORY_CACHE"
+          git clone --bare https://github.com/yt-dlp/yt-dlp.git "$HISTORY_CACHE/yt-dlp.git"
+          git clone --bare https://github.com/psf/black.git "$HISTORY_CACHE/black.git"
+          git clone --bare https://github.com/un33k/python-slugify.git "$HISTORY_CACHE/python-slugify.git"
+          git clone --bare https://github.com/wkentaro/gdown.git "$HISTORY_CACHE/gdown.git"
+      - name: Replay pinned histories without executing upstream code
+        run: python -m examples.historical.replay --cache-dir "$RUNNER_TEMP/histories" --output "$RUNNER_TEMP/results"
+      - name: Check known labels and controls
+        env:
+          RESULT_PATH: ${{ runner.temp }}/results/evaluation.json
+        run: |
+          python - <<'PY'
+          import json, os
+          from pathlib import Path
+          result = json.loads(Path(os.environ['RESULT_PATH']).read_text())
+          rows = {row['id']: row for row in result['cases']}
+          assert rows['black-cache-filename']['known_hits'] == 1
+          for row in rows.values():
+              if row['known_labels'] == 0:
+                  assert row['predictions'] == 0, row['id']
+          print('Known Black label retained; all three negative controls quiet.')
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: historical-replay-${{ github.sha }}
+          path: ${{ runner.temp }}/results
+          if-no-files-found: warn

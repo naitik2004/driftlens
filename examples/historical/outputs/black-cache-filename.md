@@ -484,7 +484,7 @@ Evidence: deterministic.
 
 </details>
 
-Abstentions: 0. Runtime: 4.908s.
+Abstentions: 0. Runtime: 8.306s.
 
 - Warning: tests/data/expression.py: cannot use starred expression here (&lt;unknown&gt;, line 148)
 - Warning: tests/data/numeric_literals_py2.py: invalid decimal literal (&lt;unknown&gt;, line 3)
