@@ -42,8 +42,12 @@ GitHub's Python 3.10/3.13 matrix has not run in this session.
   seconds of aggregate analyzer runtime; model-enabled cases took 1.87–2.71
   seconds each. See docs/LOCAL_AI.md and actual outputs. This does not establish
   historical accuracy or broad model reliability.
-- Real A/B/C repository histories, manually reviewed labels and held-out accuracy:
-  no historical dataset was supplied. The replay harness is ready for those cases.
+- Satya's real A/B/C corpus is now included under examples/historical/: two
+  genuine drift cases and two negative controls. The inspected baseline missed
+  both supplied positive labels (0/2); controls stayed quiet. These are unsupported
+  optparse/example and computed-path scenarios. This retrospective small corpus
+  is not held-out accuracy evidence; successful real-history detection is still
+  an open detector-workstream goal. The saved historical runs use no model.
 - Hosted CI has since passed on main and PR #2 across Python 3.10/3.12/3.13.
   Continue verifying CI on each new PR and the final merged commit.
 
@@ -67,3 +71,7 @@ inference. No model server or weights are required for ordinary CI.
 - The standalone local smoke test passed and saved its real API response.
 - No analyzer, extractor, Markdown linker or historical evaluator file was changed
   in this workstream.
+
+Satya's historical-evidence PR #3 was reviewed and integrated before the live AI
+PR. The combined tree is checked with the full test suite; historical misses
+remain explicit rather than being reclassified as successes.

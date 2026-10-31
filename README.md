@@ -175,8 +175,13 @@ Only A/B go to detection. C is opened afterward as review evidence. Unmatched
 predictions remain available for manual review instead of being automatically
 counted as false positives. The harness reports known-label recall, per-case
 runtime and warnings, and precision only for fully reviewed cases. It rejects
-repository overlap between development/evaluation splits. A real historical
-corpus and model resource benchmark have not yet been collected.
+repository overlap between development/evaluation splits. A small real-history
+[corpus and reproducible replay](examples/historical/README.md) now contains two
+genuine drift cases and two negative controls. The current detector missed both
+positive labels (0/2 known-label recall); both controls produced no findings.
+These positives exercise unsupported optparse/example and computed-path behavior.
+The cases are an unblinded scope study, not a held-out accuracy benchmark.
+[Live AI measurements](docs/LOCAL_AI.md) use separate synthetic inputs.
 
 ## Boundaries and project status
 

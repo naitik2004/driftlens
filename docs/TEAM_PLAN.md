@@ -25,7 +25,10 @@ Naitik's live AI work subsequently demonstrated actual Qwen inference: three
 model-assisted findings over a zero-finding baseline and five quiet controls in
 eight synthetic cases. See [the evidence and reproduction guide](LOCAL_AI.md).
 The initial unavailable-server and unvalidated-model observations above describe
-the inspected baseline. Historical evaluation remains a separate workstream.
+the inspected baseline. Satya's historical-evidence PR #3 has also been reviewed and merged: two genuine
+drift histories and two controls. Current known-label recall is 0/2 because the
+positives are outside supported patterns. A successful real-history positive
+remains a detector-workstream goal, not a completed acceptance item.
 
 ## What the judges require
 

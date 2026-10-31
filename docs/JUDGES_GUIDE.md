@@ -46,9 +46,11 @@ CI passed after PR #1. These facts do not establish real-world accuracy.
 Live local inference was subsequently observed: prompt v2 produced three
 model-assisted findings that the baseline missed, and five synthetic controls
 stayed quiet. See [actual evidence](LOCAL_AI.md). The first live run failed and
-was rejected; do not claim the model is always reliable. Historical replay tooling
-exists, but no real A/B/C corpus was bundled at the inspected baseline. Update
-that claim only after Satya's evidence is reviewed.
+was rejected; do not claim the model is always reliable. Satya's reviewed corpus
+now includes two genuine A/B/C drift cases and two controls. The detector missed
+both positive labels because they exercise unsupported patterns. Present this
+0/2 result honestly as a limitation and keep it separate from the synthetic AI
+contribution demonstration. See examples/historical/README.md.
 The GitHub workflow runs deterministic analysis without Qwen; local model-enabled
 analysis is a separate product mode. Explain that distinction directly.
 
