@@ -1,6 +1,7 @@
 """Conservative AST facts and a bounded, two-hop constant resolver."""
 import ast
 import math
+import re
 from dataclasses import asdict, dataclass
 from pathlib import PurePosixPath
 
@@ -33,6 +34,48 @@ def module_name(path):
     if parts and parts[-1] == "__init__":
         parts.pop()
     return ".".join(parts)
+
+
+def imported_names(tree, module, member):
+    names = set()
+    for node in tree.body:
+        if isinstance(node, ast.ImportFrom) and not node.level and node.module == module:
+            names.update(a.asname or a.name for a in node.names if a.name == member)
+        elif isinstance(node, ast.Import):
+            names.update((a.asname or a.name) + '.' + member for a in node.names if a.name == module)
+    return {name for name in names if sum(
+        a.asname == name.split('.')[0] or (not a.asname and a.name.split('.')[0] == name.split('.')[0])
+        for n in ast.walk(tree) if isinstance(n, (ast.Import, ast.ImportFrom)) for a in n.names) == 1 and not any(
+        (isinstance(n, ast.Name) and isinstance(n.ctx, (ast.Store, ast.Del)) and n.id == name.split('.')[0])
+        or (isinstance(n, (ast.FunctionDef, ast.AsyncFunctionDef, ast.ClassDef)) and n.name == name.split('.')[0])
+        for n in ast.walk(tree))}
+
+
+def local_class(tree, name):
+    classes = [n for n in ast.walk(tree) if isinstance(n, ast.ClassDef) and n.name == name]
+    if len(classes) != 1 or classes[0] not in tree.body or classes[0].keywords:
+        return None
+    if sum(isinstance(n, (ast.ClassDef, ast.FunctionDef, ast.AsyncFunctionDef)) and n.name == name for n in ast.walk(tree)) != 1:
+        return None
+    if any(isinstance(n, ast.Name) and n.id == name and isinstance(n.ctx, (ast.Store, ast.Del)) for n in ast.walk(tree)):
+        return None
+    if any(isinstance(n, ast.alias) and (n.asname or n.name.split('.')[0]) == name for n in ast.walk(tree)):
+        return None
+    for member in classes[0].body:
+        if not isinstance(member, (ast.FunctionDef, ast.AsyncFunctionDef)):
+            continue
+        for decorator in member.decorator_list:
+            if not isinstance(decorator, ast.Name) or decorator.id not in ('classmethod', 'staticmethod'):
+                return None
+            if any((isinstance(n, ast.Name) and n.id == decorator.id and isinstance(n.ctx, (ast.Store, ast.Del)))
+                   or (isinstance(n, ast.alias) and (n.asname or n.name) == decorator.id)
+                   or (isinstance(n, (ast.FunctionDef, ast.ClassDef)) and n.name == decorator.id) for n in ast.walk(tree)):
+                return None
+    return classes[0]
+
+
+def slug(name):
+    return re.sub(r'(?<!^)(?=[A-Z])', '-', name).replace('_', '-').lower()
 
 
 class Extractor:
@@ -133,6 +176,9 @@ class Extractor:
                     retries = self.retry_count(path, node)
                     if retries is not None:
                         facts.append(Fact(path, symbol, "retries", "retries", retries, node.lineno, node.end_lineno, safe))
+                    pattern = self.cache_pattern(path, node) if safe else None
+                    if pattern:
+                        facts.append(pattern)
             # Recognize only direct argparse.ArgumentParser instances. Attribute
             # calls on arbitrary objects do not establish public CLI flags.
             parsers = set()
@@ -174,6 +220,108 @@ class Extractor:
                                       not unsafe_parser and None not in kwargs, deps))
             facts.extend(self.optparse_facts(path, tree, module))
         return facts
+
+    def cache_pattern(self, path, function):
+        """Bound a declared numeric filename against a local literal dot-join.
+
+        Values are not evaluated: a join of N items has at least N-1 separators.
+        """
+        tree = self.trees[path]
+        if any(name in self.modules for name in ('pathlib', 'enum', 'dataclasses', 'attr')):
+            return None
+        body = [n for n in function.body if not (isinstance(n, ast.Expr) and isinstance(n.value, ast.Constant)
+                                                and isinstance(n.value.value, str))]
+        if len(body) != 1 or not isinstance(body[0], ast.Return):
+            return None
+        expression = body[0].value
+        if not (isinstance(expression, ast.BinOp) and isinstance(expression.op, ast.Div)
+                and isinstance(expression.left, ast.Name) and isinstance(expression.right, ast.JoinedStr)):
+            return None
+        base = self.constants[path].get(expression.left.id)
+        if not (base and isinstance(base.value, ast.Call)
+                and ast.unparse(base.value.func) in imported_names(tree, 'pathlib', 'Path')):
+            return None
+        pieces = expression.right.values
+        if not (len(pieces) in (3, 5) and isinstance(pieces[0], ast.Constant) and isinstance(pieces[-1], ast.Constant)
+                and isinstance(pieces[0].value, str) and isinstance(pieces[-1].value, str)
+                and re.fullmatch(r'[\w-]+\.', pieces[0].value) and re.fullmatch(r'\.[\w-]+', pieces[-1].value)):
+            return None
+        fields = [p for p in pieces if isinstance(p, ast.FormattedValue)]
+        if any(p.conversion != -1 or p.format_spec is not None for p in fields):
+            return None
+        annotations = {a.arg: a.annotation for a in function.args.posonlyargs + function.args.args + function.args.kwonlyargs}
+        value = {'prefix': pieces[0].value, 'suffix': pieces[-1].value, 'base_expression': ast.unparse(base.value)}
+        dependencies = ()
+        if len(pieces) == 5:
+            if not (len(fields) == 2 and isinstance(pieces[2], ast.Constant) and pieces[2].value == '.'):
+                return None
+            number, enum = fields[0].value, fields[1].value
+            if not (isinstance(number, ast.Name) and isinstance(annotations.get(number.id), ast.Name)
+                    and annotations[number.id].id == 'int' and isinstance(enum, ast.Attribute)
+                    and enum.attr == 'value' and isinstance(enum.value, ast.Name)):
+                return None
+            if any((isinstance(n, ast.Name) and n.id == 'int' and isinstance(n.ctx, (ast.Store, ast.Del)))
+                   or (isinstance(n, (ast.FunctionDef, ast.AsyncFunctionDef, ast.ClassDef)) and n.name == 'int')
+                   or (isinstance(n, ast.alias) and (n.asname or n.name) == 'int') for n in ast.walk(tree)):
+                return None
+            receiver = enum.value.id
+            annotation = annotations.get(receiver)
+            cls = local_class(tree, annotation.id) if isinstance(annotation, ast.Name) else None
+            if not (cls and not cls.decorator_list and len(cls.bases) == 1
+                    and ast.unparse(cls.bases[0]) in imported_names(tree, 'enum', 'Flag')):
+                return None
+            members = [n for n in cls.body if isinstance(n, ast.Assign)]
+            if not members or any(not isinstance(n.value, ast.Constant) or type(n.value.value) is not int for n in members):
+                return None
+            if any(isinstance(n, ast.FunctionDef) and (n.name == 'value' or n.name.startswith('__')) for n in cls.body):
+                return None
+            value.update(numeric_components=2,
+                         component_types=['int', cls.name + '.value (enum.Flag)'],
+                         template=value['prefix'] + '<' + slug(number.id) + '>.<' + slug(cls.name) + '>' + value['suffix'])
+            dependencies = tuple((path, n.lineno) for n in [cls, *members])
+        else:
+            if len(fields) != 1:
+                return None
+            call = fields[0].value
+            if not (isinstance(call, ast.Call) and not call.args and not call.keywords and isinstance(call.func, ast.Attribute)
+                    and isinstance(call.func.value, ast.Name)):
+                return None
+            receiver, method_name = call.func.value.id, call.func.attr
+            annotation = annotations.get(receiver)
+            cls = local_class(tree, annotation.id) if isinstance(annotation, ast.Name) else None
+            decorators = imported_names(tree, 'dataclasses', 'dataclass') | imported_names(tree, 'attr', 'dataclass')
+            if not cls or cls.bases or any(ast.unparse(d) not in decorators for d in cls.decorator_list):
+                return None
+            if any(isinstance(n, ast.FunctionDef) and n.name.startswith('__') for n in cls.body):
+                return None
+            methods = [n for n in cls.body if isinstance(n, ast.FunctionDef) and n.name == method_name]
+            if len(methods) != 1 or methods[0].decorator_list:
+                return None
+            method = methods[0]
+            if (len(method.args.args) != 1 or method.args.posonlyargs or method.args.kwonlyargs
+                    or method.args.vararg or method.args.kwarg):
+                return None
+            returns = [n for n in ast.walk(method) if isinstance(n, ast.Return)]
+            if len(returns) != 1 or method.body[-1] is not returns[0]:
+                return None
+            join = returns[0].value
+            if not (isinstance(join, ast.Call) and not join.keywords and len(join.args) == 1 and isinstance(join.args[0], ast.Name)
+                    and isinstance(join.func, ast.Attribute) and join.func.attr == 'join'
+                    and isinstance(join.func.value, ast.Constant) and join.func.value.value == '.'):
+                return None
+            name = join.args[0].id
+            lists = [n for n in method.body if isinstance(n, ast.Assign) and len(n.targets) == 1
+                     and isinstance(n.targets[0], ast.Name) and n.targets[0].id == name and isinstance(n.value, ast.List)]
+            references = [n for n in ast.walk(method) if isinstance(n, ast.Name) and n.id == name]
+            if len(lists) != 1 or len(references) != 2 or any(isinstance(n, ast.Starred) for n in lists[0].value.elts):
+                return None
+            if any(isinstance(n, (ast.Attribute, ast.Name)) and isinstance(n.ctx, (ast.Store, ast.Del))
+                   and (n.attr if isinstance(n, ast.Attribute) else n.id) == method_name for n in ast.walk(tree)):
+                return None
+            value.update(minimum_components=len(lists[0].value.elts), helper=cls.name + '.' + method_name)
+            dependencies = ((path, method.lineno), (path, lists[0].lineno), (path, returns[0].lineno))
+        return Fact(path, module_name(path) + '.' + function.name, 'cache_path', receiver,
+                    value, function.lineno, function.end_lineno, True, dependencies)
 
     def optparse_facts(self, path, tree, module):
         """Read direct OptionGroup.add_option calls inside one public function."""
@@ -296,6 +444,10 @@ def changes(before, after, renames):
         elif prior.kind == "retries":
             if prior.value != current.value and prior.value["exceptions"] == current.value["exceptions"]:
                 result.append((prior, current, "retry_limit_changed"))
+        elif prior.kind == 'cache_path':
+            if (prior.value.get('numeric_components') and current.value.get('minimum_components', 0) > prior.value['numeric_components']
+                    and all(prior.value[k] == current.value[k] for k in ('prefix', 'suffix', 'base_expression'))):
+                result.append((prior, current, 'cache_path_changed'))
         elif prior.kind in ("parameter", "flag"):
             a, b = prior.value.get("default", UNKNOWN), current.value.get("default", UNKNOWN)
             if a != UNKNOWN and b != UNKNOWN and (type(a) != type(b) or a != b):

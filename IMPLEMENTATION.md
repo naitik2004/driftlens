@@ -1,97 +1,69 @@
 # Implementation and verification status
 
-## Current implementation
+## Implemented
 
-DriftLens is an executable Python/Markdown documentation drift detector with a
-CLI and advisory GitHub Actions integration. It reads immutable merge-base/head
-Git snapshots without importing or executing the analyzed project's code.
+DriftLens compares immutable merge-base/head Git snapshots and reads Python and
+Markdown without importing or executing the analyzed project.
 
-Implemented capabilities:
+- AST facts for public top-level defaults/parameters, bounded constants/imports,
+  direct argparse definitions and a constrained retry-count pattern.
+- Direct optparse option/group facts with explicit defaults. Implicit/shared
+  destinations and set_defaults overrides conservatively abstain.
+- Exact Markdown spans, scoped linking, old support/new contradiction checks,
+  same-PR documentation correction suppression and conservative exclusions.
+- Removed CLI flags in direct `Use --flag` instructions, including backticks.
+- A bounded cache filename rule: an old declared two-numeric-field format cannot
+  match a new local literal dot-join with more fields. It follows one declared
+  helper's structure, not its runtime values. See [CACHE_LAYOUT.md](docs/CACHE_LAYOUT.md).
+- JSON/Markdown findings, grouped changes, exact paths/lines/offsets, before/after
+  facts, responsible hunks and optional immutable source links.
+- Optional local Qwen prose extraction with validated schema/quote/value and
+  model/content/prompt-versioned caching.
+- CLI, advisory GitHub Actions, MIT license, PR template and Python 3.10/3.12/3.13 CI.
 
-- AST facts for public top-level function parameters/defaults, bounded simple
-  constants/imports, direct module-level argparse definitions, and one constrained
-  retry-count pattern.
-- Direct optparse option/group facts in public function bodies, with explicit
-  defaults only. Implicit/shared destinations and set_defaults overrides abstain.
-- Exact Markdown sentence/table spans, scoped linking, unchanged-claim alignment,
-  old support/new contradiction checks, and conservative abstention.
-- Removed CLI options in direct `Use --flag` instructions, with optional backticks.
-  This proves removal, not a semantic rename or the promised flag behavior.
-- JSON, Markdown summaries, grouped findings, responsible diff hunks, source
-  locations, optional commit-pinned links and advisory workflow annotations.
-- Optional local Qwen claim extraction with schema/quote/value validation and
-  content/model/prompt-versioned caching.
-- Synthetic demos, real A/B/C replay with later corrections withheld from
-  detection, MIT license, PR template and Python 3.10/3.12/3.13 CI.
+## Latest detector continuation
 
-## Earlier integration run: 1 November 2026 (PRs #1–#6)
+Local suite: **105 tests passed**, including **21 filename-rule test methods**.
+The first positive filename regression failed before implementation. Negatives
+cover refactors, corrected docs, ambiguous owners, unknown or shadowed types,
+unknown decorators, mutated joins, custom access hooks and unresolved helpers.
 
-Runtime source checked: `36ee68ffd98273de68fd0386a3ca1829998ed822` (PRs #1–#6).
-The verification PR changes documentation, the PR template and a verification
-record; it does not change detector behavior. See [the verification record](docs/VERIFICATION.md)
-for the latest completed checks and remaining human tasks.
+All four deterministic demos ran with expected counts **1/0/0/1**. The actual local
+Qwen/control suite passed all eight cases with five uncached calls and three
+additional findings over the model-off baseline. These synthetic checks are
+separate from the historical evaluation.
 
-Observed locally on Python 3.14.6:
+The full six-case public-history replay now matches **1/3 original positive
+labels**, with all three negative controls quiet. Black's exact existing Linux
+label matches; Windows and macOS also yield matching stale sentences. These are
+three sentences in one code-change group, not three successful historical cases.
+The two extra locations were manually reviewed after A/B detection and corroborated
+by later C. Labels were not changed. Four existing Black syntax-fixture warnings
+remain visible. Positive labels are not exhaustive, so precision is undefined.
 
-- **72 tests passed**, including the direct CLI instruction regressions.
-- All four deterministic synthetic demos passed: drift 1 finding, docs fixed 0,
-  harmless refactor 0, removed flag 1. Each made zero model calls.
-- Generated JSON/Markdown were checked for expected counts, exact claim offsets,
-  old support/new contradiction, source paths, diff evidence and evidence mode.
-- The eight-case actual local Qwen suite passed: three verified findings added
-  over the baseline, five quiet controls, five uncached calls. Three controls
-  never reached the model. The first model-enabled case took 6.05 seconds in this
-  run; the other model-enabled cases took 2.58–2.74 seconds. No broad accuracy or
-  latency guarantee is made.
-- A fresh tracked-files-only clone built and installed into a new virtual
-  environment. From outside the checkout, the installed CLI correctly detected
-  the direct removed-flag example without AI and a paraphrased default with one
-  actual Qwen call, with no warnings.
+The new rule was developed using an already-known Black case. This is a
+retrospective development result, not held-out accuracy. No future C content,
+repository names, commit IDs or exact case text enter the detector. Actual reports
+are in examples/historical/outputs/; [the corpus README](examples/historical/README.md)
+explains provenance and limits.
 
-The earlier replay completed four pinned experiments (0/2); PR #11 expanded the corpus to six experiments.
-The current saved output shows 0/3, with all three controls quiet. Source main
-CI passed across Python 3.10/3.12/3.13. See the verification record for provenance
-and the latest GitHub Actions runs for verification-PR/final-main status.
+Clean installation, installed historical CLI execution, PR checks and post-merge
+main CI are checked before integration sign-off. Always inspect CI for the exact
+latest commit rather than substituting an earlier green run.
 
-## Historical effectiveness and limits
+## Remaining limits
 
-The initial retrospective corpus contained two genuine drift cases and two real
-negative controls. PR #11 later added a third missed positive; the current corpus misses all three: nested
-optparse/example semantics in yt-dlp, computed cache-path behavior in Black, and gdown’s removed folder-listing cap
-are outside current support. Both controls stay quiet. This is **0/2 supplied
-positive labels detected**, not successful real-history detection. It is an
-unblinded scope study, not a held-out accuracy benchmark. See
-[the corpus and labels](examples/historical/README.md).
+The yt-dlp implicit example and gdown folder-limit cases are still missed.
+General computed methods, arbitrary wrappers/callers, complex parsers, broad
+configuration frameworks, implicit semantic links and languages beyond Python
+remain unsupported. The filename rule assumes the supported declared typing and
+library bindings; it does not prove runtime dispatch/subclass overrides or
+filesystem normalization. Zero findings does not mean every sentence was verified.
 
-The linker requires exact scope references. Methods, nested functions, complex
-parser setups, arbitrary wrappers/aliases, broad configuration frameworks,
-implicit prose links, general behavioral reasoning and additional languages
-remain unsupported. Zero findings does not mean documentation was verified.
+Earlier 49/72/79/84-test and 0/2/0/3 corpus results describe prior versions;
+retained verification artifacts preserve those observations. Ordinary CI needs
+neither a model server nor API keys. Model weights retain their own license.
 
-## Evidence provenance
-
-Earlier 49-, 51-, 55- and 60-test results described earlier versions. Current
-integration tests are counted above. Original 31 October actual model outputs,
-including the initially rejected response, remain in examples/outputs/; their
-recorded times describe those runs, not the newer verification run. The local AI
-guide distinguishes real calls from unit-test doubles and model-internal prompt
-reuse from DriftLens's optional verdict cache.
-
-Coding assistants used during development are disclosed in PR descriptions.
-Ordinary CI requires neither a running model nor an API key. The first
-implementation PR has an empty description and no recorded pre-merge PR checks;
-its post-merge CI passed. That historical workflow gap has not been rewritten or
-represented as a successful pre-merge review.
-
-## Subsequent optparse integration correction
-
-PR #8 was merged externally during review. Its implicit Boolean defaults and
-per-option treatment of shared destinations produced reproduced false positives.
-The correction removes inferred Boolean defaults and conservatively leaves
-implicit/shared/overridden defaults unresolved. Three failing-before/passing-after
-Git-snapshot regressions were added, and the prior test that asserted an invented
-implicit True default was corrected. The valid explicit-default positive remains.
-
-The correction run passed 79 tests, all four deterministic demos, and all eight
-actual local Qwen/control cases. The baseline 72-test record above describes the
-earlier source commit. Historical recall remains an explicit limitation.
+Organizer submissions and spoken team rehearsal remain unverified by the agent.
+PR #1's empty original description and absent recorded pre-merge checks remain a
+historical workflow gap; its post-merge CI passed. No history was rewritten.

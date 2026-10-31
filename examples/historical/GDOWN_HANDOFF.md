@@ -108,7 +108,8 @@ passes, positive **0 hits / 1 known label, 0 predictions**, negative **0
 predictions**, no warnings. The acceptance command therefore **fails intentionally
 on the missing hit**. Raw outputs: `outputs/gdown-folder-file-limit.json`,
 `outputs/gdown-fuzzy-code-and-docs-together.json`; aggregate `outputs/evaluation.json`.
-Full corpus remains **0/3** positives detected. Precision is undefined with no
+After the separate Black filename rule, the full corpus is **1/3** positives
+detected; this gdown acceptance gate still fails and is not claimed complete. Precision is undefined with no
 predictions. No live Qwen inference is claimed by this deterministic evidence work.
 
 Satya's evidence deliverable is complete. Detector success remains pending;

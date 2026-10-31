@@ -39,7 +39,7 @@ README.md and tested code define what is actually supported.
 
 ## What is implemented versus still unproven
 
-The latest correction run passed 79 tests and all four synthetic demos.
+The latest detector continuation passed 105 tests and all four synthetic demos.
 Live local model calls, a clean installed CLI, and exact report evidence were
 checked separately. See [the verification record](VERIFICATION.md) for current
 status. These checks do not establish real-world accuracy.
@@ -48,10 +48,12 @@ Live local inference was subsequently observed: prompt v2 produced three
 model-assisted findings that the baseline missed, and five synthetic controls
 stayed quiet. See [actual evidence](LOCAL_AI.md). The first live run failed and
 was rejected; do not claim the model is always reliable. Satya's reviewed corpus
-now includes two genuine A/B/C drift cases and two controls. The detector missed
-both positive labels because they exercise unsupported patterns. Present this
-0/2 result honestly as a limitation and keep it separate from the synthetic AI
-contribution demonstration. See examples/historical/README.md.
+now includes three genuine A/B/C drift cases and three controls. The filename
+rule matches Black's exact original Linux label plus two other platform sentences
+in one change group. Known-label recall is 1/3; the other two cases are still
+missed. The rule was developed against a known case, not held-out evaluation.
+Keep this deterministic historical result separate from the synthetic AI
+contribution demonstration. See examples/historical/README.md and CACHE_LAYOUT.md.
 The GitHub workflow runs deterministic analysis without Qwen; local model-enabled
 analysis is a separate product mode. Explain that distinction directly.
 
@@ -209,3 +211,14 @@ initially got those cases wrong; integration review reproduced false positives.
 We added three negative regressions and now abstain on implicit/shared/overridden
 defaults instead of inventing proof. This is a correctness fix, not a claim of
 successfully detecting the two historical cases.
+
+## Explain the real Black finding
+
+The old source declares two numeric filename fields. The new same-file helper
+joins five items with dots. Whatever their string values, the declared successful
+join has at least four internal dots and cannot equal the old two-field numeric
+layout. We do not execute that method or guess its values. Exact unchanged
+templates and unambiguous owners link the doc sentences. Unknown types, hooks,
+decorators, mutated lists and unresolved helper shapes abstain. The report is a
+static declared-layout finding, not a proof of all runtime dispatch or filesystem
+normalization. Later C corroborates the locations only after detection.

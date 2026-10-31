@@ -1,5 +1,5 @@
 """Link exact claims and verify supported-before / contradicted-after facts."""
-from dataclasses import asdict
+from dataclasses import asdict, replace
 import hashlib
 import json
 import re
@@ -61,6 +61,16 @@ def default_value(claim, fact):
 def linked(claim, fact, all_facts):
     context = claim.heading + " " + claim.quote
     mentions = tokens(context)
+    if fact.kind == 'cache_path':
+        prior = [f for f in all_facts if f.kind == 'cache_path' and f.path == fact.path
+                 and f.symbol == fact.symbol and 'template' in f.value]
+        paths = [p.replace('\\', '/').rsplit('/', 1)[-1] for p in re.findall(r'`([^`\n]+)`', claim.quote)]
+        matches = [f.value['template'] for f in prior if paths.count(f.value['template']) == 1]
+        if len(matches) != 1:
+            return False
+        owners = {(f.path, f.symbol) for f in all_facts if f.kind == 'cache_path' and f.value.get('template') == matches[0]}
+        same_file = {owner for owner in owners if owner[0] == fact.path}
+        return len(owners) == 1 or fact.symbol in mentions or (fact.path in context and len(same_file) == 1)
     if fact.kind == "flag":
         # Flags also need module/path scope if multiple parsers expose that flag.
         candidates = {(f.path, f.symbol) for f in all_facts if f.kind == "flag" and f.name == fact.name}
@@ -117,7 +127,8 @@ def analyze(repo, base, head, repository_url=None, model=None):
               "limitations": ["Python top-level functions, direct module-level argparse, and direct optparse option groups in public function bodies only.",
                               "Exact scope references required; unresolved aliases, wrappers and qualifiers abstain.",
                               "Static declared defaults do not prove effective runtime values or physical units.",
-                              "Computed return values and called methods are not resolved.",
+                              "General computed return values and arbitrary called methods are not resolved.",
+                              "Filename checks bound one local literal dot-join; runtime type/dispatch overrides are not evaluated.",
                               "Markdown subset: ATX headings, paragraphs, simple pipe tables and fenced code."]}
     failed_paths = {w.split(":", 1)[0] for w in report["warnings"]}
     for before, after, category in changes(before_facts, after_facts, comparison.renames):
@@ -134,7 +145,7 @@ def analyze(repo, base, head, repository_url=None, model=None):
             reason = None
             if old_claim is None:
                 reason = "No unchanged claim with matching scope in the base snapshot"
-            elif qualified(claim):
+            elif qualified(filename_qualification(claim) if category == 'cache_path_changed' else claim):
                 reason = "Historical, platform or conditional qualifier requires more evidence"
             elif not linked(old_claim, before, before_facts):
                 reason = "Base claim could not be linked to the same fact"
@@ -143,7 +154,10 @@ def analyze(repo, base, head, repository_url=None, model=None):
                 continue
             evidence = "deterministic"
             documented = UNKNOWN
-            if category.endswith("default_changed"):
+            if category == 'cache_path_changed':
+                supported = before.value['template'] in claim.quote
+                contradicted = after.value['minimum_components'] > before.value['numeric_components']
+            elif category.endswith("default_changed"):
                 documented = default_value(claim, before)
                 supported = same_value(documented, before.value["default"])
                 contradicted = after is not None and not same_value(documented, after.value["default"])
@@ -169,7 +183,7 @@ def analyze(repo, base, head, repository_url=None, model=None):
                 exceptions_named = all(e in tokens(claim.quote) for e in before.value["exceptions"])
                 supported = exceptions_named and same_value(documented, before.value["maximum"])
                 contradicted = not same_value(documented, after.value["maximum"])
-            if not supported and model and after and not category.endswith("removed"):
+            if not supported and model and after and category != 'cache_path_changed' and not category.endswith("removed"):
                 bundle = {"base_commit": comparison.base.commit, "head_commit": comparison.head.commit,
                           "claim": claim.json(), "before": before.json(), "after": after.json(),
                           "before_code": source_excerpt(comparison.base, before),
@@ -227,6 +241,9 @@ def analyze(repo, base, head, repository_url=None, model=None):
 
 
 def explain(before, after, category):
+    if category == 'cache_path_changed':
+        return (f"{before.symbol}: the documented filename's {before.value['numeric_components']} numeric fields "
+                f"are incompatible with the new declared key, which joins at least {after.value['minimum_components']} dot-separated components.")
     if category.endswith("removed"):
         return f"{before.symbol} no longer declares {before.name}, which the unchanged documentation says is available."
     key = "maximum" if category == "retry_limit_changed" else "default"
@@ -234,7 +251,17 @@ def explain(before, after, category):
 
 
 def correction(before, after, category):
+    if category == 'cache_path_changed':
+        return 'Update the documented filename layout to describe the new composite key; review its fields rather than guessing runtime values.'
     if category.endswith("removed"):
         return f"Remove or update the documented {before.name} reference after reviewing migration behavior."
     key = "maximum" if category == "retry_limit_changed" else "default"
     return f"Update the documented {key} from {before.value[key]!r} to {after.value[key]!r}."
+
+
+def filename_qualification(claim):
+    # Platform labels and template placeholders do not alter a shared basename.
+    def clean(text):
+        text = re.sub(r'`[^`\n]+`', lambda m: re.sub(r'<[\w-]+>', '', m[0]), text)
+        return re.sub(r'\b(?:windows|linux|macos|darwin|unix)\b', '', text, flags=re.I)
+    return replace(claim, heading=clean(claim.heading), quote=clean(claim.quote))
