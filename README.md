@@ -10,6 +10,9 @@ still present in current documentation**. Findings are advisory by default.
 ## Package release status
 
 Versioned distributions use [GitHub Releases](https://github.com/naitik2004/driftlens/releases).
+The [v0.1.0 preview](https://github.com/naitik2004/driftlens/releases/tag/v0.1.0)
+has passed public download, checksum and clean installed-CLI verification;
+[actual release evidence](examples/verification/github-release-2026-11-01.json) is recorded.
 PyPI publication is deferred at the user's request. The distribution name is
 `driftlens-docs`; the PyPI package named `driftlens` belongs to an unrelated
 project. Source installation below works independently of package indexes.

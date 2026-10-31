@@ -9,6 +9,13 @@ submitted project.
 
 **Project name:** DriftLens
 
+**Published preview:** https://github.com/naitik2004/driftlens/releases/tag/v0.1.0
+
+**Release source:** `f9f45d30788ec0169cafb14e50c56c5bd40764b1`.
+The public wheel passed anonymous download, checksum verification, fresh install
+and six installed-CLI scenarios. This does not establish an independent human
+test or completed event submission.
+
 **Team name:** Fuoriclasse
 
 **Repository:** https://github.com/naitik2004/driftlens

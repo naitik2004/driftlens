@@ -122,7 +122,8 @@ risk but do not prove the absence of false positives or prompt injection.
 ## 7:15–8:00 — Naitik: delivery and close
 
 Show the actual latest green main CI, MIT license, team declaration, PR history,
-input examples and corresponding actual outputs. Name Qwen and the coding
+input examples and corresponding actual outputs. Open the v0.1.0 GitHub preview
+and its checksum/install verification; PyPI is deferred. Name Qwen and the coding
 assistants truthfully. Do not claim an organizer submission unless confirmed.
 
 “DriftLens makes supported documentation contradictions traceable to the change
