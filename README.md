@@ -7,6 +7,13 @@ executing analyzed repository code.
 A finding requires **old support + a contradictory code change + the same claim
 still present in current documentation**. Findings are advisory by default.
 
+## Package release status
+
+PyPI publication is being prepared under the proposed name `driftlens-docs`.
+It is not yet verified as published. The PyPI package named `driftlens` is an
+unrelated project. Continue using the source installation below until release
+verification is complete. See [publishing setup](docs/PUBLISHING.md).
+
 ## Quick start
 
 Python 3.10+ and Git are required. The analyzer has no third-party runtime dependencies.
