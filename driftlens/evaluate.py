@@ -61,7 +61,7 @@ def evaluate(manifest, directory):
             'warnings_per_case': sum(len(r['warnings']) for r in results) / len(results) if results else 0,
             'model_resource_usage': None,
             'limitations': ['Recall is over supplied labels only.', 'Precision is reported only for explicitly fully reviewed cases.',
-                            'No historical dataset or model hardware benchmark is bundled.']}
+                            'This deterministic replay does not measure model quality or hardware resource usage.']}
 
 
 def main():
