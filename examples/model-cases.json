@@ -1,0 +1,58 @@
+[
+  {
+    "name": "paraphrased-default",
+    "before_docs": "`connect`: the default timeout equals 30.\n",
+    "after_docs": "`connect`: the default timeout equals 30.\n",
+    "after_default": 10,
+    "expected_findings": 1
+  },
+  {
+    "name": "default-amounts-to",
+    "before_docs": "The `connect` function's `timeout` default amounts to 30.\n",
+    "after_docs": "The `connect` function's `timeout` default amounts to 30.\n",
+    "after_default": 10,
+    "expected_findings": 1
+  },
+  {
+    "name": "value-before-default",
+    "before_docs": "For `connect`, 30 is the default `timeout` value.\n",
+    "after_docs": "For `connect`, 30 is the default `timeout` value.\n",
+    "after_default": 10,
+    "expected_findings": 1
+  },
+  {
+    "name": "preexisting-inaccuracy",
+    "before_docs": "`connect`: the default timeout equals 99.\n",
+    "after_docs": "`connect`: the default timeout equals 99.\n",
+    "after_default": 10,
+    "expected_findings": 0
+  },
+  {
+    "name": "docs-fixed-together",
+    "before_docs": "`connect`: the default timeout equals 30.\n",
+    "after_docs": "`connect`: the default timeout equals 10.\n",
+    "after_default": 10,
+    "expected_findings": 0
+  },
+  {
+    "name": "explicit-example",
+    "before_docs": "# Example\n\n`connect`: the default timeout equals 30.\n",
+    "after_docs": "# Example\n\n`connect`: the default timeout equals 30.\n",
+    "after_default": 10,
+    "expected_findings": 0
+  },
+  {
+    "name": "negated-claim",
+    "before_docs": "The `connect` `timeout` default does not equal 30.\n",
+    "after_docs": "The `connect` `timeout` default does not equal 30.\n",
+    "after_default": 10,
+    "expected_findings": 0
+  },
+  {
+    "name": "unchanged-default",
+    "before_docs": "`connect`: the default timeout equals 30.\n",
+    "after_docs": "`connect`: the default timeout equals 30.\n",
+    "after_default": 30,
+    "expected_findings": 0
+  }
+]

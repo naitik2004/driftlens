@@ -1,5 +1,10 @@
 # Naitik's agent assignment: continue this chat's work
 
+Progress: local runtime/model installation, successful live inference, the
+eight-case synthetic suite and actual evidence artifacts are now completed.
+See ../LOCAL_AI.md. Continue with teammate PR integration, real-history review,
+submission verification and rehearsal; the original checklist follows.
+
 Read docs/TEAM_PLAN.md and docs/JUDGES_GUIDE.md. Own live AI, reports, integration,
 CI and the final presentation. Do not edit Ravichandra's extractor/analyzer or
 Satya's evaluator while their branches are active.

@@ -1,0 +1,113 @@
+{
+  "synthetic": true,
+  "name": "paraphrased-default",
+  "model": "qwen2.5-coder:3b",
+  "cache_enabled": false,
+  "purpose": "Live model contribution smoke test, not an accuracy benchmark.",
+  "input": {
+    "name": "paraphrased-default",
+    "before_docs": "`connect`: the default timeout equals 30.\n",
+    "after_docs": "`connect`: the default timeout equals 30.\n",
+    "after_default": 10,
+    "expected_findings": 1
+  },
+  "expected_findings": 1,
+  "status": "failed",
+  "last_ollama_response": {
+    "model": "qwen2.5-coder:3b",
+    "created_at": "2026-10-31T18:12:51.242798Z",
+    "message": {
+      "role": "assistant",
+      "content": "{\n  \"quote\": \"`connect`: the default timeout equals 30.\",\n  \"subject\": \"client.connect\",\n  \"property\": \"default\",\n  \"value\": \"30\",\n  \"before_verdict\": \"contradicted\",\n  \"after_verdict\": \"supported\"\n}"
+    },
+    "done": true,
+    "done_reason": "stop",
+    "total_duration": 10739255125,
+    "load_duration": 5964723625,
+    "prompt_eval_count": 575,
+    "prompt_eval_cached_count": 0,
+    "prompt_eval_duration": 2916757000,
+    "eval_count": 61,
+    "eval_duration": 1796560000
+  },
+  "baseline": {
+    "schema_version": 1,
+    "analyzer_version": "0.1.0",
+    "base_commit": "575f3444384531a77db9a7c0af369f8466523ae6",
+    "head_commit": "1d508c9e98f48d93139ea475ebb993dd62447478",
+    "findings": [],
+    "abstentions": [
+      {
+        "claim": {
+          "path": "README.md",
+          "heading": "",
+          "quote": "`connect`: the default timeout equals 30.",
+          "line_start": 1,
+          "line_end": 1,
+          "start": 0,
+          "end": 41,
+          "kind": "sentence",
+          "columns": []
+        },
+        "symbol": "client.connect",
+        "reason": "Cannot establish both old support and new contradiction"
+      }
+    ],
+    "warnings": [],
+    "limitations": [
+      "Python top-level functions and direct module-level argparse definitions only.",
+      "Exact scope references required; unresolved aliases, wrappers and qualifiers abstain.",
+      "Static declared defaults do not prove effective runtime values or physical units.",
+      "Markdown subset: ATX headings, paragraphs, simple pipe tables and fenced code."
+    ],
+    "metrics": {
+      "runtime_seconds": 0.086387,
+      "claims_indexed": 1,
+      "facts_indexed": 2,
+      "finding_count": 0,
+      "change_groups": 0,
+      "model_calls": 0,
+      "model_cache_hits": 0
+    }
+  },
+  "assisted": {
+    "schema_version": 1,
+    "analyzer_version": "0.1.0",
+    "base_commit": "575f3444384531a77db9a7c0af369f8466523ae6",
+    "head_commit": "1d508c9e98f48d93139ea475ebb993dd62447478",
+    "findings": [],
+    "abstentions": [
+      {
+        "claim": {
+          "path": "README.md",
+          "heading": "",
+          "quote": "`connect`: the default timeout equals 30.",
+          "line_start": 1,
+          "line_end": 1,
+          "start": 0,
+          "end": 41,
+          "kind": "sentence",
+          "columns": []
+        },
+        "symbol": "client.connect",
+        "reason": "Cannot establish both old support and new contradiction"
+      }
+    ],
+    "warnings": [],
+    "limitations": [
+      "Python top-level functions and direct module-level argparse definitions only.",
+      "Exact scope references required; unresolved aliases, wrappers and qualifiers abstain.",
+      "Static declared defaults do not prove effective runtime values or physical units.",
+      "Markdown subset: ATX headings, paragraphs, simple pipe tables and fenced code."
+    ],
+    "metrics": {
+      "runtime_seconds": 10.881322,
+      "claims_indexed": 1,
+      "facts_indexed": 2,
+      "finding_count": 0,
+      "change_groups": 0,
+      "model_calls": 1,
+      "model_cache_hits": 0
+    }
+  }
+}

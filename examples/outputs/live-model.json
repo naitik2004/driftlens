@@ -1,0 +1,181 @@
+{
+  "synthetic": true,
+  "name": "paraphrased-default",
+  "model": "qwen2.5-coder:3b",
+  "prompt_version": "driftlens-claim-v2",
+  "cache_enabled": false,
+  "purpose": "Live model contribution smoke test, not an accuracy benchmark.",
+  "input": {
+    "name": "paraphrased-default",
+    "before_docs": "`connect`: the default timeout equals 30.\n",
+    "after_docs": "`connect`: the default timeout equals 30.\n",
+    "after_default": 10,
+    "expected_findings": 1
+  },
+  "expected_findings": 1,
+  "status": "passed",
+  "last_ollama_response": {
+    "model": "qwen2.5-coder:3b",
+    "created_at": "2026-10-31T18:14:12.318177Z",
+    "message": {
+      "role": "assistant",
+      "content": "{\n  \"quote\": \"`connect`: the default timeout equals 30.\",\n  \"subject\": \"client.connect\",\n  \"property\": \"default\",\n  \"value\": 30,\n  \"before_verdict\": \"supported\",\n  \"after_verdict\": \"contradicted\"\n}"
+    },
+    "done": true,
+    "done_reason": "stop",
+    "total_duration": 2548264000,
+    "load_duration": 17925625,
+    "prompt_eval_count": 741,
+    "prompt_eval_cached_count": 404,
+    "prompt_eval_duration": 826478000,
+    "eval_count": 61,
+    "eval_duration": 1668889000
+  },
+  "baseline": {
+    "schema_version": 1,
+    "analyzer_version": "0.1.0",
+    "base_commit": "575f3444384531a77db9a7c0af369f8466523ae6",
+    "head_commit": "1d508c9e98f48d93139ea475ebb993dd62447478",
+    "findings": [],
+    "abstentions": [
+      {
+        "claim": {
+          "path": "README.md",
+          "heading": "",
+          "quote": "`connect`: the default timeout equals 30.",
+          "line_start": 1,
+          "line_end": 1,
+          "start": 0,
+          "end": 41,
+          "kind": "sentence",
+          "columns": []
+        },
+        "symbol": "client.connect",
+        "reason": "Cannot establish both old support and new contradiction"
+      }
+    ],
+    "warnings": [],
+    "limitations": [
+      "Python top-level functions and direct module-level argparse definitions only.",
+      "Exact scope references required; unresolved aliases, wrappers and qualifiers abstain.",
+      "Static declared defaults do not prove effective runtime values or physical units.",
+      "Markdown subset: ATX headings, paragraphs, simple pipe tables and fenced code."
+    ],
+    "metrics": {
+      "runtime_seconds": 0.089826,
+      "claims_indexed": 1,
+      "facts_indexed": 2,
+      "finding_count": 0,
+      "change_groups": 0,
+      "model_calls": 0,
+      "model_cache_hits": 0
+    }
+  },
+  "assisted": {
+    "schema_version": 1,
+    "analyzer_version": "0.1.0",
+    "base_commit": "575f3444384531a77db9a7c0af369f8466523ae6",
+    "head_commit": "1d508c9e98f48d93139ea475ebb993dd62447478",
+    "findings": [
+      {
+        "id": "17d296192948d3beeefd",
+        "group_id": "fcb659e0416ec503",
+        "category": "parameter_default_changed",
+        "claim": {
+          "path": "README.md",
+          "heading": "",
+          "quote": "`connect`: the default timeout equals 30.",
+          "line_start": 1,
+          "line_end": 1,
+          "start": 0,
+          "end": 41,
+          "kind": "sentence",
+          "columns": []
+        },
+        "before_claim": {
+          "path": "README.md",
+          "heading": "",
+          "quote": "`connect`: the default timeout equals 30.",
+          "line_start": 1,
+          "line_end": 1,
+          "start": 0,
+          "end": 41,
+          "kind": "sentence",
+          "columns": []
+        },
+        "before": {
+          "path": "client.py",
+          "symbol": "client.connect",
+          "kind": "parameter",
+          "name": "timeout",
+          "value": {
+            "default": 30,
+            "has_default": true,
+            "kwargs": false
+          },
+          "line": 1,
+          "end_line": 2,
+          "resolved": true,
+          "dependencies": []
+        },
+        "after": {
+          "path": "client.py",
+          "symbol": "client.connect",
+          "kind": "parameter",
+          "name": "timeout",
+          "value": {
+            "default": 10,
+            "has_default": true,
+            "kwargs": false
+          },
+          "line": 1,
+          "end_line": 2,
+          "resolved": true,
+          "dependencies": []
+        },
+        "after_owner": null,
+        "before_verdict": "supported",
+        "after_verdict": "contradicted",
+        "evidence_strength": "model-extracted, deterministic fact comparison",
+        "hunks": [
+          {
+            "old_path": "client.py",
+            "new_path": "client.py",
+            "old_start": 1,
+            "old_count": 2,
+            "new_start": 1,
+            "new_count": 2,
+            "text": "@@ -1,2 +1,2 @@\n-def connect(timeout=30):\n+def connect(timeout=10):\n     return timeout\n"
+          }
+        ],
+        "explanation": "client.connect: timeout default changed from 30 to 10; the documentation still states the old value.",
+        "suggested_correction": "Update the documented default from 30 to 10.",
+        "links": {
+          "documentation": null,
+          "before": null,
+          "after": null
+        },
+        "limitations": [
+          "Static source evidence; runtime overrides are not evaluated."
+        ]
+      }
+    ],
+    "abstentions": [],
+    "warnings": [],
+    "limitations": [
+      "Python top-level functions and direct module-level argparse definitions only.",
+      "Exact scope references required; unresolved aliases, wrappers and qualifiers abstain.",
+      "Static declared defaults do not prove effective runtime values or physical units.",
+      "Markdown subset: ATX headings, paragraphs, simple pipe tables and fenced code."
+    ],
+    "metrics": {
+      "runtime_seconds": 2.696454,
+      "claims_indexed": 1,
+      "facts_indexed": 2,
+      "finding_count": 1,
+      "change_groups": 1,
+      "model_calls": 1,
+      "model_cache_hits": 0
+    }
+  }
+}
