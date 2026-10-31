@@ -203,6 +203,14 @@ external work are recorded in [IMPLEMENTATION.md](IMPLEMENTATION.md).
 
 MIT licensed. Development proceeds on feature branches through pull requests.
 
+## Current integration status
+
+The 1 November integration run passed 72 tests, all four deterministic demos and
+the eight-case live Qwen suite. A clean installed CLI was checked outside the
+source checkout. These are implementation checks, not evidence of broad
+real-history accuracy. See [verification and outstanding submission/rehearsal
+tasks](docs/VERIFICATION.md).
+
 ## Team execution and presentation
 
 See [the three-person work plan](docs/TEAM_PLAN.md), the copyable

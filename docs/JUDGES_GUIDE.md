@@ -39,9 +39,10 @@ README.md and tested code define what is actually supported.
 
 ## What is implemented versus still unproven
 
-The inspected MVP has 49 passing original tests and four passing synthetic demos.
-This planning branch adds a tested live-model contribution harness. Main's hosted
-CI passed after PR #1. These facts do not establish real-world accuracy.
+The 1 November integration run passed 72 tests and all four synthetic demos.
+Live local model calls, a clean installed CLI, and exact report evidence were
+checked separately. See [the verification record](VERIFICATION.md) for current
+status. These checks do not establish real-world accuracy.
 
 Live local inference was subsequently observed: prompt v2 produced three
 model-assisted findings that the baseline missed, and five synthetic controls
@@ -59,7 +60,7 @@ analysis is a separate product mode. Explain that distinction directly.
 | Time | Speaker | Show and explain |
 | --- | --- | --- |
 | 0:00–0:45 | Naitik | Maintainer problem and the 30-to-10 timeout example |
-| 0:45–2:45 | Ravichandra | Live real finding: sentence, old/new code, responsible diff |
+| 0:45–2:45 | Ravichandra | Live synthetic finding: sentence, old/new code, responsible diff |
 | 2:45–3:45 | Satya | Docs fixed together and harmless refactor: no new drift |
 | 3:45–4:45 | Naitik | Actual Qwen contribution with model-off/model-on comparison |
 | 4:45–6:00 | Satya | Real historical A/B/C example, measured results and misses |
@@ -191,3 +192,11 @@ pre-existing issue, not new drift.
 Do not promise arbitrary imperative recognition, complex parser/wrapper
 resolution, general natural-language understanding or behavioral verification.
 The tests establish this narrow supported scope, not general recall or accuracy.
+
+## Rehearsal status
+
+The integration agent executed the technical commands and checked their outputs.
+That is not a spoken team rehearsal. All three members still need to run through
+the eight-minute pitch, operate their own demonstration segment and answer
+questions without an assistant. Do not mark that human rehearsal complete until
+it happens. A concise speaker script is in [PRESENTATION.md](PRESENTATION.md).
