@@ -1,0 +1,21 @@
+{
+  "case": "yt-dlp-multistream-default",
+  "response": {
+    "model": "qwen2.5-coder:3b",
+    "created_at": "2026-10-31T23:17:47.777093Z",
+    "message": {
+      "role": "assistant",
+      "content": "{\n  \"quote\": \"For example, `-f bestvideo+best+bestaudio` will download and merge all 3 given formats.\",\n  \"assessment\": \"review_required\",\n  \"reason\": \"The quote in the README.md file has changed from allowing multiple video and audio streams to not allowing them. This change requires verification to ensure that the example still accurately represents the current behavior of the `--video-multistreams` and `--audio-multistreams` flags.\",\n  \"suggested_action\": \"Verify the updated behavior of the `--video-multistreams` and `--audio-multistreams` flags by running the command `youtube-dl -f bestvideo+best+bestaudio` and checking if the output is as expected. Additionally, ensure that the `--video-multistreams` and `--audio-multistreams` flags are correctly parsed and handled in the `youtube_dlc/options.py` file.\",\n  \"citations\": [\n    {\"revision\": \"base\", \"path\": \"youtube_dlc/options.py\", \"line\": 439, \"quote\": \"    video_format.add_option(\\n        '--video-multistreams',\\n        action='store_true', dest='allow_multiple_video_streams', default=True,\\n        help='Allow multiple video streams to be merged into a single file (default)')\"},\n    {\"revision\": \"head\", \"path\": \"youtube_dlc/options.py\", \"line\": 439, \"quote\": \"    video_format.add_option(\\n        '--video-multistreams',\\n        action='store_true', dest='allow_multiple_video_streams', default=False,\\n        help='Allow multiple video streams to be merged into a single file')\"},\n    {\"revision\": \"base\", \"path\": \"youtube_dlc/options.py\", \"line\": 447, \"quote\": \"    video_format.add_option(\\n        '--audio-multistreams',\\n        action='store_true', dest='allow_multiple_audio_streams', default=True,\\n        help='Allow multiple audio streams to be merged into a single file (default)')\"},\n    {\"revision\": \"head\", \"path\": \"youtube_dlc/options.py\", \"line\": 447, \"quote\": \"    video_format.add_option(\\n        '--audio-multistreams',\\n        action='store_true', dest='allow_multiple_audio_streams', default=False,\\n        help='Allow multiple audio streams to be merged into a single file')\"}\n  ]\n}"
+    },
+    "done": true,
+    "done_reason": "stop",
+    "total_duration": 21362478167,
+    "load_duration": 29574500,
+    "prompt_eval_count": 749,
+    "prompt_eval_cached_count": 748,
+    "prompt_eval_duration": 6830012000,
+    "eval_count": 518,
+    "eval_duration": 13858119000
+  },
+  "model_calls": 1
+}

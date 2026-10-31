@@ -1,0 +1,282 @@
+{
+  "protocol_version": 1,
+  "frozen_detector_commit": "caf6347b0ff74ee01f9e74c86f749ed96aaa4677",
+  "selection": "Retrospective, purposive external-repository selection before prediction; not random, blinded, or independently human annotated.",
+  "cases": [
+    {
+      "id": "httpx-limits-default",
+      "repo": "../../../driftlens-evaluation-cache/httpx.git",
+      "before": "8d9dfb54fccb4b45c7ffedf67033714e74ea4961",
+      "drift": "8c7729e42c9ebf860e75820d5325741b85d64970",
+      "split": "evaluation",
+      "expected": [
+        {
+          "path": "docs/advanced.md",
+          "symbol": "httpx._config.DEFAULT_LIMITS",
+          "name": "max_keepalive_connections",
+          "category": "configuration_default_changed",
+          "quote": "(Defaults 10)",
+          "line_start": 559,
+          "start": 18371
+        }
+      ],
+      "fully_reviewed": false,
+      "source_url": "https://github.com/encode/httpx",
+      "license": "BSD-3-Clause",
+      "kind": "positive",
+      "control_type": null,
+      "review": "Default pool capacity changed from 10 to 20 while the same Markdown default remains; later C corrects it.",
+      "changed_paths": [
+        "CHANGELOG.md",
+        "README.md",
+        "docs/index.md",
+        "httpx/__version__.py",
+        "httpx/_config.py",
+        "tests/test_config.py"
+      ],
+      "correction": "68cf1ff88a7f6c0b084bb62455c043aa503713ef",
+      "evidence": {
+        "code_path": "httpx/_config.py",
+        "before_code": "DEFAULT_LIMITS = Limits(max_keepalive=10, max_connections=100)",
+        "drift_code": "DEFAULT_LIMITS = Limits(max_connections=100, max_keepalive_connections=20)",
+        "doc_path": "docs/advanced.md",
+        "quote": "(Defaults 10)",
+        "correction_path": "docs/advanced.md",
+        "correction_quote": "(Defaults 20)"
+      },
+      "label_context": "The preceding sentence names max_keepalive and allowable keep-alive connections. This is an effective default configuration instance, not a literal parameter default. The parameter is also renamed in B. The retained prose still promises the old capacity.",
+      "reviewed_patch_sha256": "da889341858b9f2a14f61dbe87fc67d2bc9bb55a1a0edb19684336429d9ff240"
+    },
+    {
+      "id": "httpx-redirect-default-synchronized",
+      "repo": "../../../driftlens-evaluation-cache/httpx.git",
+      "before": "0b4a83257bef85559d91b466e4ac94a216a25485",
+      "drift": "47266d763bdef9dc99f9c9d09d49d441b87802e6",
+      "split": "evaluation",
+      "expected": [],
+      "fully_reviewed": false,
+      "source_url": "https://github.com/encode/httpx",
+      "license": "BSD-3-Clause",
+      "kind": "negative",
+      "control_type": "synchronized",
+      "review": "Redirect defaults and compatibility/quickstart guidance change together.",
+      "changed_paths": [
+        "docs/compatibility.md",
+        "docs/quickstart.md",
+        "httpx/_api.py",
+        "httpx/_client.py",
+        "httpx/_models.py",
+        "tests/client/test_event_hooks.py",
+        "tests/client/test_redirects.py",
+        "tests/test_utils.py"
+      ],
+      "reviewed_patch_sha256": "0abdf64029c393396e1f3bec0d0aaa4a262bd6593a02093853eae775247c556f"
+    },
+    {
+      "id": "httpx-encoding-default-synchronized",
+      "repo": "../../../driftlens-evaluation-cache/httpx.git",
+      "before": "940d61b239d0f387405f56005b13ad5aed3216b0",
+      "drift": "1c33a2854e5d18955c8766c5c01e6229716b5b7a",
+      "split": "evaluation",
+      "expected": [],
+      "fully_reviewed": false,
+      "source_url": "https://github.com/encode/httpx",
+      "license": "BSD-3-Clause",
+      "kind": "negative",
+      "control_type": "synchronized",
+      "review": "UTF-8/default_encoding implementation and Markdown guidance change together.",
+      "changed_paths": [
+        "README.md",
+        "README_chinese.md",
+        "docs/advanced.md",
+        "docs/index.md",
+        "httpx/_client.py",
+        "httpx/_models.py",
+        "requirements.txt",
+        "setup.py",
+        "tests/client/test_client.py",
+        "tests/models/test_responses.py",
+        "tests/test_decoders.py"
+      ],
+      "reviewed_patch_sha256": "7e4f98c6e30862b72b06c2e75c7175e94b0a19390e3e5f48e04d0ff21563bc8a"
+    },
+    {
+      "id": "httpx-http2-default-synchronized",
+      "repo": "../../../driftlens-evaluation-cache/httpx.git",
+      "before": "12d00b238e837a96271d7b07b8c3b456bd82fe0c",
+      "drift": "30229f16527882305d75ff2877c5b8831f6dc638",
+      "split": "evaluation",
+      "expected": [],
+      "fully_reviewed": false,
+      "source_url": "https://github.com/encode/httpx",
+      "license": "BSD-3-Clause",
+      "kind": "negative",
+      "control_type": "synchronized",
+      "review": "HTTP/2 becomes opt-in and Markdown explains explicit enabling in the same change.",
+      "changed_paths": [
+        "docs/advanced.md",
+        "docs/http2.md",
+        "docs/index.md",
+        "httpx/__init__.py",
+        "httpx/api.py",
+        "httpx/client.py",
+        "httpx/config.py",
+        "httpx/dispatch/connection.py",
+        "httpx/dispatch/connection_pool.py",
+        "httpx/dispatch/proxy_http.py",
+        "mkdocs.yml",
+        "tests/client/test_proxies.py",
+        "tests/dispatch/test_http2.py",
+        "tests/test_concurrency.py",
+        "tests/test_config.py",
+        "tests/test_multipart.py"
+      ],
+      "reviewed_patch_sha256": "f458f967c287ca2633cd9f6b2285e235826281961798982ae908541a38702619"
+    },
+    {
+      "id": "httpx-url-comment",
+      "repo": "../../../driftlens-evaluation-cache/httpx.git",
+      "before": "6f5865f8605b2cf15872388c3d9bc3623bbf265e",
+      "drift": "efc841a9e8e709f5cc40257927dd7461dc832330",
+      "split": "evaluation",
+      "expected": [],
+      "fully_reviewed": true,
+      "source_url": "https://github.com/encode/httpx",
+      "license": "BSD-3-Clause",
+      "kind": "negative",
+      "control_type": "comment_only",
+      "review": "Only corrects a Python comment; executable AST is unchanged.",
+      "changed_paths": [
+        "httpx/_client.py"
+      ],
+      "reviewed_patch_sha256": "d6c118b63ffae31f11214a97c3d5e02c343ee551ae5ddd7e1b849d2b3240d0eb"
+    },
+    {
+      "id": "httpx-exception-docstring",
+      "repo": "../../../driftlens-evaluation-cache/httpx.git",
+      "before": "35de3dfeb6215070ce6ae1974cbba10318f0e99e",
+      "drift": "317653585cd781c59fc3f5dde20292a47f765a0e",
+      "split": "evaluation",
+      "expected": [],
+      "fully_reviewed": true,
+      "source_url": "https://github.com/encode/httpx",
+      "license": "BSD-3-Clause",
+      "kind": "negative",
+      "control_type": "docstring_only",
+      "review": "Only corrects the RemoteProtocolError docstring spelling.",
+      "changed_paths": [
+        "httpx/_exceptions.py"
+      ],
+      "reviewed_patch_sha256": "1cf2f6eb15bcada44db8ef5a2c3bc7bf3d9d7771c898ac1707cf6c6bf19d6b45"
+    },
+    {
+      "id": "httpx-wsgi-docstring",
+      "repo": "../../../driftlens-evaluation-cache/httpx.git",
+      "before": "ab64f7c41fc0fbe638dd586fecf0689c847109bb",
+      "drift": "b16901311568a8bdb90e69cc3f83b593749976bc",
+      "split": "evaluation",
+      "expected": [],
+      "fully_reviewed": true,
+      "source_url": "https://github.com/encode/httpx",
+      "license": "BSD-3-Clause",
+      "kind": "negative",
+      "control_type": "docstring_only",
+      "review": "Only changes ASGI to WSGI in a docstring; executable statements are unchanged.",
+      "changed_paths": [
+        "httpx/_transports/wsgi.py"
+      ],
+      "reviewed_patch_sha256": "2f9bde1ee91dabae66ddc4e097515f67a2f580ace0f32f639c5ef7e24ba7b7fc"
+    },
+    {
+      "id": "pipx-comparisons-and-installation-spelling",
+      "repo": "../../../driftlens-evaluation-cache/pipx.git",
+      "before": "5fd768690b178adccf53511634d734e0e7765f4c",
+      "drift": "946cd61fe6e3290448a1622737cca30b28b5ea82",
+      "split": "evaluation",
+      "expected": [],
+      "fully_reviewed": true,
+      "source_url": "https://github.com/pypa/pipx",
+      "license": "MIT",
+      "kind": "negative",
+      "control_type": "markdown_only",
+      "review": "Only fixes spelling in two Markdown pages; no code changes.",
+      "changed_paths": [
+        "docs/comparisons.md",
+        "docs/installation.md"
+      ],
+      "reviewed_patch_sha256": "bf14886166e3ac64e6c05cc1e904e620475c98fcb86304590a2dbb59747676f6"
+    },
+    {
+      "id": "pipx-comparisons-spelling",
+      "repo": "../../../driftlens-evaluation-cache/pipx.git",
+      "before": "0634553cb01815693815e43f0bf85e841f9c90ca",
+      "drift": "820f761e1cf30036609f6bdaacae781effd5abaa",
+      "split": "evaluation",
+      "expected": [],
+      "fully_reviewed": true,
+      "source_url": "https://github.com/pypa/pipx",
+      "license": "MIT",
+      "kind": "negative",
+      "control_type": "markdown_only",
+      "review": "Only fixes running spelling in Markdown; no code changes.",
+      "changed_paths": [
+        "docs/comparisons.md"
+      ],
+      "reviewed_patch_sha256": "896faea9ec9a17b36139a45afdb1d85998c900a8953b9a08309cd535ca0f9510"
+    },
+    {
+      "id": "pipx-warning-spelling",
+      "repo": "../../../driftlens-evaluation-cache/pipx.git",
+      "before": "de9dd7fa5463e84142fde95f112897982f589159",
+      "drift": "ce3c37b1f81dc2cdc987638f087073048a269ef0",
+      "split": "evaluation",
+      "expected": [],
+      "fully_reviewed": true,
+      "source_url": "https://github.com/pypa/pipx",
+      "license": "MIT",
+      "kind": "negative",
+      "control_type": "message_only",
+      "review": "Only corrects an existing logging warning; control flow and defaults are unchanged.",
+      "changed_paths": [
+        "pipx/Venv.py"
+      ],
+      "reviewed_patch_sha256": "d0ac3f6db9ca1a5e0787d4dfb8869c3ffdaa30cc85e68a94768f254590c8181c"
+    },
+    {
+      "id": "pipx-comparisons-grammar",
+      "repo": "../../../driftlens-evaluation-cache/pipx.git",
+      "before": "dd2ea2bbfa713e2882fe25ad6a17c4c2323dc90d",
+      "drift": "60452753928a0d39aff06dae4b44888b5db97fbd",
+      "split": "evaluation",
+      "expected": [],
+      "fully_reviewed": true,
+      "source_url": "https://github.com/pypa/pipx",
+      "license": "MIT",
+      "kind": "negative",
+      "control_type": "markdown_only",
+      "review": "Only corrects grammar in Markdown; no code changes.",
+      "changed_paths": [
+        "docs/comparisons.md"
+      ],
+      "reviewed_patch_sha256": "d895f25a31ed988422ba67c48e890a643cce0e327c06af900b2c4592fa70a1ab"
+    },
+    {
+      "id": "pipx-interpreter-spelling",
+      "repo": "../../../driftlens-evaluation-cache/pipx.git",
+      "before": "14775800b1cf763a32e3543ab03154ddabce8f95",
+      "drift": "dd2ea2bbfa713e2882fe25ad6a17c4c2323dc90d",
+      "split": "evaluation",
+      "expected": [],
+      "fully_reviewed": true,
+      "source_url": "https://github.com/pypa/pipx",
+      "license": "MIT",
+      "kind": "negative",
+      "control_type": "markdown_only",
+      "review": "Only corrects interpreter spelling in Markdown; no code changes.",
+      "changed_paths": [
+        "docs/comparisons.md"
+      ],
+      "reviewed_patch_sha256": "6a0c8e0eb829fee0161927e2e5eec7de2f837425f14000728685b6cbf6b2ff72"
+    }
+  ]
+}

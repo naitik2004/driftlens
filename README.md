@@ -9,10 +9,11 @@ still present in current documentation**. Findings are advisory by default.
 
 ## Package release status
 
-PyPI publication is being prepared under the proposed name `driftlens-docs`.
-It is not yet verified as published. The PyPI package named `driftlens` is an
-unrelated project. Continue using the source installation below until release
-verification is complete. See [publishing setup](docs/PUBLISHING.md).
+Versioned distributions use [GitHub Releases](https://github.com/naitik2004/driftlens/releases).
+PyPI publication is deferred at the user's request. The distribution name is
+`driftlens-docs`; the PyPI package named `driftlens` belongs to an unrelated
+project. Source installation below works independently of package indexes.
+See [release installation](docs/GETTING_STARTED.md) and [publishing setup](docs/PUBLISHING.md).
 
 ## Quick start
 
@@ -82,9 +83,10 @@ not a historical accuracy benchmark.
 - Removed argparse flags and changed explicit defaults in direct, module-level
   `ArgumentParser` / `add_argument` definitions. Retained aliases and potentially
   compatible long-option abbreviations are respected.
-- Direct optparse options/groups in public function bodies with explicit scalar
-  defaults and a single declaration per destination. Implicit defaults, shared
-  destinations and set_defaults overrides abstain; no Boolean defaults are inferred.
+- Direct optparse `store_true`/`store_false` options/groups in public function
+  bodies with explicit scalar defaults, including ordered shared destinations. The last explicit default
+  wins; implicit paired flags do not overwrite it. Unknown constructor/registration
+  state and set_defaults overrides abstain; Boolean defaults are never invented.
 - Declared cache filename layouts: two typed numeric fields versus a new local
   fixed-list dot-joined key with more fields. Exact unique template linking and
   mutation/type guards apply; [bounded rule details](docs/CACHE_LAYOUT.md).
@@ -210,6 +212,20 @@ two positive cases remain missed. This is retrospective development on a known
 case, not held-out accuracy or a broad precision claim.
 [Live AI measurements](docs/LOCAL_AI.md) use separate synthetic inputs.
 
+The separate [12-case external study](examples/evaluation/README.md) replays
+HTTPX and pipx without tuning the frozen detector: **0/1 positive labels**, all
+11 controls quiet, no warnings. With no predictions, precision is undefined.
+This small retrospective selection is not independent human verification or a
+broad accuracy claim. All raw outputs, exact labels and provenance are retained.
+
+Add `--review-candidates` to surface source-backed behavioral candidates in a
+separate review section. The original yt-dlp and gdown sentences are retrieved;
+they remain unverified, do not trigger build failures or annotations, and are
+not counted as successful detections. See [behavioral review](docs/BEHAVIOR_REVIEW.md).
+Combining this option with `--model` adds local Qwen review notes with validated
+source citations, explicitly marked unverified. Those notes do not establish a
+contradiction or increase the detection count.
+
 ## Boundaries and project status
 
 This is a conservative MVP, not a whole-program verifier. It abstains on dynamic
@@ -252,7 +268,9 @@ and spoken team rehearsal are still human tasks; see [the verification record](d
 
 ## Team execution and presentation
 
-See [the three-person work plan](docs/TEAM_PLAN.md), the copyable
+Naitik now handles the remaining integration and solo presentation. Original
+contributors remain credited in the team declaration. See
+[the original three-person work plan](docs/TEAM_PLAN.md), the copyable
 [agent assignments](docs/tasks/), and the [presentation and Q&A guide](docs/JUDGES_GUIDE.md).
 
 To verify a real local-model contribution separately from deterministic fixtures:

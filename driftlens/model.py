@@ -2,6 +2,7 @@
 
 A model proposes a claim mapping. Deterministic verification still decides
 whether the mapped fact is supported before and contradicted after.
+The separate review() path supplies unverified candidate notes, never findings.
 """
 import hashlib
 import json
@@ -59,6 +60,7 @@ class Ollama:
         self.cache = Path(cache) if cache else None
         self.calls, self.cache_hits = 0, 0
         self.last_response = None
+        self.last_review_response = None
 
     def interpret(self, bundle):
         serialized = json.dumps(bundle, sort_keys=True, ensure_ascii=True)
@@ -100,6 +102,10 @@ class Ollama:
                 path.parent.mkdir(parents=True, exist_ok=True)
                 path.write_text(json.dumps(output, ensure_ascii=True) + "\n", encoding='utf-8', newline='\n')
         return output
+
+    def review(self, candidate):
+        from .review_model import review
+        return review(self, candidate)
 
     @staticmethod
     def validate(output, bundle):

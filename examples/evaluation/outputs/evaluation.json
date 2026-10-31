@@ -1,0 +1,182 @@
+{
+  "cases": [
+    {
+      "id": "httpx-limits-default",
+      "split": "evaluation",
+      "known_labels": 1,
+      "known_hits": 0,
+      "predictions": 0,
+      "unmatched_for_review": [],
+      "correction_evidence": [],
+      "runtime_seconds": 2.299357,
+      "warnings": [],
+      "precision": null
+    },
+    {
+      "id": "httpx-redirect-default-synchronized",
+      "split": "evaluation",
+      "known_labels": 0,
+      "known_hits": 0,
+      "predictions": 0,
+      "unmatched_for_review": [],
+      "correction_evidence": [],
+      "runtime_seconds": 4.880129,
+      "warnings": [],
+      "precision": null
+    },
+    {
+      "id": "httpx-encoding-default-synchronized",
+      "split": "evaluation",
+      "known_labels": 0,
+      "known_hits": 0,
+      "predictions": 0,
+      "unmatched_for_review": [],
+      "correction_evidence": [],
+      "runtime_seconds": 3.72925,
+      "warnings": [],
+      "precision": null
+    },
+    {
+      "id": "httpx-http2-default-synchronized",
+      "split": "evaluation",
+      "known_labels": 0,
+      "known_hits": 0,
+      "predictions": 0,
+      "unmatched_for_review": [],
+      "correction_evidence": [],
+      "runtime_seconds": 2.182075,
+      "warnings": [],
+      "precision": null
+    },
+    {
+      "id": "httpx-url-comment",
+      "split": "evaluation",
+      "known_labels": 0,
+      "known_hits": 0,
+      "predictions": 0,
+      "unmatched_for_review": [],
+      "correction_evidence": [],
+      "runtime_seconds": 3.11892,
+      "warnings": [],
+      "precision": null
+    },
+    {
+      "id": "httpx-exception-docstring",
+      "split": "evaluation",
+      "known_labels": 0,
+      "known_hits": 0,
+      "predictions": 0,
+      "unmatched_for_review": [],
+      "correction_evidence": [],
+      "runtime_seconds": 2.949202,
+      "warnings": [],
+      "precision": null
+    },
+    {
+      "id": "httpx-wsgi-docstring",
+      "split": "evaluation",
+      "known_labels": 0,
+      "known_hits": 0,
+      "predictions": 0,
+      "unmatched_for_review": [],
+      "correction_evidence": [],
+      "runtime_seconds": 2.96334,
+      "warnings": [],
+      "precision": null
+    },
+    {
+      "id": "pipx-comparisons-and-installation-spelling",
+      "split": "evaluation",
+      "known_labels": 0,
+      "known_hits": 0,
+      "predictions": 0,
+      "unmatched_for_review": [],
+      "correction_evidence": [],
+      "runtime_seconds": 1.386327,
+      "warnings": [],
+      "precision": null
+    },
+    {
+      "id": "pipx-comparisons-spelling",
+      "split": "evaluation",
+      "known_labels": 0,
+      "known_hits": 0,
+      "predictions": 0,
+      "unmatched_for_review": [],
+      "correction_evidence": [],
+      "runtime_seconds": 1.666364,
+      "warnings": [],
+      "precision": null
+    },
+    {
+      "id": "pipx-warning-spelling",
+      "split": "evaluation",
+      "known_labels": 0,
+      "known_hits": 0,
+      "predictions": 0,
+      "unmatched_for_review": [],
+      "correction_evidence": [],
+      "runtime_seconds": 1.160483,
+      "warnings": [],
+      "precision": null
+    },
+    {
+      "id": "pipx-comparisons-grammar",
+      "split": "evaluation",
+      "known_labels": 0,
+      "known_hits": 0,
+      "predictions": 0,
+      "unmatched_for_review": [],
+      "correction_evidence": [],
+      "runtime_seconds": 0.779069,
+      "warnings": [],
+      "precision": null
+    },
+    {
+      "id": "pipx-interpreter-spelling",
+      "split": "evaluation",
+      "known_labels": 0,
+      "known_hits": 0,
+      "predictions": 0,
+      "unmatched_for_review": [],
+      "correction_evidence": [],
+      "runtime_seconds": 0.817176,
+      "warnings": [],
+      "precision": null
+    }
+  ],
+  "known_case_recall": 0.0,
+  "warnings_per_case": 0.0,
+  "model_resource_usage": null,
+  "limitations": [
+    "Recall is over supplied labels only.",
+    "Precision is reported only for explicitly fully reviewed cases.",
+    "This deterministic replay does not measure model quality or hardware resource usage."
+  ],
+  "study": {
+    "manifest_sha256": "1a3565f848b428b1fb765da91aabbb58b669afceff9368e1e2b3878dd27c8d35",
+    "frozen_detector_commit": "caf6347b0ff74ee01f9e74c86f749ed96aaa4677",
+    "executed_detector_commit": "7af949d5f3a08274735a9abf4c85c45575f8d8b9",
+    "working_tree_modified": true,
+    "runtime_sha256": {
+      "__init__.py": "27a8399c569c86036a61a71388a08e3a152cd5caa252e9024fbe73de5349a05d",
+      "__main__.py": "935a1c1166b0c1ea35a82256345000bf2c73ded718d77773bc27a71ecce28f7d",
+      "analyzer.py": "8649ae2590f738cde2396cc15f65b267cc2f6b2c10b3c6363ce258ca22e10ffc",
+      "cli.py": "0457a5b08a7bc9151fffe0cade1c657c967ffe12dccb936889af7cd757836e9d",
+      "evaluate.py": "31ec11547670c1442260433c0a9d454204eb9b495c216e0caa8eda97c4f65290",
+      "facts.py": "9107b46804ed539648e7e0d086181b40cce3b639f0facf78315436cedb56080e",
+      "markdown.py": "f223a5b545f694376e0f76711e710ace7e82ee18fcb419beaeb0abb77f1fd919",
+      "model.py": "d7ac95c8226d91ae6123723f9059232038256dc0f25daba188832830fa7f424e",
+      "reporting.py": "e66a2206d3af7e71e5bf3dc2411726e9fafe89137554640e3ba346378ddd8ecf",
+      "review.py": "a220f017f0d7b46e6c1892605b6943e9cfa44fcf7b2a2c975029bbf992a6eaec",
+      "review_model.py": "721c11055bde738676808cd4300dea527d5b7c0cab7ce6e9ab95fb537460b307",
+      "snapshots.py": "8c96c026e6d590d49371a600cd5573a3cdad7b87e081cdd3bcd39a8ffeb0da8b"
+    },
+    "selection": "Retrospective, purposive external-repository selection before prediction; not random, blinded, or independently human annotated.",
+    "positive_cases": 1,
+    "negative_controls": 11,
+    "independent_human_review": false,
+    "precision": null,
+    "patch_fingerprint": "Canonical full-index Myers diff; provenance checks rerun after presentation-only fingerprint normalization."
+  }
+}

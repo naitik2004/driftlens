@@ -1,5 +1,43 @@
 # Integration verification — 1 November 2026
 
+## Naitik takeover and release continuation
+
+PR #18's passing evidence update was reviewed and merged. Naitik took over all
+remaining repository work; no teammate completion or attendance is assumed.
+The current runtime passes **141 tests**, four deterministic demos (1/0/0/1),
+the eight-case actual local Qwen default-extraction suite, and the six-history
+development replay. Runtime file hashes and actual outputs are recorded in
+[the takeover evidence](../examples/verification/final-takeover-2026-11-01.json).
+
+Ordered shared optparse destinations now resolve the last explicit default;
+implicit paired flags do not overwrite it. Earlier conflicting/implicit/dynamic
+default false-alarm controls remain quiet. Unknown constructor/registration
+state and set_defaults continue to abstain.
+
+Opt-in behavioral review retrieves the original yt-dlp and gdown claims, one
+candidate each, without changing established finding recall from **1/3**.
+All three real controls have zero findings and zero candidates. Actual local
+Qwen review added two unverified notes with validated source citations; three
+controls made zero model calls. The initial gdown response echoed the wrong
+quote and was rejected; its raw response is retained. Schema-constrained exact
+quote echo fixed the request without weakening validation. See
+[actual review requests and controls](../examples/verification/behavior-ai-2026-11-01/)
+and [the rejected response](../examples/verification/behavior-model-initial-failure-2026-11-01.json).
+
+The external study is now executed rather than a protocol alone: **12 pinned
+cases across HTTPX and pipx**, with frozen labels, source/patch/ancestry checks,
+licenses, raw frozen/current reports and a manual hosted workflow. Its one
+genuine positive is missed; all 11 controls are quiet with no warnings. Recall
+is **0/1** and precision undefined. Selection is purposive and retrospective,
+not independent human annotation. See [the complete study](../examples/evaluation/README.md).
+
+The user selected GitHub Releases and deferred PyPI/TestPyPI. The wheel and
+source archive build; strict metadata and fresh installed execution are checked
+before publication. Exact hosted CI, release URL, asset hashes and public
+download/install evidence are recorded after those actions actually complete.
+No independent human first-use, OrganizerHQ submission or spoken rehearsal is
+claimed. The presentation now assigns every segment to Naitik.
+
 ## Hosted readiness follow-up
 
 After PR #17 merged, main `ecf4a8ea33b79af0e586ac318e88b83cd1cf3657` passed CI

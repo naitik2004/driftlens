@@ -1,0 +1,21 @@
+{
+  "case": "gdown-folder-file-limit",
+  "response": {
+    "model": "qwen2.5-coder:3b",
+    "created_at": "2026-10-31T23:18:43.910319Z",
+    "message": {
+      "role": "assistant",
+      "content": "{\n  \"quote\": \"- Downloads folders recursively (up to 50 files per folder)\",\n  \"assessment\": \"review_required\",\n  \"reason\": \"The numeric client guard that limited the number of files per folder has been removed, but the claim about the maximum number of files per folder remains. The new implementation and external service may impose a different limit, and no unlimited-service claim is established.\",\n  \"suggested_action\": \"Verify the new implementation and external service to ensure they impose a reasonable limit on the number of files per folder. Check the documentation and source code for any changes that might affect the file download behavior.\",\n  \"citations\": [\n    {\"revision\": \"base\", \"path\": \"gdown/download_folder.py\", \"line\": 22, \"quote\": \"MAX_NUMBER_FILES = 50\"},\n    {\"revision\": \"base\", \"path\": \"gdown/download_folder.py\", \"line\": 178, \"quote\": \"    has_at_least_max_files = len(gdrive_file.children) == MAX_NUMBER_FILES\"},\n    {\"revision\": \"head\", \"path\": \"gdown/download_folder.py\", \"line\": 144, \"quote\": \"    gdrive_file = _download_and_parse_google_drive_link(\\n        sess=sess,\\n        folder_id=folder_id,\\n        quiet=quiet,\\n        verify=verify,\\n    )\"},\n    {\"revision\": \"head\", \"path\": \"gdown/download_folder.py\", \"line\": 276, \"quote\": \"def _download_and_parse_google_drive_link(\\n    sess: requests.Session,\\n    folder_id: str,\\n    quiet: bool = False,\\n    verify: bool | str = True,\\n) -> _GoogleDriveFile:\\n    folder_name, children = _parse_embedded_folder_view(\\n        sess=sess, folder_id=folder_id, verify=verify\\n    )\\n\\n    gdrive_file = _GoogleDriveFile(\\n        id=folder_id,\\n        name=folder_name,\\n        type=_GoogleDriveFile.TYPE_FOLDER,\\n    )\\n\\n    for child_id, child_name, child_type in children:\\n        if child_type != _GoogleDriveFile.TYPE_FOLDER:\\n            if not quiet:\\n                print(\\n                    \\\"Processing file\\\",\\n                    child_id,\\n                    child_name,\\n                )\\n            gdrive_file.children.append(\\n                _GoogleDriveFile(\\n                    id=child_id,\\n                    name=child_name,\\n                    type=child_type,\\n                )\\n            )\\n            continue\\n\\n        if not quiet:\\n            print(\\n                \\\"Retrieving folder\\\",\\n                child_id,\\n                child_name,\\n            )\\n        child = _download_and_parse_google_drive_link(\\n            sess=sess,\\n            folder_id=child_id,\\n            quiet=quiet,\\n            verify=verify,\\n        )\\n        gdrive_file.children.append(child)\\n    return gdrive_file\"}\n  ]\n}"
+    },
+    "done": true,
+    "done_reason": "stop",
+    "total_duration": 20472699625,
+    "load_duration": 47961708,
+    "prompt_eval_count": 863,
+    "prompt_eval_cached_count": 174,
+    "prompt_eval_duration": 1844604000,
+    "eval_count": 638,
+    "eval_duration": 18375180000
+  },
+  "model_calls": 1
+}

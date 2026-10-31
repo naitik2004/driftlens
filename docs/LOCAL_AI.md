@@ -94,3 +94,13 @@ Runtime: Ollama 0.40.13; hardware: Apple M3, 8 GB RAM; configured context: 4096.
 Ollama reported about 2.16 GB of model allocation and one runner RSS sample was
 2,095,088 KiB. Neither is peak memory; shared/GPU memory may overlap. Full metadata
 and the verified runtime archive checksum are retained in the environment output.
+
+## Behavioral review notes
+
+`--review-candidates --model qwen2.5-coder:3b` optionally explains up to three
+source-backed candidates. These notes remain unverified even when citations
+validate. The review request uses an 8,192-token context and bounded output,
+separately from the earlier default-extraction measurements above. No new peak
+memory or broad accuracy claim is made for this path. Actual real-history
+requests, controls and the rejected first gdown quote are retained in the final
+verification evidence. See [BEHAVIOR_REVIEW.md](BEHAVIOR_REVIEW.md).

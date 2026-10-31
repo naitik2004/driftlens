@@ -1,6 +1,12 @@
 # Publishing DriftLens
 
-Proposed distribution name: **driftlens-docs**. The existing PyPI project named
+The user selected **GitHub Releases for now**. PyPI/TestPyPI publication is
+deferred, not a release prerequisite. A GitHub release should contain the tested
+wheel, source archive and SHA256SUMS, identify its exact source commit, and pass
+a fresh download/checksum/install test. Do not claim a package-index upload.
+The account setup below documents a future PyPI route and the earlier failure.
+
+Distribution name: **driftlens-docs**. The existing PyPI project named
 `driftlens` is unrelated; installing it does not install this tool. The Python
 module and executable for this project remain `driftlens`. Install distributions
 with overlapping module names in separate virtual environments.
@@ -30,6 +36,19 @@ were created and restricted to the `main` branch. This completes the GitHub-side
 environment step, not the PyPI/TestPyPI publisher registration or publication.
 The readiness branch's hosted validation run passed with its upload job skipped;
 see [the recorded evidence](../examples/verification/public-readiness-2026-11-01.json).
+
+The actual TestPyPI upload reached OIDC exchange and returned `invalid-publisher`:
+a valid token but no matching publisher. Its observed identity is owner
+`naitik2004` (ID `71080891`), repo `driftlens`, workflow
+`naitik2004/driftlens/.github/workflows/publish.yml@refs/heads/main`, environment
+`testpypi`. In the account form, enter **publish.yml**, not the directory path.
+TestPyPI registration is separate from PyPI and from creating GitHub environments.
+The agent has no authenticated PyPI/TestPyPI account session, so it cannot complete
+that form. Do not disable GitHub's immutable subject identities or put credentials
+in source to work around this. PyPI's
+[publisher lookup](https://github.com/pypi/warehouse/blob/main/warehouse/oidc/models/github.py)
+matches repository, owner ID, workflow filename and environment; see
+[official troubleshooting](https://docs.pypi.org/trusted-publishers/troubleshooting/).
 
 ## Validate and publish
 

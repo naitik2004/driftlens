@@ -1,3 +1,11 @@
+# Current ownership
+
+Naitik has taken over all remaining coding, integration, evaluation, release and
+solo presentation work. The assignments below are historical context, not a
+reason to wait for Satya or Ravichandra. Their original contributions remain
+credited in HACKATHON.md. Account-only submission and human rehearsal still need
+actual confirmation.
+
 # Fuoriclasse: parallel delivery plan
 
 Start here before giving work to another coding agent. This is a verified baseline

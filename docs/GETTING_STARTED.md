@@ -1,9 +1,26 @@
 # Install and run DriftLens
 
 You need Git and Python 3.10 or newer. Ollama is optional; ordinary analysis
-does not need a model server or API key. Public package publication has not been
-verified, so install this repository's source rather than the unrelated PyPI
-package named `driftlens`.
+does not need a model server or API key. Distribution is through GitHub Releases;
+PyPI is deferred. The unrelated PyPI package named `driftlens` is not this tool.
+
+## Versioned GitHub installation
+
+Download the wheel and `SHA256SUMS` from the
+[v0.1.0 release](https://github.com/naitik2004/driftlens/releases/tag/v0.1.0).
+Check its checksum against `SHA256SUMS`, then install that local wheel in a fresh
+environment. You can also install the versioned wheel directly:
+
+```sh
+python3 -m venv .venv
+.venv/bin/python -m pip install --no-deps https://github.com/naitik2004/driftlens/releases/download/v0.1.0/driftlens_docs-0.1.0-py3-none-any.whl
+.venv/bin/driftlens --help
+```
+
+On Windows PowerShell, use `py -3 -m venv .venv` and replace the executable paths
+with `.\.venv\Scripts\python.exe` and `.\.venv\Scripts\driftlens.exe`.
+The release page identifies the exact source commit and known limitations.
+The source-install alternative follows.
 
 ## macOS and Linux
 

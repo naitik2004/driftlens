@@ -39,7 +39,7 @@ README.md and tested code define what is actually supported.
 
 ## What is implemented versus still unproven
 
-The latest detector continuation passed 105 tests and all four synthetic demos.
+The current continuation passed 141 tests and all four synthetic demos.
 Live local model calls, a clean installed CLI, and exact report evidence were
 checked separately. See [the verification record](VERIFICATION.md) for current
 status. These checks do not establish real-world accuracy.
@@ -198,9 +198,9 @@ The tests establish this narrow supported scope, not general recall or accuracy.
 ## Rehearsal status
 
 The integration agent executed the technical commands and checked their outputs.
-That is not a spoken team rehearsal. All three members still need to run through
-the eight-minute pitch, operate their own demonstration segment and answer
-questions without an assistant. Do not mark that human rehearsal complete until
+That is not a spoken rehearsal. Naitik now delivers the entire eight-minute
+pitch alone, including operating the demos and answering questions without an
+assistant. The original teammates remain credited. Do not mark rehearsal complete until
 it happens. A concise speaker script is in [PRESENTATION.md](PRESENTATION.md).
 
 ## Optparse correction to explain if asked
@@ -208,9 +208,17 @@ it happens. A concise speaker script is in [PRESENTATION.md](PRESENTATION.md).
 Unlike argparse Boolean actions, optparse leaves unspecified defaults as None.
 Defaults also belong to destinations shared by options. A newly merged extension
 initially got those cases wrong; integration review reproduced false positives.
-We added three negative regressions and now abstain on implicit/shared/overridden
-defaults instead of inventing proof. This is a correctness fix, not a claim of
+The current extension models ordered shared destinations: the last explicit
+default wins, and implicit paired flags do not overwrite it. Dynamic constructor
+keywords, unknown later defaults and set_defaults still abstain. Regression
+tests preserve the earlier false-alarm controls. This is not a claim of
 successfully detecting the two historical cases.
+
+Opt-in review mode retrieves those sentences with source evidence but keeps them
+out of annotations, failure status and recall. The independent external study
+has 12 cases, 0/1 supplied positive hits and 11 quiet controls. With no
+predictions, precision is undefined. This is a real limitation, not an accuracy
+pass; see [the complete study](../examples/evaluation/README.md).
 
 ## Explain the real Black finding
 

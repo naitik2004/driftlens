@@ -1,0 +1,35 @@
+name: External historical evaluation (manual)
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  replay:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/cache@v4
+        id: histories
+        with:
+          path: ${{ runner.temp }}/external-histories
+          key: external-histories-${{ hashFiles('examples/evaluation/manifest.json') }}
+      - name: Fetch public histories without executing their code
+        if: steps.histories.outputs.cache-hit != 'true'
+        run: |
+          mkdir -p "$RUNNER_TEMP/external-histories"
+          git clone --bare https://github.com/encode/httpx.git "$RUNNER_TEMP/external-histories/httpx.git"
+          git clone --bare https://github.com/pypa/pipx.git "$RUNNER_TEMP/external-histories/pipx.git"
+      - name: Verify provenance and report measured accuracy
+        run: python -m examples.evaluation.replay --cache-dir "$RUNNER_TEMP/external-histories" --output "$RUNNER_TEMP/results"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: external-evaluation-${{ github.sha }}
+          path: ${{ runner.temp }}/results
+          if-no-files-found: warn
