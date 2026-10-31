@@ -1,0 +1,29 @@
+{
+  "source": "black-cache-filename",
+  "reviewed_after_a_b_detection": true,
+  "future_c_supplied_to_detector": false,
+  "original_linux_label_matched": true,
+  "underlying_change_groups": 1,
+  "reviewed_locations": [
+    {
+      "path": "README.md",
+      "line_start": 884,
+      "quote": "* Windows: `C:\\\\Users\\<username>\\AppData\\Local\\black\\black\\Cache\\<version>\\cache.<line-length>.<file-mode>.pickle`",
+      "category": "cache_path_changed"
+    },
+    {
+      "path": "README.md",
+      "line_start": 885,
+      "quote": "* macOS: `/Users/<username>/Library/Caches/black/<version>/cache.<line-length>.<file-mode>.pickle`",
+      "category": "cache_path_changed"
+    },
+    {
+      "path": "README.md",
+      "line_start": 886,
+      "quote": "* Linux: `/home/<username>/.cache/black/<version>/cache.<line-length>.<file-mode>.pickle`",
+      "category": "cache_path_changed"
+    }
+  ],
+  "corroboration": "After detection, C has three corresponding cache.<mode-key>.pickle platform paths.",
+  "interpretation": "Three sentences for one code change. Labels were not expanded; two extra locations remain visible as reviewed unmatched predictions in evaluation.json."
+}

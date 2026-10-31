@@ -43,10 +43,11 @@ extracts structured claims from otherwise unresolved prose, with schema, quote
 and value validation. Unsupported or ambiguous evidence is left unverified.
 
 The repository includes a CLI, advisory GitHub Actions workflow, MIT license,
-79-test correction result, four deterministic demos, actual local-model outputs
+105-test detector result, four deterministic demos, actual local-model outputs
 and reproducible public-history experiments. AI added three verified findings in
-a developer-selected synthetic suite. Both genuine historical drift cases in the
-current corpus remain missed because they exercise unsupported patterns. The
+a developer-selected synthetic suite. The historical corpus matches one of three original positive labels: Black
+produces three stale platform sentences in one change group. The other two cases
+remain missed. This is a retrospective development result, not held-out accuracy. The
 project does not claim broad historical accuracy or general behavioral reasoning.
 
 ## What the form cannot verify automatically for us

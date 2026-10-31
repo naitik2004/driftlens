@@ -68,6 +68,9 @@ not a historical accuracy benchmark.
 - Direct optparse options/groups in public function bodies with explicit scalar
   defaults and a single declaration per destination. Implicit defaults, shared
   destinations and set_defaults overrides abstain; no Boolean defaults are inferred.
+- Declared cache filename layouts: two typed numeric fields versus a new local
+  fixed-list dot-joined key with more fields. Exact unique template linking and
+  mutation/type guards apply; [bounded rule details](docs/CACHE_LAYOUT.md).
 - Simple module constants and `from module import CONSTANT` dependencies with a
   maximum of two resolution hops. Constant changes carry the dependency's diff.
 - One constrained retry pattern: a literal `range(N)` loop around `try: return
@@ -76,7 +79,8 @@ not a historical accuracy benchmark.
 - Markdown sentences, ATX headings and simple pipe tables, with original Unicode
   character offsets (zero-based, end-exclusive) and one-based line numbers.
 
-Exact symbol/parameter or flag references link documentation to facts. Unchanged
+Exact symbol/parameter or flag references, or an unambiguous declared filename
+template, link documentation to facts. Unchanged
 Markdown files are searched too. A table's header supplies its column semantics.
 Identical old/current claims and heading context establish continuity; modified
 or newly added passages are conservatively left unverified.
@@ -180,21 +184,22 @@ counted as false positives. The harness reports known-label recall, per-case
 runtime and warnings, and precision only for fully reviewed cases. It rejects
 repository overlap between development/evaluation splits. A small real-history
 [corpus and reproducible replay](examples/historical/README.md) now contains three
-genuine drift cases and three negative controls. The current detector missed all three
-positive labels (0/3 known-label recall); all three controls produced no findings.
-The cases cover optparse/example behavior, computed cache paths, and
-a removed local folder-listing cap; none is safely supported by the current static evidence rules.
-The cases are an unblinded scope study, not a held-out accuracy benchmark.
+genuine drift cases and three negative controls. The bounded filename detector
+matches **1/3 original positive labels**; all three controls stay quiet. Black's
+Linux claim matches exactly, plus two manually reviewed Windows/macOS references
+in the same code-change group. No labels or revisions were changed. The other
+two positive cases remain missed. This is retrospective development on a known
+case, not held-out accuracy or a broad precision claim.
 [Live AI measurements](docs/LOCAL_AI.md) use separate synthetic inputs.
 
 ## Boundaries and project status
 
 This is a conservative MVP, not a whole-program verifier. It abstains on dynamic
-defaults, decorators, reassigned parameters, unsupported runtime configuration,
+defaults, decorated functions, reassigned parameters, unsupported runtime configuration,
 ambiguous scopes, historical/platform/conditional qualifiers, examples and
 uncertain alias relationships. Defaults are declared Python values; physical
 units and effective values after external overrides are not independently
-proven. Methods, nested functions, complex argparse setup, arbitrary config
+proven. General method evaluation, nested functions, complex argparse setup, arbitrary config
 frameworks, public wrapper/caller traversal, implicit prose links, general symbol
 renames and arbitrary behavioral claims are not supported. Code blocks are
 indexed but never used as default assertions. Complex Markdown extensions and
@@ -209,11 +214,13 @@ MIT licensed. Development proceeds on feature branches through pull requests.
 
 ## Current integration status
 
-The earlier PR #10 correction run passed 79 tests, all four deterministic demos and
-the eight-case live Qwen suite. A clean installed CLI was checked outside the
-source checkout. A separate local check on merged main 6047427 passed 84 tests and all four demos; the model suite and clean-install checks were not rerun after PR #11. These are implementation checks, not evidence of broad
-real-history accuracy. See [verification and outstanding submission/rehearsal
-tasks](docs/VERIFICATION.md).
+The latest detector continuation passed **105 tests**, all four deterministic
+demos, the eight-case actual local Qwen suite, and the six-case historical replay.
+The historical result is **1/3 supplied positive labels**, with three quiet
+controls. Three Black platform sentences form one underlying change group.
+See [the filename proof and runnable historical demo](docs/CACHE_LAYOUT.md).
+These checks do not establish broad real-world accuracy. Submission confirmation
+and spoken team rehearsal are still human tasks; see [the verification record](docs/VERIFICATION.md).
 
 ## Team execution and presentation
 

@@ -1,0 +1,53 @@
+{
+  "base_main": "b4f881698e12d26673fd0be9945c97ea6a2884c6",
+  "change": "Bounded declared cache filename layout rule",
+  "original_manifest_labels_changed": false,
+  "unit_tests": {
+    "count": 105,
+    "status": "passed",
+    "new_rule_methods": 21
+  },
+  "historical": {
+    "cases": 6,
+    "original_positive_labels": 3,
+    "original_labels_matched": 1,
+    "known_label_recall": 0.3333333333333333,
+    "negative_controls": 3,
+    "negative_predictions": 0,
+    "black_sentence_findings": 3,
+    "black_change_groups": 1,
+    "unmatched_platform_locations_manually_reviewed": 2,
+    "precision": null,
+    "held_out_evaluation": false
+  },
+  "synthetic_demo_counts": [
+    1,
+    0,
+    0,
+    1
+  ],
+  "live_model": {
+    "cases_passed": 8,
+    "uncached_calls": 5,
+    "extra_findings": 3
+  },
+  "execution_boundary": "No analyzed upstream code imported or executed; later C never supplied to detection.",
+  "remaining_misses": [
+    "yt-dlp-multistream-default",
+    "gdown-folder-file-limit"
+  ],
+  "clean_installed_history_cli": {
+    "status": "passed",
+    "original_label_hits": 1,
+    "sentence_findings": 3,
+    "change_groups": 1,
+    "model_calls": 0,
+    "known_fixture_warnings": 4,
+    "findings_identical_to_saved_artifact": true,
+    "execution": "Installed venv console script outside source checkout"
+  },
+  "organizer_submission": "unverified",
+  "spoken_team_rehearsal": "unverified",
+  "runtime_commit": "26247bfb465e88ba6cdd331555bd6eade974df9f",
+  "captured_at_ist": "2026-11-01T02:45:21.019696+05:30"
+}

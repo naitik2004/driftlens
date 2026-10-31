@@ -26,32 +26,27 @@ Problem 5 because that link is the useful part for maintainers.”
 
 ## 0:45–2:45 — Ravichandra: deterministic live demonstration
 
-Say explicitly: “This first demonstration uses controlled synthetic Git histories.”
+Say: “This first demonstration uses an actual historical Black code change.”
+Run the pinned A/B command in CACHE_LAYOUT.md, using the prepared bare cache.
+It writes `/tmp/driftlens-black-live.md` and its JSON report. Open the report
+preview alongside the pinned old/new code links.
 
-```sh
-python3 -m examples.demo
-```
+“The README still describes a cache filename with two numeric fields. The code
+now calls a local helper that joins five fields. Counting the declared separators
+proves that layout cannot match, without evaluating the unknown values. The
+Linux label matches exactly; Windows and macOS give two more stale sentences,
+all grouped under this one code change.”
 
-Show the drift-detected report preview. Point to the exact quote and line, old
-30/new 10 source facts, responsible diff and suggested correction. Explain that
-the analyzer reads committed snapshots, not uncommitted editor content.
+Show exact quote, line, old/new facts, helper/list dependencies and responsible
+diff. Explain that runtime overrides and filesystem normalization are outside
+this static contract. Later documentation C was not given to the detector.
 
-Then show the removed-flag report and the direct instruction regression:
-
-```sh
-python3 -m unittest tests.test_detector_extensions -q
-```
-
-“The slide's `Use --timeout` instruction is now recognized when that exact flag
-was supported before and removed now. We report removal. We do not prove that a
-new `--deadline` flag means the same thing or actually stops a slow job.”
-
-Show one committed test/source snippet. Do not spend the segment scrolling a
-whole file or presenting a test double as real model execution.
+Then briefly show the removed-flag example as an additional controlled fixture.
+Do not call that synthetic example upstream history or a verified semantic rename.
 
 ## 2:45–3:45 — Satya: two important non-findings
 
-Show documentation-fixed and harmless-refactor reports from the same demo run.
+Run `python3 -m examples.demo` and show documentation-fixed and harmless-refactor reports.
 
 “The first change updates the documentation too, so there is no unchanged stale
 claim. The second changes formatting without changing the declared default, so
@@ -85,15 +80,16 @@ API response. Mention the initial rejected response if asked about reliability.
 
 Show examples/historical/README.md and one pinned A/B/C source example.
 
-“We also investigated actual public history. We analyze A and B before using C,
-the later correction, for validation. The current corpus has two genuine drift
-cases and two negative controls. The detector misses both positives: one needs
-shared optparse-default/example-link semantics; the other needs computed cache-path reasoning.
-Both are outside the implementation's scope today.
+“Our corpus has three genuine drift histories and three negative controls.
+The original Black Linux label is now detected; all three controls stay quiet.
+The two extra platform sentences are reviewed predictions for that same code
+change, not extra successful historical cases. Known-label recall is one of
+three supplied positive labels. We left the labels unchanged.
 
-“We retain that 0/2 result rather than present synthetic success as historical
-accuracy. This is an unblinded, small retrospective study, not a held-out benchmark.
-It tells us exactly where a future bounded extension needs evidence.”
+“The yt-dlp behavior example and gdown folder cap remain missed. This rule was
+developed using an already-known Black case, so we do not call it held-out
+accuracy. We kept the misses, warnings and two additional reviewed locations
+visible. Later C is used only after A/B detection to corroborate the result.”
 
 If a later reviewed PR changes these results, rerun the corpus and update this
 script and reports before changing that claim. Never silently replace a miss
@@ -132,7 +128,7 @@ Ask each other, without an assistant:
 1. Why is this different from grep and doctest?
 2. Which exact line verifies old support and current contradiction?
 3. What did Qwen add, and what happens if it returns a wrong type or verdict?
-4. Why are both real-history positives missed? What would a safe extension need?
+4. Why does Black match, why do the other two histories remain missed, and why are three sentences only one successful historical case?
 5. How does a same-PR doc fix avoid a false alarm?
 6. Why is zero findings not proof that documentation is correct?
 7. What runs on GitHub, and what requires the local model?

@@ -1,3 +1,13 @@
+# Detector continuation status
+
+The user explicitly asked Naitik's chat to take over this workstream. The new
+bounded filename-layout rule was implemented there, with 105 passing tests and
+21 rule-specific methods. Black's original historical Linux label now matches;
+all three platform sentences are reported in one change group. Full corpus:
+1/3 original positive labels, all three controls quiet. See
+[the proof and limits](../CACHE_LAYOUT.md). PR/final-main checks and installed
+execution are required before sign-off. The original assignment follows.
+
 # Paste this assignment into Ravichandra's coding agent
 
 You are working on Fuoriclasse's DriftLens for Problem 5. Read docs/TEAM_PLAN.md,

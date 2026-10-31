@@ -8,7 +8,7 @@
       "predictions": 0,
       "unmatched_for_review": [],
       "correction_evidence": [],
-      "runtime_seconds": 20.382653,
+      "runtime_seconds": 21.04352,
       "warnings": [],
       "precision": null
     },
@@ -16,11 +16,302 @@
       "id": "black-cache-filename",
       "split": "evaluation",
       "known_labels": 1,
-      "known_hits": 0,
-      "predictions": 0,
-      "unmatched_for_review": [],
-      "correction_evidence": [],
-      "runtime_seconds": 4.864244,
+      "known_hits": 1,
+      "predictions": 3,
+      "unmatched_for_review": [
+        {
+          "id": "dd54b6d2a58bdf4532ed",
+          "group_id": "2630231e70f6c59f",
+          "category": "cache_path_changed",
+          "claim": {
+            "path": "README.md",
+            "heading": "Installation and usage / Ignoring unmodified files",
+            "quote": "* Windows: `C:\\\\Users\\<username>\\AppData\\Local\\black\\black\\Cache\\<version>\\cache.<line-length>.<file-mode>.pickle`",
+            "line_start": 884,
+            "line_end": 884,
+            "start": 35025,
+            "end": 35139,
+            "kind": "sentence",
+            "columns": []
+          },
+          "before_claim": {
+            "path": "README.md",
+            "heading": "Installation and usage / Ignoring unmodified files",
+            "quote": "* Windows: `C:\\\\Users\\<username>\\AppData\\Local\\black\\black\\Cache\\<version>\\cache.<line-length>.<file-mode>.pickle`",
+            "line_start": 869,
+            "line_end": 869,
+            "start": 33913,
+            "end": 34027,
+            "kind": "sentence",
+            "columns": []
+          },
+          "before": {
+            "path": "black.py",
+            "symbol": "black.get_cache_file",
+            "kind": "cache_path",
+            "name": "mode",
+            "value": {
+              "prefix": "cache.",
+              "suffix": ".pickle",
+              "base_expression": "Path(user_cache_dir('black', version=__version__))",
+              "numeric_components": 2,
+              "component_types": [
+                "int",
+                "FileMode.value (enum.Flag)"
+              ],
+              "template": "cache.<line-length>.<file-mode>.pickle"
+            },
+            "line": 3601,
+            "end_line": 3602,
+            "resolved": true,
+            "dependencies": [
+              [
+                "black.py",
+                114
+              ],
+              [
+                "black.py",
+                115
+              ],
+              [
+                "black.py",
+                116
+              ],
+              [
+                "black.py",
+                117
+              ],
+              [
+                "black.py",
+                118
+              ],
+              [
+                "black.py",
+                119
+              ]
+            ]
+          },
+          "after": {
+            "path": "black.py",
+            "symbol": "black.get_cache_file",
+            "kind": "cache_path",
+            "name": "mode",
+            "value": {
+              "prefix": "cache.",
+              "suffix": ".pickle",
+              "base_expression": "Path(user_cache_dir('black', version=__version__))",
+              "minimum_components": 5,
+              "helper": "FileMode.get_cache_key"
+            },
+            "line": 3700,
+            "end_line": 3701,
+            "resolved": true,
+            "dependencies": [
+              [
+                "black.py",
+                175
+              ],
+              [
+                "black.py",
+                183
+              ],
+              [
+                "black.py",
+                190
+              ]
+            ]
+          },
+          "after_owner": null,
+          "before_verdict": "supported",
+          "after_verdict": "contradicted",
+          "evidence_strength": "deterministic",
+          "hunks": [
+            {
+              "old_path": "black.py",
+              "new_path": "black.py",
+              "old_start": 111,
+              "old_count": 32,
+              "new_start": 112,
+              "new_count": 86,
+              "text": "@@ -111,32 +112,86 @@ class Changed(Enum):\n     YES = 2\n \n \n-class FileMode(Flag):\n-    AUTO_DETECT = 0\n-    PYTHON36 = 1\n-    PYI = 2\n-    NO_STRING_NORMALIZATION = 4\n-    NO_NUMERIC_UNDERSCORE_NORMALIZATION = 8\n+class TargetVersion(Enum):\n+    PYPY35 = 1\n+    CPY27 = 2\n+    CPY33 = 3\n+    CPY34 = 4\n+    CPY35 = 5\n+    CPY36 = 6\n+    CPY37 = 7\n+    CPY38 = 8\n+\n+    def is_python2(self) -> bool:\n+        return self is TargetVersion.CPY27\n+\n+\n+PY36_VERSIONS = {TargetVersion.CPY36, TargetVersion.CPY37, TargetVersion.CPY38}\n+\n+\n+class Feature(Enum):\n+    # All string literals are unicode\n+    UNICODE_LITERALS = 1\n+    F_STRINGS = 2\n+    NUMERIC_UNDERSCORES = 3\n+    TRAILING_COMMA = 4\n+\n+\n+VERSION_TO_FEATURES: Dict[TargetVersion, Set[Feature]] = {\n+    TargetVersion.CPY27: set(),\n+    TargetVersion.PYPY35: {Feature.UNICODE_LITERALS, Feature.F_STRINGS},\n+    TargetVersion.CPY33: {Feature.UNICODE_LITERALS},\n+    TargetVersion.CPY34: {Feature.UNICODE_LITERALS},\n+    TargetVersion.CPY35: {Feature.UNICODE_LITERALS, Feature.TRAILING_COMMA},\n+    TargetVersion.CPY36: {\n+        Feature.UNICODE_LITERALS,\n+        Feature.F_STRINGS,\n+        Feature.NUMERIC_UNDERSCORES,\n+        Feature.TRAILING_COMMA,\n+    },\n+    TargetVersion.CPY37: {\n+        Feature.UNICODE_LITERALS,\n+        Feature.F_STRINGS,\n+        Feature.NUMERIC_UNDERSCORES,\n+        Feature.TRAILING_COMMA,\n+    },\n+    TargetVersion.CPY38: {\n+        Feature.UNICODE_LITERALS,\n+        Feature.F_STRINGS,\n+        Feature.NUMERIC_UNDERSCORES,\n+        Feature.TRAILING_COMMA,\n+    },\n+}\n \n-    @classmethod\n-    def from_configuration(\n-        cls,\n-        *,\n-        py36: bool,\n-        pyi: bool,\n-        skip_string_normalization: bool,\n-        skip_numeric_underscore_normalization: bool,\n-    ) -> \"FileMode\":\n-        mode = cls.AUTO_DETECT\n-        if py36:\n-            mode |= cls.PYTHON36\n-        if pyi:\n-            mode |= cls.PYI\n-        if skip_string_normalization:\n-            mode |= cls.NO_STRING_NORMALIZATION\n-        if skip_numeric_underscore_normalization:\n-            mode |= cls.NO_NUMERIC_UNDERSCORE_NORMALIZATION\n-        return mode\n+\n+@dataclass\n+class FileMode:\n+    target_versions: Set[TargetVersion] = Factory(set)\n+    line_length: int = DEFAULT_LINE_LENGTH\n+    numeric_underscore_normalization: bool = True\n+    string_normalization: bool = True\n+    is_pyi: bool = False\n+\n+    def get_cache_key(self) -> str:\n+        if self.target_versions:\n+            version_str = \",\".join(\n+                str(version.value)\n+                for version in sorted(self.target_versions, key=lambda v: v.value)\n+            )\n+        else:\n+            version_str = \"-\"\n+        parts = [\n+            version_str,\n+            str(self.line_length),\n+            str(int(self.numeric_underscore_normalization)),\n+            str(int(self.string_normalization)),\n+            str(int(self.is_pyi)),\n+        ]\n+        return \".\".join(parts)\n+\n+\n+def supports_feature(target_versions: Set[TargetVersion], feature: Feature) -> bool:\n+    return all(feature in VERSION_TO_FEATURES[version] for version in target_versions)\n \n \n def read_pyproject_toml(\n"
+            },
+            {
+              "old_path": "black.py",
+              "new_path": "black.py",
+              "old_start": 3598,
+              "old_count": 16,
+              "new_start": 3697,
+              "new_count": 16,
+              "text": "@@ -3598,16 +3697,16 @@ def can_omit_invisible_parens(line: Line, line_length: int) -> bool:\n     return False\n \n \n-def get_cache_file(line_length: int, mode: FileMode) -> Path:\n-    return CACHE_DIR / f\"cache.{line_length}.{mode.value}.pickle\"\n+def get_cache_file(mode: FileMode) -> Path:\n+    return CACHE_DIR / f\"cache.{mode.get_cache_key()}.pickle\"\n \n \n-def read_cache(line_length: int, mode: FileMode) -> Cache:\n+def read_cache(mode: FileMode) -> Cache:\n     \"\"\"Read the cache if it exists and is well formed.\n \n     If it is not well formed, the call to write_cache later should resolve the issue.\n     \"\"\"\n-    cache_file = get_cache_file(line_length, mode)\n+    cache_file = get_cache_file(mode)\n     if not cache_file.exists():\n         return {}\n \n"
+            }
+          ],
+          "explanation": "black.get_cache_file: the documented filename's 2 numeric fields are incompatible with the new declared key, which joins at least 5 dot-separated components.",
+          "suggested_correction": "Update the documented filename layout to describe the new composite key; review its fields rather than guessing runtime values.",
+          "links": {
+            "documentation": null,
+            "before": null,
+            "after": null
+          },
+          "limitations": [
+            "Static source evidence; runtime overrides are not evaluated."
+          ]
+        },
+        {
+          "id": "ed1cc2053df67530888d",
+          "group_id": "2630231e70f6c59f",
+          "category": "cache_path_changed",
+          "claim": {
+            "path": "README.md",
+            "heading": "Installation and usage / Ignoring unmodified files",
+            "quote": "* macOS: `/Users/<username>/Library/Caches/black/<version>/cache.<line-length>.<file-mode>.pickle`",
+            "line_start": 885,
+            "line_end": 885,
+            "start": 35140,
+            "end": 35238,
+            "kind": "sentence",
+            "columns": []
+          },
+          "before_claim": {
+            "path": "README.md",
+            "heading": "Installation and usage / Ignoring unmodified files",
+            "quote": "* macOS: `/Users/<username>/Library/Caches/black/<version>/cache.<line-length>.<file-mode>.pickle`",
+            "line_start": 870,
+            "line_end": 870,
+            "start": 34028,
+            "end": 34126,
+            "kind": "sentence",
+            "columns": []
+          },
+          "before": {
+            "path": "black.py",
+            "symbol": "black.get_cache_file",
+            "kind": "cache_path",
+            "name": "mode",
+            "value": {
+              "prefix": "cache.",
+              "suffix": ".pickle",
+              "base_expression": "Path(user_cache_dir('black', version=__version__))",
+              "numeric_components": 2,
+              "component_types": [
+                "int",
+                "FileMode.value (enum.Flag)"
+              ],
+              "template": "cache.<line-length>.<file-mode>.pickle"
+            },
+            "line": 3601,
+            "end_line": 3602,
+            "resolved": true,
+            "dependencies": [
+              [
+                "black.py",
+                114
+              ],
+              [
+                "black.py",
+                115
+              ],
+              [
+                "black.py",
+                116
+              ],
+              [
+                "black.py",
+                117
+              ],
+              [
+                "black.py",
+                118
+              ],
+              [
+                "black.py",
+                119
+              ]
+            ]
+          },
+          "after": {
+            "path": "black.py",
+            "symbol": "black.get_cache_file",
+            "kind": "cache_path",
+            "name": "mode",
+            "value": {
+              "prefix": "cache.",
+              "suffix": ".pickle",
+              "base_expression": "Path(user_cache_dir('black', version=__version__))",
+              "minimum_components": 5,
+              "helper": "FileMode.get_cache_key"
+            },
+            "line": 3700,
+            "end_line": 3701,
+            "resolved": true,
+            "dependencies": [
+              [
+                "black.py",
+                175
+              ],
+              [
+                "black.py",
+                183
+              ],
+              [
+                "black.py",
+                190
+              ]
+            ]
+          },
+          "after_owner": null,
+          "before_verdict": "supported",
+          "after_verdict": "contradicted",
+          "evidence_strength": "deterministic",
+          "hunks": [
+            {
+              "old_path": "black.py",
+              "new_path": "black.py",
+              "old_start": 111,
+              "old_count": 32,
+              "new_start": 112,
+              "new_count": 86,
+              "text": "@@ -111,32 +112,86 @@ class Changed(Enum):\n     YES = 2\n \n \n-class FileMode(Flag):\n-    AUTO_DETECT = 0\n-    PYTHON36 = 1\n-    PYI = 2\n-    NO_STRING_NORMALIZATION = 4\n-    NO_NUMERIC_UNDERSCORE_NORMALIZATION = 8\n+class TargetVersion(Enum):\n+    PYPY35 = 1\n+    CPY27 = 2\n+    CPY33 = 3\n+    CPY34 = 4\n+    CPY35 = 5\n+    CPY36 = 6\n+    CPY37 = 7\n+    CPY38 = 8\n+\n+    def is_python2(self) -> bool:\n+        return self is TargetVersion.CPY27\n+\n+\n+PY36_VERSIONS = {TargetVersion.CPY36, TargetVersion.CPY37, TargetVersion.CPY38}\n+\n+\n+class Feature(Enum):\n+    # All string literals are unicode\n+    UNICODE_LITERALS = 1\n+    F_STRINGS = 2\n+    NUMERIC_UNDERSCORES = 3\n+    TRAILING_COMMA = 4\n+\n+\n+VERSION_TO_FEATURES: Dict[TargetVersion, Set[Feature]] = {\n+    TargetVersion.CPY27: set(),\n+    TargetVersion.PYPY35: {Feature.UNICODE_LITERALS, Feature.F_STRINGS},\n+    TargetVersion.CPY33: {Feature.UNICODE_LITERALS},\n+    TargetVersion.CPY34: {Feature.UNICODE_LITERALS},\n+    TargetVersion.CPY35: {Feature.UNICODE_LITERALS, Feature.TRAILING_COMMA},\n+    TargetVersion.CPY36: {\n+        Feature.UNICODE_LITERALS,\n+        Feature.F_STRINGS,\n+        Feature.NUMERIC_UNDERSCORES,\n+        Feature.TRAILING_COMMA,\n+    },\n+    TargetVersion.CPY37: {\n+        Feature.UNICODE_LITERALS,\n+        Feature.F_STRINGS,\n+        Feature.NUMERIC_UNDERSCORES,\n+        Feature.TRAILING_COMMA,\n+    },\n+    TargetVersion.CPY38: {\n+        Feature.UNICODE_LITERALS,\n+        Feature.F_STRINGS,\n+        Feature.NUMERIC_UNDERSCORES,\n+        Feature.TRAILING_COMMA,\n+    },\n+}\n \n-    @classmethod\n-    def from_configuration(\n-        cls,\n-        *,\n-        py36: bool,\n-        pyi: bool,\n-        skip_string_normalization: bool,\n-        skip_numeric_underscore_normalization: bool,\n-    ) -> \"FileMode\":\n-        mode = cls.AUTO_DETECT\n-        if py36:\n-            mode |= cls.PYTHON36\n-        if pyi:\n-            mode |= cls.PYI\n-        if skip_string_normalization:\n-            mode |= cls.NO_STRING_NORMALIZATION\n-        if skip_numeric_underscore_normalization:\n-            mode |= cls.NO_NUMERIC_UNDERSCORE_NORMALIZATION\n-        return mode\n+\n+@dataclass\n+class FileMode:\n+    target_versions: Set[TargetVersion] = Factory(set)\n+    line_length: int = DEFAULT_LINE_LENGTH\n+    numeric_underscore_normalization: bool = True\n+    string_normalization: bool = True\n+    is_pyi: bool = False\n+\n+    def get_cache_key(self) -> str:\n+        if self.target_versions:\n+            version_str = \",\".join(\n+                str(version.value)\n+                for version in sorted(self.target_versions, key=lambda v: v.value)\n+            )\n+        else:\n+            version_str = \"-\"\n+        parts = [\n+            version_str,\n+            str(self.line_length),\n+            str(int(self.numeric_underscore_normalization)),\n+            str(int(self.string_normalization)),\n+            str(int(self.is_pyi)),\n+        ]\n+        return \".\".join(parts)\n+\n+\n+def supports_feature(target_versions: Set[TargetVersion], feature: Feature) -> bool:\n+    return all(feature in VERSION_TO_FEATURES[version] for version in target_versions)\n \n \n def read_pyproject_toml(\n"
+            },
+            {
+              "old_path": "black.py",
+              "new_path": "black.py",
+              "old_start": 3598,
+              "old_count": 16,
+              "new_start": 3697,
+              "new_count": 16,
+              "text": "@@ -3598,16 +3697,16 @@ def can_omit_invisible_parens(line: Line, line_length: int) -> bool:\n     return False\n \n \n-def get_cache_file(line_length: int, mode: FileMode) -> Path:\n-    return CACHE_DIR / f\"cache.{line_length}.{mode.value}.pickle\"\n+def get_cache_file(mode: FileMode) -> Path:\n+    return CACHE_DIR / f\"cache.{mode.get_cache_key()}.pickle\"\n \n \n-def read_cache(line_length: int, mode: FileMode) -> Cache:\n+def read_cache(mode: FileMode) -> Cache:\n     \"\"\"Read the cache if it exists and is well formed.\n \n     If it is not well formed, the call to write_cache later should resolve the issue.\n     \"\"\"\n-    cache_file = get_cache_file(line_length, mode)\n+    cache_file = get_cache_file(mode)\n     if not cache_file.exists():\n         return {}\n \n"
+            }
+          ],
+          "explanation": "black.get_cache_file: the documented filename's 2 numeric fields are incompatible with the new declared key, which joins at least 5 dot-separated components.",
+          "suggested_correction": "Update the documented filename layout to describe the new composite key; review its fields rather than guessing runtime values.",
+          "links": {
+            "documentation": null,
+            "before": null,
+            "after": null
+          },
+          "limitations": [
+            "Static source evidence; runtime overrides are not evaluated."
+          ]
+        }
+      ],
+      "correction_evidence": [
+        {
+          "finding_id": "dd54b6d2a58bdf4532ed",
+          "old_quote_still_present": false,
+          "note": "Later text changes are review evidence, not ground truth."
+        },
+        {
+          "finding_id": "ed1cc2053df67530888d",
+          "old_quote_still_present": false,
+          "note": "Later text changes are review evidence, not ground truth."
+        },
+        {
+          "finding_id": "c23a5381113e96d71025",
+          "old_quote_still_present": false,
+          "note": "Later text changes are review evidence, not ground truth."
+        }
+      ],
+      "runtime_seconds": 4.89166,
       "warnings": [
         "tests/data/expression.py: cannot use starred expression here (<unknown>, line 148)",
         "tests/data/numeric_literals_py2.py: invalid decimal literal (<unknown>, line 3)",
@@ -37,7 +328,7 @@
       "predictions": 0,
       "unmatched_for_review": [],
       "correction_evidence": [],
-      "runtime_seconds": 21.62093,
+      "runtime_seconds": 20.427305,
       "warnings": [],
       "precision": null
     },
@@ -49,7 +340,7 @@
       "predictions": 0,
       "unmatched_for_review": [],
       "correction_evidence": [],
-      "runtime_seconds": 0.258777,
+      "runtime_seconds": 0.25617,
       "warnings": [],
       "precision": null
     },
@@ -61,7 +352,7 @@
       "predictions": 0,
       "unmatched_for_review": [],
       "correction_evidence": [],
-      "runtime_seconds": 0.471323,
+      "runtime_seconds": 0.482727,
       "warnings": [],
       "precision": null
     },
@@ -73,12 +364,12 @@
       "predictions": 0,
       "unmatched_for_review": [],
       "correction_evidence": [],
-      "runtime_seconds": 0.490834,
+      "runtime_seconds": 0.466829,
       "warnings": [],
       "precision": null
     }
   ],
-  "known_case_recall": 0.0,
+  "known_case_recall": 0.3333333333333333,
   "warnings_per_case": 0.6666666666666666,
   "model_resource_usage": null,
   "limitations": [

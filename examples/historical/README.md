@@ -1,8 +1,8 @@
 # Real historical replay
 
 This corpus contains **three genuine stale-documentation histories and three real
-negative controls**. All three positives are outside the current detector's supported
-patterns. They are useful scope failures, not evidence of successful detection.
+negative controls**. Black is now detected by a bounded declared-layout rule. The other two
+positives remain misses, and are retained as scope failures.
 This is deterministic evaluation: no model is loaded and upstream code is never
 imported or executed.
 
@@ -42,21 +42,26 @@ python3 -m driftlens.evaluate examples/historical/manifest.json --output /tmp/dr
 
 | Case | Supplied labels found | Findings | Warnings | Saved report runtime (s) |
 | --- | --- | --- | --- | --- |
-| yt-dlp-multistream-default | 0/1 | 0 | 0 | 19.124 |
-| black-cache-filename | 0/1 | 0 | 4 | 4.847 |
-| yt-dlp-whitespace-control | 0/0 | 0 | 0 | 19.378 |
-| slugify-code-and-docs-together | 0/0 | 0 | 0 | 0.238 |
-| gdown-folder-file-limit | 0/1 | 0 | 0 | 0.447 |
-| gdown-fuzzy-code-and-docs-together | 0/0 | 0 | 0 | 0.428 |
+| yt-dlp-multistream-default | 0/1 | 0 | 0 | 19.229 |
+| black-cache-filename | 1/1 | 3 | 4 | 4.908 |
+| yt-dlp-whitespace-control | 0/0 | 0 | 0 | 19.694 |
+| slugify-code-and-docs-together | 0/0 | 0 | 0 | 0.248 |
+| gdown-folder-file-limit | 0/1 | 0 | 0 | 0.471 |
+| gdown-fuzzy-code-and-docs-together | 0/0 | 0 | 0 | 0.485 |
 
-Known-label recall is **0/3 (0%)** in `outputs/evaluation.json`; all three negative
-controls still produce zero findings. The yt-dlp extractor
-now recognizes directly assigned optparse groups. Implicit/shared destinations
-and set_defaults overrides are conservatively unresolved after the defaults
-correction; the stale format-selection
-example does not name the changed flag or explicitly state its default. The
-explicit flag references in nearby sentences describe conditional behavior that
-remains true. Black's computed cache filename is not resolved. Those two and gdown's removed folder limit are recorded as misses.
+Known-label recall is **1/3 (33.3%)** in `outputs/evaluation.json`; all three
+negative controls still produce zero findings. Black's exact existing Linux label
+is matched. The Windows/macOS sentences are also reported, for three sentence
+findings in one underlying change group. They were manually reviewed after
+A/B detection and corroborated by C; original labels were not expanded to inflate
+recall. Positive labels are not exhaustive, so precision remains undefined.
+
+The bounded rule compares an old declared two-numeric-field filename against a
+new local helper that joins five parts. It does not execute the helper or guess
+its values. See [the rule and negative tests](../../docs/CACHE_LAYOUT.md),
+[readable actual output](outputs/black-cache-filename.md), and
+[reviewed locations](outputs/black-cache-filename.review.json).
+The yt-dlp example and gdown limit still remain misses.
 
 Raw reports and the harness metrics are in [outputs/](outputs/). The independent
 harness replay measures its own runtime, so its durations differ from the saved
@@ -90,9 +95,10 @@ predictions have undefined precision, not 100% precision. Report known-label
 recall over supplied labels only. Do not describe zero findings as verified docs.
 The stored analyzer warnings remain visible.
 
-The reports were generated on Python 3.14.6 from analyzer version 0.1.0, based on
-team main `176cd70b1289b8936f96f3018846dadda6acd6e4` (no detector changes in
-this follow-up). Runtime is machine-dependent.
+The current reports were regenerated on Python 3.14.6 / analyzer 0.1.0 by the
+filename-layout continuation, based on main
+`b4f881698e12d26673fd0be9945c97ea6a2884c6`. Earlier corpus results are preserved in
+Git history. Runtime is machine-dependent.
 The evaluator's limitations text is updated to avoid claiming no corpus exists;
 its API, matching and metric definitions are unchanged.
 
@@ -158,7 +164,12 @@ return CACHE_DIR / f"cache.{mode.get_cache_key()}.pickle"
 
 > - Linux: `/home/<username>/.cache/black/<version>/cache.<mode-key>.pickle`
 
-Label subject: `black.get_cache_file`, name `mode`, category `cache_path_changed`. This is a manual label outside detector categories. The report remains a miss because B's expression calls `mode.get_cache_key()`, whose result is assembled by a method body using a sorted enum comprehension, instance attributes, conversions, and joins. The extractor does not resolve function calls or instance state; no filename fact is produced.
+Label subject: `black.get_cache_file`, name `mode`, category `cache_path_changed`.
+The original label is unchanged and now matches. The rule does not calculate the
+version string, instance state or final key. It proves a five-item dot-join lower
+bound, contradicting the old declared two-numeric-field template. Exact Linux
+localization is retained, and the two extra platform references are reviewed
+separately rather than used to inflate known-label recall.
 
 ### yt-dlp-whitespace-control
 
@@ -186,12 +197,14 @@ a finding. The separate conditional sentences mentioning
 For Black, A builds `cache.<line-length>.<integer-mode>.pickle`; B returns
 `cache.{mode.get_cache_key()}.pickle`. Resolving the latter requires following
 `get_cache_key`, evaluating a sorted enum comprehension and instance attributes,
-then joining computed components. The extractor has no exact, non-executing
-resolution for that call chain, so it leaves the case as a miss. C corrects the
+then joining computed components. The new bounded rule does not resolve the values of that call chain. It instead
+proves that the declared five-part dot-join cannot match the old two-numeric-field
+string layout. It now detects all three retained platform sentences. C corrects the
 documentation in its new location; the replay verifies that path explicitly.
 
 The defaults-semantics correction regenerated these outputs and reran the full
-replay without changing the pinned revisions or labels. Recall was 0/2 before this follow-up and is now 0/3 after adding the gdown miss.
+replay without changing the pinned revisions or labels. The corpus grew from 0/2 to 0/3 before the detector extension; the new filename
+rule now matches 1/3 original labels without changing the manifest.
 
 
 ### gdown-folder-file-limit
@@ -248,3 +261,13 @@ bounded searches and the no-upstream-execution boundary. This continuation chang
 only the historical workstream and does not claim to close the detector's
 successful-real-history gap. Shared integration/presentation summaries need their
 case counts reconciled by the integration owner after review.
+
+## Detector continuation
+
+This rule was developed against the already-known Black case, so its success is
+a retrospective development result, not held-out evaluation. The underlying
+source change is counted once among the original three labels. Two extra
+platform references are retained and reviewed, not silently discarded or called
+false positives. C was read only for after-the-fact corroboration, never as input
+to the detector. Runtime type/dispatch overrides and filesystem normalization are
+not evaluated by this declared-layout rule.

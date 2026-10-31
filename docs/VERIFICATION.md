@@ -1,5 +1,24 @@
 # Integration verification — 1 November 2026
 
+## Latest detector continuation
+
+The user authorized taking over the detector workstream. The new bounded
+filename-layout rule passed 105 tests (21 dedicated methods), all four ordinary
+demos and the eight-case actual local Qwen/control suite. The six-case historical
+replay matches 1/3 original positive labels; all three controls stay quiet.
+Black has three sentence findings in one underlying code-change group, including
+the exact pre-existing Linux label. Two additional platform references were
+manually reviewed after detection and corroborated by C. Labels were unchanged;
+this is retrospective development on a known case, not held-out accuracy.
+
+See [proof, command and boundaries](CACHE_LAYOUT.md),
+[actual historical report](../examples/historical/outputs/black-cache-filename.md),
+and [the continuation record](../examples/verification/cache-layout-2026-11-01.json).
+Earlier 72/79/84-test and 0/3 records below describe older versions. The remaining
+yt-dlp and gdown positives are still missed. Installed historical CLI execution
+and exact PR/post-merge main CI are checked before sign-off.
+
+
 ## Later optparse correction
 
 PR #8 was merged during integration review. Three false-positive cases were
