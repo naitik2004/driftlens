@@ -34,6 +34,11 @@ def verify(case, repo):
                     f'{case["id"]}: missing {key}')
         require(evidence['quote'] in read(repo, a, evidence['doc_path']),
                 f'{case["id"]}: claim not present at A')
+        require(evidence['quote'] in read(repo, b, evidence['doc_path']),
+                f'{case["id"]}: claim not retained at B')
+        if evidence.get('absent_drift_code'):
+            require(evidence['absent_drift_code'] not in read(repo, b, evidence['code_path']),
+                    f'{case["id"]}: removed code still present at B')
     for label in case['expected']:
         source = read(repo, b, label['path'])
         start, quote = label['start'], label['quote']
@@ -50,10 +55,15 @@ def verify(case, repo):
                     'Formatting control changes the Python AST')
     if case.get('synchronized'):
         item = case['synchronized']
+        removing = 'removed_text' in item
+        require(removing != ('added_text' in item),
+                'Synchronized control needs exactly one added_text or removed_text')
+        text = item['removed_text'] if removing else item['added_text']
         for key in ('code_path', 'doc_path'):
-            require(item['added_text'] not in read(repo, a, item[key]) and
-                    item['added_text'] in read(repo, b, item[key]),
-                    'Synchronized control must add code and docs together')
+            before_has = text in read(repo, a, item[key])
+            after_has = text in read(repo, b, item[key])
+            require((before_has and not after_has) if removing else (not before_has and after_has),
+                    'Synchronized control must change code and docs together')
 
 
 def replay(manifest_path, output):
