@@ -2,6 +2,18 @@
 
 ## Hosted readiness follow-up
 
+After PR #17 merged, main `ecf4a8ea33b79af0e586ac318e88b83cd1cf3657` passed CI
+and both manual workflows. The [current-main historical replay](https://github.com/naitik2004/driftlens/actions/runs/41248274106)
+matched the committed findings in all six cases: Black 1/1 supplied positive
+labels, yt-dlp 0/1, gdown 0/1, and zero predictions across all three controls.
+Thus historical recall remains **1/3**. The [main package validation](https://github.com/naitik2004/driftlens/actions/runs/41248276461)
+passed tests, demos, build, strict Twine metadata checks and the isolated wheel
+install; its publish job was deliberately skipped. A downloaded main wheel also
+passed a fresh local install check. Python-version-specific parser warning text
+differs for legacy Black fixtures, while all six findings match exactly.
+
+Machine-readable results: [post-merge main evidence](../examples/verification/hosted-main-2026-11-01.json).
+
 Source `8c161534fbcd7775d4b1181f151d2a36dcfcfa8d` passed all 121 tests and functional
 installed-wheel controls on Linux, macOS and Windows in
 [hosted CI](https://github.com/naitik2004/driftlens/actions/runs/41246791397).

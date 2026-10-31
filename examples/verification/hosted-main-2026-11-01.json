@@ -1,0 +1,46 @@
+{
+  "source_commit": "ecf4a8ea33b79af0e586ac318e88b83cd1cf3657",
+  "main_ci": {
+    "run_id": 41247880080,
+    "url": "https://github.com/naitik2004/driftlens/actions/runs/41247880080",
+    "conclusion": "success"
+  },
+  "historical_replay": {
+    "run_id": 41248274106,
+    "url": "https://github.com/naitik2004/driftlens/actions/runs/41248274106",
+    "conclusion": "success",
+    "artifact": "historical-replay-ecf4a8ea33b79af0e586ac318e88b83cd1cf3657",
+    "findings_identical_to_committed_artifacts": {
+      "yt-dlp-multistream-default": true,
+      "black-cache-filename": true,
+      "yt-dlp-whitespace-control": true,
+      "slugify-code-and-docs-together": true,
+      "gdown-folder-file-limit": true,
+      "gdown-fuzzy-code-and-docs-together": true
+    },
+    "positive_labels_hit": 1,
+    "positive_labels": 3,
+    "negative_controls_with_predictions": 0,
+    "cases": {
+      "yt-dlp-multistream-default": {"known_hits": 0, "known_labels": 1, "predictions": 0},
+      "black-cache-filename": {"known_hits": 1, "known_labels": 1, "predictions": 3},
+      "yt-dlp-whitespace-control": {"known_hits": 0, "known_labels": 0, "predictions": 0},
+      "slugify-code-and-docs-together": {"known_hits": 0, "known_labels": 0, "predictions": 0},
+      "gdown-folder-file-limit": {"known_hits": 0, "known_labels": 1, "predictions": 0},
+      "gdown-fuzzy-code-and-docs-together": {"known_hits": 0, "known_labels": 0, "predictions": 0}
+    },
+    "warning_note": "Findings are identical; legacy Black fixture warning text varies by Python version."
+  },
+  "package_validation": {
+    "run_id": 41248276461,
+    "url": "https://github.com/naitik2004/driftlens/actions/runs/41248276461",
+    "conclusion": "success",
+    "build_tests_demos_twine_and_outside_checkout_install": "passed",
+    "publish_job": "skipped by publish=false",
+    "downloaded_wheel_fresh_local_install": "passed"
+  },
+  "publication": "not attempted; PyPI-side Trusted Publisher configuration remains unconfirmed",
+  "independent_dataset": "not completed; existing cases remain development data",
+  "independent_first_user": "not observed",
+  "organizer_submission_and_rehearsal": "unverified"
+}
