@@ -13,7 +13,7 @@ Versioned distributions use [GitHub Releases](https://github.com/naitik2004/drif
 The [v0.1.0 preview](https://github.com/naitik2004/driftlens/releases/tag/v0.1.0)
 has passed public download, checksum and clean installed-CLI verification;
 [actual release evidence](examples/verification/github-release-2026-11-01.json) is recorded.
-PyPI publication is deferred at the user's request. The distribution name is
+PyPI publication is deferred. The distribution name is
 `driftlens-docs`; the PyPI package named `driftlens` belongs to an unrelated
 project. Source installation below works independently of package indexes.
 See [release installation](docs/GETTING_STARTED.md) and [publishing setup](docs/PUBLISHING.md).
@@ -242,53 +242,25 @@ renames and arbitrary behavioral claims are not supported. Code blocks are
 indexed but never used as default assertions. Complex Markdown extensions and
 setext heading semantics are outside this parser's subset.
 
-The design and future expansion are in [ARCHITECTURE.md](ARCHITECTURE.md).
-[HACKATHON.md](HACKATHON.md) records the original team/event declaration; its
-initial implementation status is historical. Current validation and remaining
-external work are recorded in [IMPLEMENTATION.md](IMPLEMENTATION.md).
+Technical references: [architecture](ARCHITECTURE.md),
+[implemented scope](IMPLEMENTATION.md), and [verification](docs/VERIFICATION.md).
 
-MIT licensed. Development proceeds on feature branches through pull requests.
+MIT licensed. Development uses feature branches, pull requests and CI.
 
-## Current integration status
+## Validation
 
-The current continuation passes **146 tests**, all four demos, the actual local
-Qwen suite and clean installed-CLI controls. Shared optparse defaults resolve in
-registration order; ambiguous duplicate spellings abstain. Optional behavioral
-review retrieves the two unresolved historical claims without counting them as
-hits. The 12-case external study is executed with its miss preserved. See
-[the current verification record](docs/VERIFICATION.md). Earlier observations
-below retain their original versions and counts.
+The full suite contains **146 tests**. CI checks Linux, macOS and Windows,
+UTF-8 reports, distribution metadata and installed CLI behavior. Four basic
+demos expect finding counts **1/0/0/1**.
 
-Additional [controlled repository tests](examples/controlled/README.md) use
-pinned backoff, retry and urllib3 source snapshots: all three injected default
-changes were detected and all 15 controls stayed quiet (18/18 scenarios).
-Generated documentation and counterfactual changes are explicitly synthetic;
-these results do not change historical recall. The detector runtime is unchanged.
+The [controlled repository study](examples/controlled/README.md) passed 18/18
+scenarios on pinned backoff, retry and urllib3 source: three injected default
+changes detected and 15 controls quiet. Generated documentation and mutations
+are synthetic; historical recall remains separate and unchanged. See
+[verification](docs/VERIFICATION.md) for source versions, actual model evidence
+and evaluation limits.
 
-The public-readiness follow-up passed **121 tests** and functional installed-wheel
-checks on hosted Linux, macOS and Windows. Text reports and fixtures use explicit
-UTF-8. The historical workflow ran successfully on merged main, with findings
-identical to the saved artifacts. Hosted packaging validation also passed on the
-readiness branch with upload skipped. This is portability/build evidence, not
-publication or an independent person's first-use experience. See
-[the hosted record](examples/verification/public-readiness-2026-11-01.json).
-
-The audit follow-up passed **120 tests**, all four deterministic demos, the
-eight-case actual local Qwen suite, and the six-case historical replay. It fixes
-five reproduced errors involving parser registration, shadowed bindings and Git
-timeouts. CI also checks a functional installed CLI outside the checkout.
-The historical result is **1/3 supplied positive labels**, with three quiet
-controls. Three Black platform sentences form one underlying change group.
-See [the filename proof and runnable historical demo](docs/CACHE_LAYOUT.md).
-These checks do not establish broad real-world accuracy. Submission confirmation
-and spoken team rehearsal are still human tasks; see [the verification record](docs/VERIFICATION.md).
-
-## Team execution and presentation
-
-Naitik now handles the remaining integration and solo presentation. Original
-contributors remain credited in the team declaration. See
-[the original three-person work plan](docs/TEAM_PLAN.md), the copyable
-[agent assignments](docs/tasks/), and the [presentation and Q&A guide](docs/JUDGES_GUIDE.md).
+## Local model validation
 
 To verify a real local-model contribution separately from deterministic fixtures:
 
@@ -306,7 +278,7 @@ explicit test double and do not establish live-model execution.
 Local setup, observed results and failure interpretation: [Local AI guide](docs/LOCAL_AI.md).
 
 
-## Direct CLI instructions: Problem 5 example
+## Direct CLI instructions
 
 When a module-level argparse definition changes from `--timeout` to `--deadline`
 and the current README still says either of these, DriftLens reports

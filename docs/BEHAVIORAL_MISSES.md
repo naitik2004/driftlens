@@ -48,14 +48,15 @@ that complete operation. Looking only for a deleted constant would also flag
 limits moved into helpers, inlined or renamed. Nothing here establishes an
 unlimited remote-service guarantee.
 
-The detailed [gdown acceptance handoff](../examples/historical/GDOWN_HANDOFF.md)
-requires those negative cases and abstention when the new bound is unresolved.
-That acceptance gate still fails and is not marked complete.
+A verifier must retain negative cases for renamed, inlined or moved bounds,
+corrected documentation, unrelated constants and conditional bypasses. It must
+abstain when the effective new bound is unresolved. Optional
+[behavioral review](BEHAVIOR_REVIEW.md) retrieves evidence without asserting a hit.
 
-## Current decision
+## Reporting boundary
 
-Keep both as visible development misses. Do not hardcode repository names,
-numbers, endpoint strings or expected quotes into runtime rules. First collect
-new independently selected histories, then evaluate a separately scoped
-behavioral-analysis design with positive and adversarial controls. Existing
-1/3 recall remains the reported result.
+Both remain visible development misses. Repository names, numbers, endpoints
+and expected quotes are not hardcoded into runtime rules. Review candidates
+and optional Qwen notes remain unverified; they do not increase the established
+1/3 development recall. See [review behavior](BEHAVIOR_REVIEW.md) for commands
+and the distinction between retrieval and verified findings.

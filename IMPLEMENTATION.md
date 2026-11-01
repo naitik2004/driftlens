@@ -1,114 +1,55 @@
-# Implementation and verification status
+# Implementation status
 
-## Additional repository tests
+DriftLens analyzes Python and Markdown from immutable Git snapshots without
+executing the target project. The analyzer has no third-party runtime dependencies.
 
-The unchanged runtime passed 18 controlled scenarios on pinned backoff, retry
-and urllib3 source: three injected default changes detected, 15 controls quiet,
-zero warnings and zero model calls. Generated Markdown claims and local
-counterfactual commits are explicitly synthetic, not new historical bug hits.
-The repository test suite now includes five fixture-generator regressions
-(146 total tests). See [the results and reproduction](examples/controlled/README.md).
+## Supported behavior
 
-## Implemented
+- Public top-level parameter/default facts, including positional-only and
+  keyword-only arguments; conservative removal and compatibility checks.
+- Direct module-level argparse flags and supported optparse Boolean actions in
+  public functions. Shared destinations use ordered explicit defaults;
+  ambiguous registrations and dynamic overrides abstain.
+- Bounded constants/imports, a constrained retry-count pattern and a declared
+  cache-filename layout comparison.
+- Source-mapped Markdown sentences/tables, scoped linking, old-support/new-
+  contradiction checks, and suppression when documentation is corrected.
+- Grouped JSON/Markdown findings, responsible diffs, commit-pinned source links
+  and advisory GitHub annotations.
+- Optional local Qwen extraction with validated quote, subject, schema and value.
+- Optional behavioral candidates and source-cited model notes, kept separate
+  from verified findings, annotations, build failures and recall.
+- Snapshot resource limits, Git timeouts and explicit UTF-8 report handling.
 
-DriftLens compares immutable merge-base/head Git snapshots and reads Python and
-Markdown without importing or executing the analyzed project.
+## Run and verify
 
-- AST facts for public top-level defaults/parameters, bounded constants/imports,
-  direct argparse definitions and a constrained retry-count pattern.
-- Direct optparse option/group facts with ordered shared-destination defaults:
-  last explicit registration wins; implicit paired flags do not overwrite it.
-  Dynamic constructors/registrations and set_defaults overrides abstain.
-- Exact Markdown spans, scoped linking, old support/new contradiction checks,
-  same-PR documentation correction suppression and conservative exclusions.
-- Removed CLI flags in direct `Use --flag` instructions, including backticks.
-- A bounded cache filename rule: an old declared two-numeric-field format cannot
-  match a new local literal dot-join with more fields. It follows one declared
-  helper's structure, not its runtime values. See [CACHE_LAYOUT.md](docs/CACHE_LAYOUT.md).
-- JSON/Markdown findings, grouped changes, exact paths/lines/offsets, before/after
-  facts, responsible hunks and optional immutable source links.
-- Optional local Qwen prose extraction with validated schema/quote/value and
-  model/content/prompt-versioned caching.
-- Opt-in source-backed behavioral review candidates, explicitly separate from
-  findings, annotations, build failures and accuracy metrics. See
-  [BEHAVIOR_REVIEW.md](docs/BEHAVIOR_REVIEW.md).
-- Optional bounded Qwen notes on those candidates, with exact-quote and source
-  citation validation. These are unverified interpretations, never drift hits.
-- CLI, advisory GitHub Actions, MIT license, PR template and Python 3.10/3.12/3.13 CI.
+```sh
+python3 -m unittest discover -v
+python3 -m examples.demo
+```
 
-## Audit follow-up
+The current suite has 146 tests. The four deterministic scenarios expect finding
+counts 1/0/0/1. CI checks Linux, macOS and Windows, distribution metadata and a
+fresh installed CLI. See [verification](docs/VERIFICATION.md),
+[installation](docs/GETTING_STARTED.md) and [release workflow](docs/PUBLISHING.md).
 
-The later public-readiness follow-up passes **121 tests** on hosted Linux,
-Windows and macOS, including installed Unicode-report controls. It executes and
-records the historical workflow on merged main and packaging validation on the
-readiness branch without upload. GitHub pypi/testpypi environments are created
-with main-only branch policies; PyPI-side publishers are still unconfirmed.
-Independent data collection subsequently produced a
-[12-case external study](examples/evaluation/README.md): 0/1 supplied positives,
-11 quiet controls, no warnings. Precision is undefined with no predictions.
-The earlier [hosted evidence](examples/verification/public-readiness-2026-11-01.json)
-predates this study. No independent human test is claimed.
+Evaluation is intentionally separated:
 
-The five reproduced audit errors are fixed: unsupported parser registrations
-no longer prove removal, shadowed parser constructors and rebound constants
-abstain, custom range bindings invalidate retry facts, and Git timeouts return
-CLI exit code 2. Snapshot collection now preflights configurable file/byte limits
-and checks a collection time budget; exceeding one produces no partial report.
-All **120 tests** pass, including the new audit and explicit-cache
-regressions. Four demos, the eight-case actual local AI suite, and the six-case
-historical replay passed. A clean wheel install outside the checkout passed
-functional drift and corrected-doc controls.
+- [Development histories](examples/historical/README.md): 1/3 original positive
+  labels detected; three real controls quiet.
+- [External histories](examples/evaluation/README.md): 0/1 positive labels;
+  11 controls quiet. Precision is undefined with no predictions.
+- [Controlled source mutations](examples/controlled/README.md): 18/18 scenarios,
+  with three injected changes detected and 15 controls quiet. These are synthetic.
+- [Actual local-model checks](docs/LOCAL_AI.md): saved inference responses and
+  clearly labeled model-assisted results.
 
-CI now validates distributions and installed behavior. A manual historical
-workflow checks the known Black hit and controls. All known corpus cases are
-marked development; no held-out accuracy is claimed. Release preparation from
-closed PR #15 is restored under proposed distribution name driftlens-docs;
-publication still needs configured PyPI/TestPyPI Trusted Publishers. See
-[the audit](docs/REPOSITORY_AUDIT.md) and [publishing setup](docs/PUBLISHING.md).
+## Limitations
 
-## Latest detector continuation
-
-Local suite: **105 tests passed**, including **21 filename-rule test methods**.
-The first positive filename regression failed before implementation. Negatives
-cover refactors, corrected docs, ambiguous owners, unknown or shadowed types,
-unknown decorators, mutated joins, custom access hooks and unresolved helpers.
-
-All four deterministic demos ran with expected counts **1/0/0/1**. The actual local
-Qwen/control suite passed all eight cases with five uncached calls and three
-additional findings over the model-off baseline. These synthetic checks are
-separate from the historical evaluation.
-
-The full six-case public-history replay now matches **1/3 original positive
-labels**, with all three negative controls quiet. Black's exact existing Linux
-label matches; Windows and macOS also yield matching stale sentences. These are
-three sentences in one code-change group, not three successful historical cases.
-The two extra locations were manually reviewed after A/B detection and corroborated
-by later C. Labels were not changed. Four existing Black syntax-fixture warnings
-remain visible. Positive labels are not exhaustive, so precision is undefined.
-
-The new rule was developed using an already-known Black case. This is a
-retrospective development result, not held-out accuracy. No future C content,
-repository names, commit IDs or exact case text enter the detector. Actual reports
-are in examples/historical/outputs/; [the corpus README](examples/historical/README.md)
-explains provenance and limits.
-
-Clean installation, installed historical CLI execution, PR checks and post-merge
-main CI are checked before integration sign-off. Always inspect CI for the exact
-latest commit rather than substituting an earlier green run.
-
-## Remaining limits
-
-The yt-dlp implicit example and gdown folder-limit cases are still missed.
-General computed methods, arbitrary wrappers/callers, complex parsers, broad
-configuration frameworks, implicit semantic links and languages beyond Python
-remain unsupported. The filename rule assumes the supported declared typing and
-library bindings; it does not prove runtime dispatch/subclass overrides or
-filesystem normalization. Zero findings does not mean every sentence was verified.
-
-Earlier 49/72/79/84-test and 0/2/0/3 corpus results describe prior versions;
-retained verification artifacts preserve those observations. Ordinary CI needs
-neither a model server nor API keys. Model weights retain their own license.
-
-Organizer submissions and spoken team rehearsal remain unverified by the agent.
-PR #1's empty original description and absent recorded pre-merge checks remain a
-historical workflow gap; its post-merge CI passed. No history was rewritten.
+General behavioral inference, arbitrary wrappers/callers, computed configuration,
+re-export aliases, complex parsers and additional programming languages are not
+verified. Literal defaults do not establish physical units or effective runtime
+values. The cache rule assumes its supported declared types and local helper
+shape; runtime overrides and filesystem normalization are outside its scope.
+The yt-dlp/gdown behavioral histories remain unverified; review candidates do
+not count as successful detections. See [details](docs/BEHAVIORAL_MISSES.md).

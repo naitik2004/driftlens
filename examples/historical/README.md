@@ -6,7 +6,7 @@ positives remain misses, and are retained as scope failures.
 This is deterministic evaluation: no model is loaded and upstream code is never
 imported or executed.
 
-Implementation handoff for the existing gdown miss: [exact evidence and acceptance gate](GDOWN_HANDOFF.md).
+Technical explanation of the unverified cases: [behavioral limits](../../docs/BEHAVIORAL_MISSES.md).
 
 ## Reproduce
 
@@ -260,14 +260,12 @@ updates every README usage in that same commit. The replay checks removal from
 both `gdown/download.py` and `README.md`. It is a synchronized removal negative,
 not a delayed-fix positive. The actual report has zero findings and zero warnings.
 
-## Follow-up audit and rejected candidates
+## Rejected candidates
 
-[TEAM_AUDIT.md](TEAM_AUDIT.md) records what each teammate already completed before
-this continuation. [SEARCH_LOG.md](SEARCH_LOG.md) preserves rejected candidates,
-bounded searches and the no-upstream-execution boundary. This continuation changes
-only the historical workstream and does not claim to close the detector's
-successful-real-history gap. Shared integration/presentation summaries need their
-case counts reconciled by the integration owner after review.
+[SEARCH_LOG.md](SEARCH_LOG.md) preserves rejected candidates, bounded searches
+and the no-upstream-execution boundary. Unverified candidates are not counted
+as positives or negative controls. Original labels and observed misses remain
+visible in the saved results.
 
 ## Detector continuation
 
