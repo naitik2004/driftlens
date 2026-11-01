@@ -39,7 +39,7 @@ README.md and tested code define what is actually supported.
 
 ## What is implemented versus still unproven
 
-The current continuation passed 141 tests and all four synthetic demos.
+The current continuation passed 146 tests and all four synthetic demos.
 Live local model calls, a clean installed CLI, and exact report evidence were
 checked separately. See [the verification record](VERIFICATION.md) for current
 status. These checks do not establish real-world accuracy.

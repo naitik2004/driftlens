@@ -1,0 +1,50 @@
+{
+  "schema_version": 1,
+  "analyzer_version": "0.1.0",
+  "base_commit": "8ab114035865fb57aac6167cb3056aac14b14c7e",
+  "head_commit": "6d54f3d712ca9252d8692da71bbe9487f22cd005",
+  "findings": [],
+  "abstentions": [
+    {
+      "claim": {
+        "path": "docs/driftlens-controlled.md",
+        "heading": "Synthetic controlled validation",
+        "quote": "`backoff._decorator.on_exception` `raise_on_giveup` defaults to False.",
+        "line_start": 3,
+        "line_end": 3,
+        "start": 35,
+        "end": 105,
+        "kind": "sentence",
+        "columns": []
+      },
+      "symbol": "backoff._decorator.on_exception",
+      "reason": "No unchanged claim with matching scope in the base snapshot"
+    }
+  ],
+  "warnings": [],
+  "limitations": [
+    "Python top-level functions, direct module-level argparse, and direct optparse option groups in public function bodies only.",
+    "Exact scope references required; unresolved aliases, wrappers and qualifiers abstain.",
+    "Static declared defaults do not prove effective runtime values or physical units.",
+    "General computed return values and arbitrary called methods are not resolved.",
+    "Filename checks bound one local literal dot-join; runtime type/dispatch overrides are not evaluated.",
+    "Markdown subset: ATX headings, paragraphs, simple pipe tables and fenced code."
+  ],
+  "metrics": {
+    "runtime_seconds": 4.567263,
+    "claims_indexed": 68,
+    "facts_indexed": 222,
+    "finding_count": 0,
+    "change_groups": 0,
+    "model_calls": 0,
+    "model_cache_hits": 0
+  },
+  "controlled_study": {
+    "synthetic": true,
+    "upstream_repository": "https://github.com/litl/backoff",
+    "upstream_commit": "d82b23c42d7a7e2402903e71e7a7f03014a00076",
+    "scenario": "docs-updated",
+    "generated_documentation": "docs/driftlens-controlled.md",
+    "note": "Counterfactual local commits; not a real upstream bug or historical finding."
+  }
+}

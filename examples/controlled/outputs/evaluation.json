@@ -1,0 +1,261 @@
+{
+  "synthetic": true,
+  "scope": "Controlled synthetic mutations of pinned backoff, retry and urllib3 Python/Markdown snapshots. Generated documentation is not an original upstream claim. This is functional validation, not historical bug discovery or an independent accuracy benchmark.",
+  "executed_detector_commit": "5e13b81b125166cad5f57c0a05add58406241e3a",
+  "runtime_sha256": {
+    "__init__.py": "27a8399c569c86036a61a71388a08e3a152cd5caa252e9024fbe73de5349a05d",
+    "__main__.py": "935a1c1166b0c1ea35a82256345000bf2c73ded718d77773bc27a71ecce28f7d",
+    "analyzer.py": "8649ae2590f738cde2396cc15f65b267cc2f6b2c10b3c6363ce258ca22e10ffc",
+    "cli.py": "0457a5b08a7bc9151fffe0cade1c657c967ffe12dccb936889af7cd757836e9d",
+    "evaluate.py": "31ec11547670c1442260433c0a9d454204eb9b495c216e0caa8eda97c4f65290",
+    "facts.py": "9107b46804ed539648e7e0d086181b40cce3b639f0facf78315436cedb56080e",
+    "markdown.py": "f223a5b545f694376e0f76711e710ace7e82ee18fcb419beaeb0abb77f1fd919",
+    "model.py": "d7ac95c8226d91ae6123723f9059232038256dc0f25daba188832830fa7f424e",
+    "reporting.py": "e66a2206d3af7e71e5bf3dc2411726e9fafe89137554640e3ba346378ddd8ecf",
+    "review.py": "a220f017f0d7b46e6c1892605b6943e9cfa44fcf7b2a2c975029bbf992a6eaec",
+    "review_model.py": "721c11055bde738676808cd4300dea527d5b7c0cab7ce6e9ab95fb537460b307",
+    "snapshots.py": "8c96c026e6d590d49371a600cd5573a3cdad7b87e081cdd3bcd39a8ffeb0da8b"
+  },
+  "manifest_sha256": "8c527cba29bd85d379987d43190e1cb4ad0a35e32317f94a03fe4229d7934617",
+  "repositories": [
+    {
+      "id": "backoff",
+      "commit": "d82b23c42d7a7e2402903e71e7a7f03014a00076",
+      "eligible_files": 19,
+      "source_sha256": "baebc5f940745fd7bce2073f8f09fedc6c24990d5cd189a1439c0c16c03883d9",
+      "fact": {
+        "path": "backoff/_decorator.py",
+        "symbol": "backoff._decorator.on_exception",
+        "kind": "parameter",
+        "name": "raise_on_giveup",
+        "value": {
+          "default": true,
+          "has_default": true,
+          "kwargs": true
+        },
+        "line": 123,
+        "end_line": 222,
+        "resolved": true,
+        "dependencies": []
+      },
+      "upstream_source": "https://github.com/litl/backoff/blob/d82b23c42d7a7e2402903e71e7a7f03014a00076/backoff/_decorator.py#L123"
+    },
+    {
+      "id": "retry",
+      "commit": "c3f386aa279b130b37a4a4e91e758c7f02ec898c",
+      "eligible_files": 5,
+      "source_sha256": "0e9f19ae891e8895120269d5168071257502231aa7a124b32a3d0830cb5c3e7f",
+      "fact": {
+        "path": "retry/api.py",
+        "symbol": "retry.api.retry",
+        "kind": "parameter",
+        "name": "delay",
+        "value": {
+          "default": 0,
+          "has_default": true,
+          "kwargs": false
+        },
+        "line": 54,
+        "end_line": 76,
+        "resolved": true,
+        "dependencies": []
+      },
+      "upstream_source": "https://github.com/invl/retry/blob/c3f386aa279b130b37a4a4e91e758c7f02ec898c/retry/api.py#L54"
+    },
+    {
+      "id": "urllib3",
+      "commit": "2aa7e9c35234a90a1ce09b84dc7b706a6d604674",
+      "eligible_files": 91,
+      "source_sha256": "24ca35b60d67215d40789daf10d0bf4f17e5d1ee61e86ce5f43195935ad645ba",
+      "fact": {
+        "path": "src/urllib3/__init__.py",
+        "symbol": "urllib3.request",
+        "kind": "parameter",
+        "name": "redirect",
+        "value": {
+          "default": true,
+          "has_default": true,
+          "kwargs": false
+        },
+        "line": 117,
+        "end_line": 205,
+        "resolved": true,
+        "dependencies": []
+      },
+      "upstream_source": "https://github.com/urllib3/urllib3/blob/2aa7e9c35234a90a1ce09b84dc7b706a6d604674/src/urllib3/__init__.py#L117"
+    }
+  ],
+  "cases": [
+    {
+      "id": "backoff-default-drift",
+      "scenario": "default-drift",
+      "expected_findings": 1,
+      "actual_findings": 1,
+      "passed": true,
+      "warnings": [],
+      "model_calls": 0
+    },
+    {
+      "id": "backoff-docs-updated",
+      "scenario": "docs-updated",
+      "expected_findings": 0,
+      "actual_findings": 0,
+      "passed": true,
+      "warnings": [],
+      "model_calls": 0
+    },
+    {
+      "id": "backoff-harmless-refactor",
+      "scenario": "harmless-refactor",
+      "expected_findings": 0,
+      "actual_findings": 0,
+      "passed": true,
+      "warnings": [],
+      "model_calls": 0
+    },
+    {
+      "id": "backoff-preexisting-inaccuracy",
+      "scenario": "preexisting-inaccuracy",
+      "expected_findings": 0,
+      "actual_findings": 0,
+      "passed": true,
+      "warnings": [],
+      "model_calls": 0
+    },
+    {
+      "id": "backoff-explicit-example",
+      "scenario": "explicit-example",
+      "expected_findings": 0,
+      "actual_findings": 0,
+      "passed": true,
+      "warnings": [],
+      "model_calls": 0
+    },
+    {
+      "id": "backoff-historical-qualifier",
+      "scenario": "historical-qualifier",
+      "expected_findings": 0,
+      "actual_findings": 0,
+      "passed": true,
+      "warnings": [],
+      "model_calls": 0
+    },
+    {
+      "id": "retry-default-drift",
+      "scenario": "default-drift",
+      "expected_findings": 1,
+      "actual_findings": 1,
+      "passed": true,
+      "warnings": [],
+      "model_calls": 0
+    },
+    {
+      "id": "retry-docs-updated",
+      "scenario": "docs-updated",
+      "expected_findings": 0,
+      "actual_findings": 0,
+      "passed": true,
+      "warnings": [],
+      "model_calls": 0
+    },
+    {
+      "id": "retry-harmless-refactor",
+      "scenario": "harmless-refactor",
+      "expected_findings": 0,
+      "actual_findings": 0,
+      "passed": true,
+      "warnings": [],
+      "model_calls": 0
+    },
+    {
+      "id": "retry-preexisting-inaccuracy",
+      "scenario": "preexisting-inaccuracy",
+      "expected_findings": 0,
+      "actual_findings": 0,
+      "passed": true,
+      "warnings": [],
+      "model_calls": 0
+    },
+    {
+      "id": "retry-explicit-example",
+      "scenario": "explicit-example",
+      "expected_findings": 0,
+      "actual_findings": 0,
+      "passed": true,
+      "warnings": [],
+      "model_calls": 0
+    },
+    {
+      "id": "retry-historical-qualifier",
+      "scenario": "historical-qualifier",
+      "expected_findings": 0,
+      "actual_findings": 0,
+      "passed": true,
+      "warnings": [],
+      "model_calls": 0
+    },
+    {
+      "id": "urllib3-default-drift",
+      "scenario": "default-drift",
+      "expected_findings": 1,
+      "actual_findings": 1,
+      "passed": true,
+      "warnings": [],
+      "model_calls": 0
+    },
+    {
+      "id": "urllib3-docs-updated",
+      "scenario": "docs-updated",
+      "expected_findings": 0,
+      "actual_findings": 0,
+      "passed": true,
+      "warnings": [],
+      "model_calls": 0
+    },
+    {
+      "id": "urllib3-harmless-refactor",
+      "scenario": "harmless-refactor",
+      "expected_findings": 0,
+      "actual_findings": 0,
+      "passed": true,
+      "warnings": [],
+      "model_calls": 0
+    },
+    {
+      "id": "urllib3-preexisting-inaccuracy",
+      "scenario": "preexisting-inaccuracy",
+      "expected_findings": 0,
+      "actual_findings": 0,
+      "passed": true,
+      "warnings": [],
+      "model_calls": 0
+    },
+    {
+      "id": "urllib3-explicit-example",
+      "scenario": "explicit-example",
+      "expected_findings": 0,
+      "actual_findings": 0,
+      "passed": true,
+      "warnings": [],
+      "model_calls": 0
+    },
+    {
+      "id": "urllib3-historical-qualifier",
+      "scenario": "historical-qualifier",
+      "expected_findings": 0,
+      "actual_findings": 0,
+      "passed": true,
+      "warnings": [],
+      "model_calls": 0
+    }
+  ],
+  "passed": 18,
+  "total": 18,
+  "historical_recall": null,
+  "limitations": [
+    "Generated Markdown claims and counterfactual code changes are synthetic.",
+    "Cases intentionally exercise supported APIs, not representative repository accuracy.",
+    "No upstream Python, tests, setup scripts or installers were executed.",
+    "Original historical misses remain unchanged and are not replaced by these cases."
+  ]
+}

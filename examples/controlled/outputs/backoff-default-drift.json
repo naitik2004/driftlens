@@ -1,0 +1,117 @@
+{
+  "schema_version": 1,
+  "analyzer_version": "0.1.0",
+  "base_commit": "8ab114035865fb57aac6167cb3056aac14b14c7e",
+  "head_commit": "e6d28ffd0a63ac2951318a4024f910a8c442e053",
+  "findings": [
+    {
+      "id": "8178a036f28ac2529e1f",
+      "group_id": "6b652ac538895aa0",
+      "category": "parameter_default_changed",
+      "claim": {
+        "path": "docs/driftlens-controlled.md",
+        "heading": "Synthetic controlled validation",
+        "quote": "`backoff._decorator.on_exception` `raise_on_giveup` defaults to True.",
+        "line_start": 3,
+        "line_end": 3,
+        "start": 35,
+        "end": 104,
+        "kind": "sentence",
+        "columns": []
+      },
+      "before_claim": {
+        "path": "docs/driftlens-controlled.md",
+        "heading": "Synthetic controlled validation",
+        "quote": "`backoff._decorator.on_exception` `raise_on_giveup` defaults to True.",
+        "line_start": 3,
+        "line_end": 3,
+        "start": 35,
+        "end": 104,
+        "kind": "sentence",
+        "columns": []
+      },
+      "before": {
+        "path": "backoff/_decorator.py",
+        "symbol": "backoff._decorator.on_exception",
+        "kind": "parameter",
+        "name": "raise_on_giveup",
+        "value": {
+          "default": true,
+          "has_default": true,
+          "kwargs": true
+        },
+        "line": 123,
+        "end_line": 222,
+        "resolved": true,
+        "dependencies": []
+      },
+      "after": {
+        "path": "backoff/_decorator.py",
+        "symbol": "backoff._decorator.on_exception",
+        "kind": "parameter",
+        "name": "raise_on_giveup",
+        "value": {
+          "default": false,
+          "has_default": true,
+          "kwargs": true
+        },
+        "line": 123,
+        "end_line": 222,
+        "resolved": true,
+        "dependencies": []
+      },
+      "after_owner": null,
+      "before_verdict": "supported",
+      "after_verdict": "contradicted",
+      "evidence_strength": "deterministic",
+      "hunks": [
+        {
+          "old_path": "backoff/_decorator.py",
+          "new_path": "backoff/_decorator.py",
+          "old_start": 130,
+          "old_count": 7,
+          "new_start": 130,
+          "new_count": 7,
+          "text": "@@ -130,7 +130,7 @@ def on_exception(wait_gen: _WaitGenerator,\n                  on_success: Union[_Handler, Iterable[_Handler], None] = None,\n                  on_backoff: Union[_Handler, Iterable[_Handler], None] = None,\n                  on_giveup: Union[_Handler, Iterable[_Handler], None] = None,\n-                 raise_on_giveup: bool = True,\n+                 raise_on_giveup: bool = False,\n                  logger: _MaybeLogger = 'backoff',\n                  backoff_log_level: int = logging.INFO,\n                  giveup_log_level: int = logging.ERROR,\n"
+        }
+      ],
+      "explanation": "backoff._decorator.on_exception: raise_on_giveup default changed from True to False; the documentation still states the old value.",
+      "suggested_correction": "Update the documented default from True to False.",
+      "links": {
+        "documentation": null,
+        "before": null,
+        "after": null
+      },
+      "limitations": [
+        "Static source evidence; runtime overrides are not evaluated."
+      ]
+    }
+  ],
+  "abstentions": [],
+  "warnings": [],
+  "limitations": [
+    "Python top-level functions, direct module-level argparse, and direct optparse option groups in public function bodies only.",
+    "Exact scope references required; unresolved aliases, wrappers and qualifiers abstain.",
+    "Static declared defaults do not prove effective runtime values or physical units.",
+    "General computed return values and arbitrary called methods are not resolved.",
+    "Filename checks bound one local literal dot-join; runtime type/dispatch overrides are not evaluated.",
+    "Markdown subset: ATX headings, paragraphs, simple pipe tables and fenced code."
+  ],
+  "metrics": {
+    "runtime_seconds": 4.841847,
+    "claims_indexed": 68,
+    "facts_indexed": 222,
+    "finding_count": 1,
+    "change_groups": 1,
+    "model_calls": 0,
+    "model_cache_hits": 0
+  },
+  "controlled_study": {
+    "synthetic": true,
+    "upstream_repository": "https://github.com/litl/backoff",
+    "upstream_commit": "d82b23c42d7a7e2402903e71e7a7f03014a00076",
+    "scenario": "default-drift",
+    "generated_documentation": "docs/driftlens-controlled.md",
+    "note": "Counterfactual local commits; not a real upstream bug or historical finding."
+  }
+}

@@ -1,0 +1,117 @@
+{
+  "schema_version": 1,
+  "analyzer_version": "0.1.0",
+  "base_commit": "6b38743ed1a77add6d152574fc6a5e4477909d7b",
+  "head_commit": "39f4c4646f2b2e66ecac7f83edb4de7ba7cd23a2",
+  "findings": [
+    {
+      "id": "68a17522c53c66c2884b",
+      "group_id": "a69037f3922795c8",
+      "category": "parameter_default_changed",
+      "claim": {
+        "path": "docs/driftlens-controlled.md",
+        "heading": "Synthetic controlled validation",
+        "quote": "`retry.api.retry` `delay` defaults to 0.",
+        "line_start": 3,
+        "line_end": 3,
+        "start": 35,
+        "end": 75,
+        "kind": "sentence",
+        "columns": []
+      },
+      "before_claim": {
+        "path": "docs/driftlens-controlled.md",
+        "heading": "Synthetic controlled validation",
+        "quote": "`retry.api.retry` `delay` defaults to 0.",
+        "line_start": 3,
+        "line_end": 3,
+        "start": 35,
+        "end": 75,
+        "kind": "sentence",
+        "columns": []
+      },
+      "before": {
+        "path": "retry/api.py",
+        "symbol": "retry.api.retry",
+        "kind": "parameter",
+        "name": "delay",
+        "value": {
+          "default": 0,
+          "has_default": true,
+          "kwargs": false
+        },
+        "line": 54,
+        "end_line": 76,
+        "resolved": true,
+        "dependencies": []
+      },
+      "after": {
+        "path": "retry/api.py",
+        "symbol": "retry.api.retry",
+        "kind": "parameter",
+        "name": "delay",
+        "value": {
+          "default": 1,
+          "has_default": true,
+          "kwargs": false
+        },
+        "line": 54,
+        "end_line": 76,
+        "resolved": true,
+        "dependencies": []
+      },
+      "after_owner": null,
+      "before_verdict": "supported",
+      "after_verdict": "contradicted",
+      "evidence_strength": "deterministic",
+      "hunks": [
+        {
+          "old_path": "retry/api.py",
+          "new_path": "retry/api.py",
+          "old_start": 51,
+          "old_count": 7,
+          "new_start": 51,
+          "new_count": 7,
+          "text": "@@ -51,7 +51,7 @@ def __retry_internal(f, exceptions=Exception, tries=-1, delay=0, max_delay=None,\n                 _delay = min(_delay, max_delay)\n \n \n-def retry(exceptions=Exception, tries=-1, delay=0, max_delay=None, backoff=1, jitter=0, logger=logging_logger):\n+def retry(exceptions=Exception, tries=-1, delay=1, max_delay=None, backoff=1, jitter=0, logger=logging_logger):\n     \"\"\"Returns a retry decorator.\n \n     :param exceptions: an exception or a tuple of exceptions to catch. default: Exception.\n"
+        }
+      ],
+      "explanation": "retry.api.retry: delay default changed from 0 to 1; the documentation still states the old value.",
+      "suggested_correction": "Update the documented default from 0 to 1.",
+      "links": {
+        "documentation": null,
+        "before": null,
+        "after": null
+      },
+      "limitations": [
+        "Static source evidence; runtime overrides are not evaluated."
+      ]
+    }
+  ],
+  "abstentions": [],
+  "warnings": [],
+  "limitations": [
+    "Python top-level functions, direct module-level argparse, and direct optparse option groups in public function bodies only.",
+    "Exact scope references required; unresolved aliases, wrappers and qualifiers abstain.",
+    "Static declared defaults do not prove effective runtime values or physical units.",
+    "General computed return values and arbitrary called methods are not resolved.",
+    "Filename checks bound one local literal dot-join; runtime type/dispatch overrides are not evaluated.",
+    "Markdown subset: ATX headings, paragraphs, simple pipe tables and fenced code."
+  ],
+  "metrics": {
+    "runtime_seconds": 0.943194,
+    "claims_indexed": 1,
+    "facts_indexed": 31,
+    "finding_count": 1,
+    "change_groups": 1,
+    "model_calls": 0,
+    "model_cache_hits": 0
+  },
+  "controlled_study": {
+    "synthetic": true,
+    "upstream_repository": "https://github.com/invl/retry",
+    "upstream_commit": "c3f386aa279b130b37a4a4e91e758c7f02ec898c",
+    "scenario": "default-drift",
+    "generated_documentation": "docs/driftlens-controlled.md",
+    "note": "Counterfactual local commits; not a real upstream bug or historical finding."
+  }
+}

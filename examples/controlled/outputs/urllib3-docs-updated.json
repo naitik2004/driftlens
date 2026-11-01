@@ -1,0 +1,50 @@
+{
+  "schema_version": 1,
+  "analyzer_version": "0.1.0",
+  "base_commit": "f66eda3932adb686aec20405a306964145695d0b",
+  "head_commit": "332c3e0db3f89727e6c9b395eb7ff4b57b3362ff",
+  "findings": [],
+  "abstentions": [
+    {
+      "claim": {
+        "path": "docs/driftlens-controlled.md",
+        "heading": "Synthetic controlled validation",
+        "quote": "`urllib3.request` `redirect` defaults to False.",
+        "line_start": 3,
+        "line_end": 3,
+        "start": 35,
+        "end": 82,
+        "kind": "sentence",
+        "columns": []
+      },
+      "symbol": "urllib3.request",
+      "reason": "No unchanged claim with matching scope in the base snapshot"
+    }
+  ],
+  "warnings": [],
+  "limitations": [
+    "Python top-level functions, direct module-level argparse, and direct optparse option groups in public function bodies only.",
+    "Exact scope references required; unresolved aliases, wrappers and qualifiers abstain.",
+    "Static declared defaults do not prove effective runtime values or physical units.",
+    "General computed return values and arbitrary called methods are not resolved.",
+    "Filename checks bound one local literal dot-join; runtime type/dispatch overrides are not evaluated.",
+    "Markdown subset: ATX headings, paragraphs, simple pipe tables and fenced code."
+  ],
+  "metrics": {
+    "runtime_seconds": 18.862818,
+    "claims_indexed": 283,
+    "facts_indexed": 627,
+    "finding_count": 0,
+    "change_groups": 0,
+    "model_calls": 0,
+    "model_cache_hits": 0
+  },
+  "controlled_study": {
+    "synthetic": true,
+    "upstream_repository": "https://github.com/urllib3/urllib3",
+    "upstream_commit": "2aa7e9c35234a90a1ce09b84dc7b706a6d604674",
+    "scenario": "docs-updated",
+    "generated_documentation": "docs/driftlens-controlled.md",
+    "note": "Counterfactual local commits; not a real upstream bug or historical finding."
+  }
+}

@@ -251,13 +251,19 @@ MIT licensed. Development proceeds on feature branches through pull requests.
 
 ## Current integration status
 
-The current continuation passes **141 tests**, all four demos, the actual local
+The current continuation passes **146 tests**, all four demos, the actual local
 Qwen suite and clean installed-CLI controls. Shared optparse defaults resolve in
 registration order; ambiguous duplicate spellings abstain. Optional behavioral
 review retrieves the two unresolved historical claims without counting them as
 hits. The 12-case external study is executed with its miss preserved. See
 [the current verification record](docs/VERIFICATION.md). Earlier observations
 below retain their original versions and counts.
+
+Additional [controlled repository tests](examples/controlled/README.md) use
+pinned backoff, retry and urllib3 source snapshots: all three injected default
+changes were detected and all 15 controls stayed quiet (18/18 scenarios).
+Generated documentation and counterfactual changes are explicitly synthetic;
+these results do not change historical recall. The detector runtime is unchanged.
 
 The public-readiness follow-up passed **121 tests** and functional installed-wheel
 checks on hosted Linux, macOS and Windows. Text reports and fixtures use explicit

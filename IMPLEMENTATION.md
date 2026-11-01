@@ -1,5 +1,14 @@
 # Implementation and verification status
 
+## Additional repository tests
+
+The unchanged runtime passed 18 controlled scenarios on pinned backoff, retry
+and urllib3 source: three injected default changes detected, 15 controls quiet,
+zero warnings and zero model calls. Generated Markdown claims and local
+counterfactual commits are explicitly synthetic, not new historical bug hits.
+The repository test suite now includes five fixture-generator regressions
+(146 total tests). See [the results and reproduction](examples/controlled/README.md).
+
 ## Implemented
 
 DriftLens compares immutable merge-base/head Git snapshots and reads Python and

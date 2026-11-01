@@ -1,0 +1,48 @@
+{
+  "scope": "Controlled synthetic mutations of pinned backoff, retry and urllib3 Python/Markdown snapshots. Generated documentation is not an original upstream claim. This is functional validation, not historical bug discovery or an independent accuracy benchmark.",
+  "frozen_detector_commit": "5e13b81b125166cad5f57c0a05add58406241e3a",
+  "repositories": [
+    {
+      "id": "backoff",
+      "source_url": "https://github.com/litl/backoff",
+      "commit": "d82b23c42d7a7e2402903e71e7a7f03014a00076",
+      "source_path": "backoff/_decorator.py",
+      "symbol": "backoff._decorator.on_exception",
+      "function": "on_exception",
+      "parameter": "raise_on_giveup",
+      "before": true,
+      "after": false,
+      "example_prefix": "backoff.expo, Exception, ",
+      "license": "MIT",
+      "license_path": "LICENSE"
+    },
+    {
+      "id": "retry",
+      "source_url": "https://github.com/invl/retry",
+      "commit": "c3f386aa279b130b37a4a4e91e758c7f02ec898c",
+      "source_path": "retry/api.py",
+      "symbol": "retry.api.retry",
+      "function": "retry",
+      "parameter": "delay",
+      "before": 0,
+      "after": 1,
+      "example_prefix": "",
+      "license": "Apache-2.0",
+      "license_path": "LICENSE"
+    },
+    {
+      "id": "urllib3",
+      "source_url": "https://github.com/urllib3/urllib3",
+      "commit": "2aa7e9c35234a90a1ce09b84dc7b706a6d604674",
+      "source_path": "src/urllib3/__init__.py",
+      "symbol": "urllib3.request",
+      "function": "request",
+      "parameter": "redirect",
+      "before": true,
+      "after": false,
+      "example_prefix": "'GET', 'https://example.invalid', ",
+      "license": "MIT",
+      "license_path": "LICENSE.txt"
+    }
+  ]
+}
