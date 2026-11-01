@@ -1,0 +1,117 @@
+{
+  "schema_version": 1,
+  "analyzer_version": "0.1.0",
+  "base_commit": "f66eda3932adb686aec20405a306964145695d0b",
+  "head_commit": "4a7dde5412299a5c9e44882489f09bd0f56650be",
+  "findings": [
+    {
+      "id": "d133cedafdc8cac82120",
+      "group_id": "68929b88c1792ac5",
+      "category": "parameter_default_changed",
+      "claim": {
+        "path": "docs/driftlens-controlled.md",
+        "heading": "Synthetic controlled validation",
+        "quote": "`urllib3.request` `redirect` defaults to True.",
+        "line_start": 3,
+        "line_end": 3,
+        "start": 35,
+        "end": 81,
+        "kind": "sentence",
+        "columns": []
+      },
+      "before_claim": {
+        "path": "docs/driftlens-controlled.md",
+        "heading": "Synthetic controlled validation",
+        "quote": "`urllib3.request` `redirect` defaults to True.",
+        "line_start": 3,
+        "line_end": 3,
+        "start": 35,
+        "end": 81,
+        "kind": "sentence",
+        "columns": []
+      },
+      "before": {
+        "path": "src/urllib3/__init__.py",
+        "symbol": "urllib3.request",
+        "kind": "parameter",
+        "name": "redirect",
+        "value": {
+          "default": true,
+          "has_default": true,
+          "kwargs": false
+        },
+        "line": 117,
+        "end_line": 205,
+        "resolved": true,
+        "dependencies": []
+      },
+      "after": {
+        "path": "src/urllib3/__init__.py",
+        "symbol": "urllib3.request",
+        "kind": "parameter",
+        "name": "redirect",
+        "value": {
+          "default": false,
+          "has_default": true,
+          "kwargs": false
+        },
+        "line": 117,
+        "end_line": 205,
+        "resolved": true,
+        "dependencies": []
+      },
+      "after_owner": null,
+      "before_verdict": "supported",
+      "after_verdict": "contradicted",
+      "evidence_strength": "deterministic",
+      "hunks": [
+        {
+          "old_path": "src/urllib3/__init__.py",
+          "new_path": "src/urllib3/__init__.py",
+          "old_start": 123,
+          "old_count": 7,
+          "new_start": 123,
+          "new_count": 7,
+          "text": "@@ -123,7 +123,7 @@ def request(\n     headers: typing.Mapping[str, str] | None = None,\n     preload_content: bool | None = True,\n     decode_content: bool | None = True,\n-    redirect: bool | None = True,\n+    redirect: bool | None = False,\n     retries: Retry | bool | int | None = None,\n     timeout: Timeout | float | int | None = 3,\n     json: typing.Any | None = None,\n"
+        }
+      ],
+      "explanation": "urllib3.request: redirect default changed from True to False; the documentation still states the old value.",
+      "suggested_correction": "Update the documented default from True to False.",
+      "links": {
+        "documentation": null,
+        "before": null,
+        "after": null
+      },
+      "limitations": [
+        "Static source evidence; runtime overrides are not evaluated."
+      ]
+    }
+  ],
+  "abstentions": [],
+  "warnings": [],
+  "limitations": [
+    "Python top-level functions, direct module-level argparse, and direct optparse option groups in public function bodies only.",
+    "Exact scope references required; unresolved aliases, wrappers and qualifiers abstain.",
+    "Static declared defaults do not prove effective runtime values or physical units.",
+    "General computed return values and arbitrary called methods are not resolved.",
+    "Filename checks bound one local literal dot-join; runtime type/dispatch overrides are not evaluated.",
+    "Markdown subset: ATX headings, paragraphs, simple pipe tables and fenced code."
+  ],
+  "metrics": {
+    "runtime_seconds": 20.29684,
+    "claims_indexed": 283,
+    "facts_indexed": 627,
+    "finding_count": 1,
+    "change_groups": 1,
+    "model_calls": 0,
+    "model_cache_hits": 0
+  },
+  "controlled_study": {
+    "synthetic": true,
+    "upstream_repository": "https://github.com/urllib3/urllib3",
+    "upstream_commit": "2aa7e9c35234a90a1ce09b84dc7b706a6d604674",
+    "scenario": "default-drift",
+    "generated_documentation": "docs/driftlens-controlled.md",
+    "note": "Counterfactual local commits; not a real upstream bug or historical finding."
+  }
+}

@@ -1,0 +1,36 @@
+name: Controlled repository validation (manual)
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  replay:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.14'
+      - uses: actions/cache@v4
+        id: histories
+        with:
+          path: ${{ runner.temp }}/controlled-histories
+          key: controlled-histories-${{ hashFiles('examples/controlled/manifest.json') }}
+      - name: Fetch pinned-source repositories without running upstream code
+        if: steps.histories.outputs.cache-hit != 'true'
+        run: |
+          mkdir -p "$RUNNER_TEMP/controlled-histories"
+          git clone --bare https://github.com/litl/backoff.git "$RUNNER_TEMP/controlled-histories/backoff.git"
+          git clone --bare https://github.com/invl/retry.git "$RUNNER_TEMP/controlled-histories/retry.git"
+          git clone --bare https://github.com/urllib3/urllib3.git "$RUNNER_TEMP/controlled-histories/urllib3.git"
+      - name: Run synthetic mutations with unchanged detector
+        run: python -m examples.controlled.replay --cache-dir "$RUNNER_TEMP/controlled-histories" --output "$RUNNER_TEMP/results"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: controlled-repositories-${{ github.sha }}
+          path: ${{ runner.temp }}/results
+          if-no-files-found: warn

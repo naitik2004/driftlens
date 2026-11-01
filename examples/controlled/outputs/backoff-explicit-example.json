@@ -1,0 +1,34 @@
+{
+  "schema_version": 1,
+  "analyzer_version": "0.1.0",
+  "base_commit": "d6b98ff4efde6a6427323eab951bf8dde2a26e92",
+  "head_commit": "f0cba26d72f871d4d5c80c3e88875a26dffbc4e8",
+  "findings": [],
+  "abstentions": [],
+  "warnings": [],
+  "limitations": [
+    "Python top-level functions, direct module-level argparse, and direct optparse option groups in public function bodies only.",
+    "Exact scope references required; unresolved aliases, wrappers and qualifiers abstain.",
+    "Static declared defaults do not prove effective runtime values or physical units.",
+    "General computed return values and arbitrary called methods are not resolved.",
+    "Filename checks bound one local literal dot-join; runtime type/dispatch overrides are not evaluated.",
+    "Markdown subset: ATX headings, paragraphs, simple pipe tables and fenced code."
+  ],
+  "metrics": {
+    "runtime_seconds": 4.296829,
+    "claims_indexed": 68,
+    "facts_indexed": 222,
+    "finding_count": 0,
+    "change_groups": 0,
+    "model_calls": 0,
+    "model_cache_hits": 0
+  },
+  "controlled_study": {
+    "synthetic": true,
+    "upstream_repository": "https://github.com/litl/backoff",
+    "upstream_commit": "d82b23c42d7a7e2402903e71e7a7f03014a00076",
+    "scenario": "explicit-example",
+    "generated_documentation": "docs/driftlens-controlled.md",
+    "note": "Counterfactual local commits; not a real upstream bug or historical finding."
+  }
+}

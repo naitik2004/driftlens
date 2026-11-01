@@ -1,0 +1,50 @@
+{
+  "schema_version": 1,
+  "analyzer_version": "0.1.0",
+  "base_commit": "33d01edd20db0954a14d609cc1dababe7f0739c8",
+  "head_commit": "458a687f65eb4bd1b178a6139374c2d4b3e4b99e",
+  "findings": [],
+  "abstentions": [
+    {
+      "claim": {
+        "path": "docs/driftlens-controlled.md",
+        "heading": "Synthetic controlled validation",
+        "quote": "Previously, `retry.api.retry` `delay` defaults to 0.",
+        "line_start": 3,
+        "line_end": 3,
+        "start": 35,
+        "end": 87,
+        "kind": "sentence",
+        "columns": []
+      },
+      "symbol": "retry.api.retry",
+      "reason": "Historical, platform or conditional qualifier requires more evidence"
+    }
+  ],
+  "warnings": [],
+  "limitations": [
+    "Python top-level functions, direct module-level argparse, and direct optparse option groups in public function bodies only.",
+    "Exact scope references required; unresolved aliases, wrappers and qualifiers abstain.",
+    "Static declared defaults do not prove effective runtime values or physical units.",
+    "General computed return values and arbitrary called methods are not resolved.",
+    "Filename checks bound one local literal dot-join; runtime type/dispatch overrides are not evaluated.",
+    "Markdown subset: ATX headings, paragraphs, simple pipe tables and fenced code."
+  ],
+  "metrics": {
+    "runtime_seconds": 0.680698,
+    "claims_indexed": 1,
+    "facts_indexed": 31,
+    "finding_count": 0,
+    "change_groups": 0,
+    "model_calls": 0,
+    "model_cache_hits": 0
+  },
+  "controlled_study": {
+    "synthetic": true,
+    "upstream_repository": "https://github.com/invl/retry",
+    "upstream_commit": "c3f386aa279b130b37a4a4e91e758c7f02ec898c",
+    "scenario": "historical-qualifier",
+    "generated_documentation": "docs/driftlens-controlled.md",
+    "note": "Counterfactual local commits; not a real upstream bug or historical finding."
+  }
+}

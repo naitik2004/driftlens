@@ -133,6 +133,12 @@ both what worked and what failed, so a maintainer can inspect the evidence.”
 
 ## Four-minute Q&A drill
 
+If asked which other projects were tested: “We also injected controlled default
+changes into private copies of backoff, retry and urllib3 source, with generated
+Markdown claims. All three changes were detected and 15 controls stayed quiet.
+These are functional tests, not newly discovered upstream bugs or extra
+historical recall.” The full pinned study is in examples/controlled/README.md.
+
 Naitik: answer aloud without an assistant, then check the guide:
 
 1. Why is this different from grep and doctest?

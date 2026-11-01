@@ -1,5 +1,21 @@
 # Integration verification — 1 November 2026
 
+## Additional repository validation
+
+At the user's request, the unchanged release runtime was tested on pinned
+backoff, retry and urllib3 source snapshots. **18/18 controlled scenarios passed**:
+three injected default changes detected, 15 negative controls quiet, zero
+warnings and zero model calls. The full local suite passed **146 tests**,
+including five new generator regressions for exact target selection, UTF-8 byte
+offsets, keyword-only arguments, typed baselines and rejecting dynamic defaults.
+
+These tests add generated Markdown claims and counterfactual changes in
+temporary private copies. They are not new upstream bug discoveries and do not
+replace the existing historical misses or change their recall. Source links,
+pins, license notices, all reports and reproduction commands are in the
+[controlled study](../examples/controlled/README.md). A manual GitHub workflow
+repeats the study. The detector files are byte-identical to v0.1.0.
+
 ## Published GitHub preview
 
 [DriftLens v0.1.0](https://github.com/naitik2004/driftlens/releases/tag/v0.1.0)
